@@ -1,0 +1,27 @@
+kind = "web"
+previewPath = "/"
+title = "Tara Logistics"
+version = "1.0.0"
+id = "artifacts/tara-logistics"
+router = "path"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 18208
+
+[services.development]
+run = "pnpm --filter @workspace/tara-logistics run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/tara-logistics", "run", "build" ]
+serve = "static"
+publicDir = "artifacts/tara-logistics/dist/public"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "18208"
+BASE_PATH = "/"

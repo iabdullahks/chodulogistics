@@ -10,6 +10,10 @@ servers:
 tags:
   - name: health
     description: Health operations
+  - name: leads
+    description: Freight quote and contact form submissions
+  - name: shipments
+    description: Shipment tracking
 paths:
   /healthz:
     get:
@@ -24,6 +28,46 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/HealthStatus"
+  /leads:
+    post:
+      operationId: createLead
+      tags: [leads]
+      summary: Submit a quote request or contact message
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LeadInput"
+      responses:
+        "201":
+          description: Lead created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Lead"
+        "400":
+          description: Invalid input
+  /shipments/{trackingNumber}:
+    get:
+      operationId: trackShipment
+      tags: [shipments]
+      summary: Look up a shipment by tracking number
+      parameters:
+        - name: trackingNumber
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Shipment found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Shipment"
+        "404":
+          description: Shipment not found
 components:
   schemas:
     HealthStatus:
@@ -33,4 +77,42 @@ components:
           type: string
       required:
         - status
+    Lead:
+      type: object
+      required:
+        [id, fullName, email, phone, companyName, subject, serviceInterested, message, createdAt]
+      properties:
+        id: { type: integer }
+        fullName: { type: string }
+        email: { type: string }
+        phone: { type: string }
+        companyName: { type: ["string", "null"] }
+        subject: { type: ["string", "null"] }
+        serviceInterested: { type: ["string", "null"] }
+        message: { type: string }
+        createdAt: { type: string, format: date-time }
+    LeadInput:
+      type: object
+      required: [fullName, email, phone, message]
+      properties:
+        fullName: { type: string, minLength: 1 }
+        email: { type: string, minLength: 1 }
+        phone: { type: string, minLength: 1 }
+        companyName: { type: string }
+        subject: { type: string }
+        serviceInterested: { type: string }
+        message: { type: string, minLength: 1 }
+    Shipment:
+      type: object
+      required:
+        [id, trackingNumber, status, origin, destination, carrierName, estimatedDelivery, lastUpdate]
+      properties:
+        id: { type: integer }
+        trackingNumber: { type: string }
+        status: { type: string }
+        origin: { type: string }
+        destination: { type: string }
+        carrierName: { type: string }
+        estimatedDelivery: { type: string, format: date-time }
+        lastUpdate: { type: string }
 
