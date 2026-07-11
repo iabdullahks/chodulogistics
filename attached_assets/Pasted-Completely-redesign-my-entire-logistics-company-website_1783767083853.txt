@@ -1,0 +1,511 @@
+Completely redesign my entire logistics company website into a premium, enterprise-grade experience while keeping all existing content, functionality, navigation, forms, links, and SEO intact.
+
+This is NOT a rebuild of the business.
+It is a complete UI/UX redesign.
+
+The website should feel like a modern combination of:
+
+• Stripe
+• Linear
+• Ramp
+• Framer
+• Vercel
+• Webflow Enterprise
+• Flexport
+• Uber Freight
+
+The goal is to make visitors immediately trust the company and increase quote requests.
+
+----------------------------------------------------
+BRANDING
+----------------------------------------------------
+
+Brand Personality:
+
+• Premium
+• Modern
+• Professional
+• Reliable
+• Enterprise
+• Luxury
+• Trustworthy
+• Clean
+• Minimal
+• Technology-driven
+
+Avoid looking like a generic trucking template.
+
+----------------------------------------------------
+COLOR SYSTEM
+----------------------------------------------------
+
+Primary Background:
+#0B1220
+
+Secondary Background:
+#111827
+
+Card Background:
+#172033
+
+Accent Gold:
+#D4AF37
+
+Gold Hover:
+#F4C542
+
+White:
+#F8FAFC
+
+Paragraph Text:
+#CBD5E1
+
+Muted Text:
+#94A3B8
+
+Border:
+rgba(255,255,255,0.08)
+
+Success:
+#10B981
+
+Danger:
+#EF4444
+
+Use elegant gradients and soft glows throughout the website.
+
+----------------------------------------------------
+DESIGN LANGUAGE
+----------------------------------------------------
+
+Everything should have:
+
+• Large spacing
+• Clean layouts
+• Premium typography
+• Rounded corners (20–24px)
+• Glassmorphism where appropriate
+• Soft shadows
+• Smooth transitions
+• Minimal borders
+• Excellent readability
+• Modern SaaS feel
+
+Avoid:
+
+• Boxy layouts
+• Heavy borders
+• Outdated icons
+• Clutter
+• Small text
+• Generic templates
+
+----------------------------------------------------
+TYPOGRAPHY
+----------------------------------------------------
+
+Hero Heading:
+56–72px
+
+Section Heading:
+40–48px
+
+Card Titles:
+24–28px
+
+Paragraph:
+17–18px
+
+Button Text:
+16px
+
+Use a clean modern font such as:
+
+Inter
+Plus Jakarta Sans
+Manrope
+
+----------------------------------------------------
+BUTTONS
+----------------------------------------------------
+
+Primary Button:
+
+Gold background
+Dark text
+Rounded-xl
+
+Hover:
+
+Gold brightens
+Shadow appears
+Scale 1.03
+Transition 300ms
+
+Secondary Button:
+
+Transparent
+White border
+
+Hover:
+
+Gold border
+Gold text
+
+----------------------------------------------------
+CARDS
+----------------------------------------------------
+
+Every card should have:
+
+24px radius
+
+Consistent padding
+
+Equal heights
+
+Soft border
+
+Premium hover
+
+Lift animation
+
+Shadow
+
+Gold hover border
+
+Icon with circular gold background
+
+----------------------------------------------------
+ICONS
+----------------------------------------------------
+
+Replace every icon with premium modern outline SVG icons.
+
+Icons should have:
+
+Gold circular background
+
+Soft glow
+
+Hover scale
+
+Hover rotation
+
+----------------------------------------------------
+ANIMATIONS
+----------------------------------------------------
+
+Use subtle modern animations only.
+
+Include:
+
+Fade Up
+
+Slide Up
+
+Scroll Reveal
+
+Hover Lift
+
+Arrow Slide
+
+Button Ripple
+
+Icon Rotation
+
+Smooth easing
+
+300–500ms duration
+
+----------------------------------------------------
+BACKGROUND
+----------------------------------------------------
+
+Use:
+
+Soft radial gradients
+
+Subtle abstract logistics lines
+
+Very low opacity grid
+
+Light noise texture
+
+Premium glow behind headings
+
+No visual clutter.
+
+----------------------------------------------------
+HEADER
+----------------------------------------------------
+
+Redesign navigation.
+
+Sticky header.
+
+Glass effect on scroll.
+
+Modern logo spacing.
+
+Hover underline animation.
+
+CTA button:
+
+Get a Quote
+
+Gold button
+
+----------------------------------------------------
+HERO SECTION
+----------------------------------------------------
+
+Create a premium hero section.
+
+Large headline.
+
+Professional supporting text.
+
+Two CTA buttons.
+
+Modern logistics imagery.
+
+Background gradient.
+
+Floating statistics.
+
+Trust badges.
+
+Client logos.
+
+Animated scroll indicator.
+
+----------------------------------------------------
+SERVICES
+----------------------------------------------------
+
+Completely redesign services into premium feature cards.
+
+Use equal height cards.
+
+Large icons.
+
+Beautiful hover.
+
+Gold accent.
+
+Micro interactions.
+
+----------------------------------------------------
+WHY CHOOSE US
+----------------------------------------------------
+
+Create a premium section showing:
+
+Reliability
+
+Nationwide Coverage
+
+Fast Payments
+
+Experienced Team
+
+24/7 Support
+
+Animated metrics.
+
+----------------------------------------------------
+PROCESS SECTION
+----------------------------------------------------
+
+Create a beautiful timeline.
+
+Modern numbered steps.
+
+Connecting line.
+
+Animations while scrolling.
+
+----------------------------------------------------
+ABOUT SECTION
+----------------------------------------------------
+
+Premium split layout.
+
+Professional imagery.
+
+Company statistics.
+
+Mission.
+
+Vision.
+
+Core values.
+
+----------------------------------------------------
+TESTIMONIALS
+----------------------------------------------------
+
+Modern testimonial cards.
+
+Customer photos.
+
+Star ratings.
+
+Quote icon.
+
+Auto sliding carousel.
+
+----------------------------------------------------
+CTA SECTION
+----------------------------------------------------
+
+Large premium call-to-action.
+
+Dark background.
+
+Gold gradient.
+
+Strong heading.
+
+Quote request button.
+
+----------------------------------------------------
+FOOTER
+----------------------------------------------------
+
+Redesign footer completely.
+
+Multiple columns.
+
+Quick Links.
+
+Services.
+
+Contact.
+
+Social icons.
+
+Newsletter.
+
+Legal links.
+
+Hover animations.
+
+----------------------------------------------------
+FORMS
+----------------------------------------------------
+
+Modern inputs.
+
+Rounded corners.
+
+Floating labels.
+
+Validation.
+
+Loading states.
+
+Success animations.
+
+----------------------------------------------------
+RESPONSIVE DESIGN
+----------------------------------------------------
+
+Desktop
+
+Tablet
+
+Mobile
+
+Everything should be perfectly responsive.
+
+----------------------------------------------------
+ACCESSIBILITY
+----------------------------------------------------
+
+WCAG compliant.
+
+Keyboard navigation.
+
+Proper contrast.
+
+Semantic HTML.
+
+ARIA labels.
+
+----------------------------------------------------
+SEO
+----------------------------------------------------
+
+Keep all existing SEO.
+
+Maintain headings.
+
+Maintain metadata.
+
+Maintain URLs.
+
+Maintain structured data.
+
+----------------------------------------------------
+PERFORMANCE
+----------------------------------------------------
+
+Optimize for Lighthouse.
+
+Lazy loading.
+
+Modern image optimization.
+
+Minimal JavaScript.
+
+Excellent Core Web Vitals.
+
+----------------------------------------------------
+TAILWIND
+----------------------------------------------------
+
+Use Tailwind CSS best practices.
+
+Reusable components.
+
+Clean code.
+
+Maintainable architecture.
+
+----------------------------------------------------
+IMPORTANT
+----------------------------------------------------
+
+Do NOT remove any existing content.
+
+Do NOT change business information.
+
+Do NOT remove pages.
+
+Do NOT break functionality.
+
+Only improve:
+
+UI
+
+UX
+
+Layout
+
+Typography
+
+Spacing
+
+Animations
+
+Responsiveness
+
+Visual hierarchy
+
+Branding
+
+Micro interactions
+
+The final website should look like a premium $50M logistics technology company rather than a basic trucking website.
