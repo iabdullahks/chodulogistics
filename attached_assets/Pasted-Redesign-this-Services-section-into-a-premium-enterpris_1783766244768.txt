@@ -1,0 +1,165 @@
+Redesign this Services section into a premium, enterprise-grade logistics website with a modern SaaS aesthetic. The design should feel clean, luxurious, trustworthy, and conversion-focused, similar to Stripe, Linear, Framer, Webflow, and Ramp.
+
+## Color Palette
+
+Use the following premium color scheme consistently throughout the section:
+
+- Primary Background: #0B1220
+- Secondary Background: #111827
+- Card Background: #172033
+- Primary Accent (Luxury Gold): #D4AF37
+- Hover Accent: #F4C542
+- Main Heading: #F8FAFC
+- Body Text: #CBD5E1
+- Muted Text: #94A3B8
+- Borders: rgba(255,255,255,0.08)
+
+Use subtle gold gradients, soft glows, and premium lighting effects without making the UI feel flashy.
+
+## Layout
+
+- Increase spacing and white space significantly.
+- Add generous vertical padding (100–140px).
+- Use a responsive grid:
+  - Desktop: 3 columns
+  - Tablet: 2 columns
+  - Mobile: 1 column
+- Maximum container width around 1280px.
+- Keep everything perfectly aligned with equal card heights.
+
+## Section Header
+
+Add a premium heading section centered above the cards.
+
+Small Label:
+OUR SERVICES
+
+Main Heading:
+Helping Trucking Businesses Grow
+
+Subtitle:
+We provide end-to-end logistics solutions designed to help carriers and owner-operators streamline operations, increase revenue, and grow with confidence.
+
+## Cards
+
+Each service card should include:
+
+- 24px border radius
+- Premium glassmorphism effect
+- Background: #172033
+- Thin semi-transparent border
+- Large internal padding (32–40px)
+- Equal height
+- Smooth hover transition
+- Hover lift (translateY)
+- Soft shadow on hover
+- Border changes to gold on hover
+- Gold accent line across the top
+- Premium micro-interactions
+
+## Icons
+
+Replace current icons with modern outline SVG icons.
+
+Icons should have:
+
+- Circular background
+- Soft gold gradient
+- Slight glow
+- Rotate or scale slightly on hover
+
+## Typography
+
+Heading:
+- 38–42px
+- Bold
+- White (#F8FAFC)
+
+Section Label:
+- Gold (#D4AF37)
+- Uppercase
+- Letter spacing
+
+Card Title:
+- 24–26px
+- Bold
+- White
+
+Description:
+- 17–18px
+- Color #CBD5E1
+- Line height 1.7
+
+## Buttons
+
+Replace "View Details" with:
+
+Learn More →
+
+Button should include:
+
+- Gold text
+- Animated arrow slide
+- Underline animation
+- Hover color #F4C542
+
+## Background
+
+Enhance the section using:
+
+- Large radial gold glow behind the heading
+- Very subtle grid pattern (3–5% opacity)
+- Abstract logistics-inspired lines or geometric shapes
+- Soft gradient from #0B1220 to #111827
+- No visual clutter
+
+## Animations
+
+Use tasteful modern animations:
+
+- Fade-up on scroll
+- Card lift
+- Icon rotation
+- Arrow slide
+- Smooth easing
+- 300–500ms duration
+
+## Hover Effects
+
+Cards should:
+
+- Lift 8px
+- Add larger shadow
+- Border changes to #D4AF37
+- Slightly brighten background
+- Icon scales to 110%
+- Gold glow appears subtly
+
+Buttons should:
+
+- Arrow slides right
+- Text changes to #F4C542
+
+## Design Style
+
+The final section should feel:
+
+- Premium
+- Enterprise
+- Modern SaaS
+- Luxury logistics
+- Minimal
+- Highly trustworthy
+- High-end B2B website
+
+Avoid:
+
+- Heavy borders
+- Flat cards
+- Small typography
+- Tight spacing
+- Generic icons
+- Outdated design patterns
+- Template-like appearance
+
+Use modern Tailwind CSS best practices, semantic HTML, accessible color contrast, responsive design, smooth animations, and clean component architecture.
