@@ -153,7 +153,7 @@ export default function PaymentProcess() {
                   {[
                     {
                       q: "Where do I send my invoices and paperwork?",
-                      a: "All clean paperwork and invoices should be emailed to accounting@taralogistics.com. Please include the load number in the subject line of your email."
+                      a: "All clean paperwork and invoices should be emailed to accounting@choudulogistics.com. Please include the load number in the subject line of your email."
                     },
                     {
                       q: "How does Quick Pay work?",

@@ -41,7 +41,7 @@ export default function FactoringRegistration() {
                     Fuel, maintenance, and insurance bills don't wait for brokers to pay their invoices. Factoring allows you to get paid within 24 hours of delivering a load, giving you the liquid capital necessary to keep moving.
                   </p>
                   <p>
-                    Tara Logistics partners with reputable, transparent factoring companies. We assist you through the entire registration process, helping you avoid hidden fees, understand recourse vs. non-recourse options, and get your account funded rapidly.
+                    CHODU Logistics partners with reputable, transparent factoring companies. We assist you through the entire registration process, helping you avoid hidden fees, understand recourse vs. non-recourse options, and get your account funded rapidly.
                   </p>
                 </div>
               </section>

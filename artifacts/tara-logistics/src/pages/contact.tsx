@@ -138,7 +138,7 @@ export default function Contact() {
                     </div>
                     <div>
                       <div className="font-semibold uppercase tracking-wider text-xs text-[#94A3B8] mb-2">Email</div>
-                      <div className="text-2xl font-medium text-foreground">dispatch@taralogistics.com</div>
+                      <div className="text-2xl font-medium text-foreground">dispatch@choudulogistics.com</div>
                       <div className="text-[15px] text-[#CBD5E1] mt-2">Average response: &lt; 30 mins</div>
                     </div>
                   </div>

@@ -1,6 +1,6 @@
 kind = "web"
 previewPath = "/"
-title = "Tara Logistics"
+title = "CHODU Logistics"
 version = "1.0.0"
 id = "artifacts/tara-logistics"
 router = "path"
