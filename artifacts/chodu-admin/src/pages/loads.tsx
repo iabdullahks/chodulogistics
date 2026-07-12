@@ -217,14 +217,14 @@ function LoadFormFields({ form }: { form: UseFormReturn<LoadFormValues> }) {
       <div className="grid grid-cols-2 gap-4">
         <FormField control={form.control} name="trackingId" render={({ field }) => (
           <FormItem>
-            <FormLabel>Tracking ID</FormLabel>
+            <FormLabel className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Tracking ID</FormLabel>
             <FormControl><Input {...field} className="bg-background/50 font-mono" placeholder="Enter tracking ID" /></FormControl>
             <FormMessage />
           </FormItem>
         )} />
         <FormField control={form.control} name="status" render={({ field }) => (
           <FormItem>
-            <FormLabel>Load Status</FormLabel>
+            <FormLabel className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Load Status</FormLabel>
             <Select onValueChange={field.onChange} value={field.value}>
               <FormControl>
                 <SelectTrigger className="bg-background/50">
@@ -244,21 +244,21 @@ function LoadFormFields({ form }: { form: UseFormReturn<LoadFormValues> }) {
       <div className="grid grid-cols-3 gap-4">
         <FormField control={form.control} name="carrierName" render={({ field }) => (
           <FormItem>
-            <FormLabel>Carrier</FormLabel>
+            <FormLabel className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Carrier</FormLabel>
             <FormControl><Input {...field} className="bg-background/50" placeholder="Carrier name" /></FormControl>
             <FormMessage />
           </FormItem>
         )} />
         <FormField control={form.control} name="dot" render={({ field }) => (
           <FormItem>
-            <FormLabel>DOT</FormLabel>
+            <FormLabel className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">DOT</FormLabel>
             <FormControl><Input {...field} className="bg-background/50 font-mono" placeholder="DOT number" /></FormControl>
             <FormMessage />
           </FormItem>
         )} />
         <FormField control={form.control} name="truck" render={({ field }) => (
           <FormItem>
-            <FormLabel>Truck #</FormLabel>
+            <FormLabel className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Truck #</FormLabel>
             <FormControl><Input {...field} className="bg-background/50 font-mono" placeholder="Truck number" /></FormControl>
             <FormMessage />
           </FormItem>
@@ -266,14 +266,14 @@ function LoadFormFields({ form }: { form: UseFormReturn<LoadFormValues> }) {
       </div>
       <FormField control={form.control} name="slotFeeStatus" render={({ field }) => (
         <FormItem>
-          <FormLabel>Slot Fee Status</FormLabel>
+          <FormLabel className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Slot Fee Status</FormLabel>
           <FormControl><Input {...field} className="bg-background/50" placeholder="Slot fee status" /></FormControl>
           <FormMessage />
         </FormItem>
       )} />
       <FormField control={form.control} name="tripsPerWeek" render={({ field }) => (
         <FormItem>
-          <FormLabel>Total Trips in a Week</FormLabel>
+          <FormLabel className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Total Trips in a Week</FormLabel>
           <FormControl><Input type="number" {...field} className="bg-background/50" placeholder="Number of trips" /></FormControl>
           <FormMessage />
         </FormItem>
@@ -282,28 +282,28 @@ function LoadFormFields({ form }: { form: UseFormReturn<LoadFormValues> }) {
       <SectionHeader icon={Route}>Route Information</SectionHeader>
       <FormField control={form.control} name="outboundRoute" render={({ field }) => (
         <FormItem>
-          <FormLabel>Outbound Route</FormLabel>
+          <FormLabel className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Outbound Route</FormLabel>
           <FormControl><Textarea {...field} className="bg-background/50 resize-none" placeholder="Enter outbound route details" /></FormControl>
           <FormMessage />
         </FormItem>
       )} />
       <FormField control={form.control} name="returnRoute" render={({ field }) => (
         <FormItem>
-          <FormLabel>Return Route</FormLabel>
+          <FormLabel className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Return Route</FormLabel>
           <FormControl><Textarea {...field} className="bg-background/50 resize-none" placeholder="Enter return route details" /></FormControl>
           <FormMessage />
         </FormItem>
       )} />
       <FormField control={form.control} name="pickupAddress" render={({ field }) => (
         <FormItem>
-          <FormLabel>Pickup Address</FormLabel>
+          <FormLabel className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Pickup Address</FormLabel>
           <FormControl><Textarea {...field} className="bg-background/50 resize-none" placeholder="Enter pickup address" /></FormControl>
           <FormMessage />
         </FormItem>
       )} />
       <FormField control={form.control} name="deliveryAddress" render={({ field }) => (
         <FormItem>
-          <FormLabel>Delivery Address</FormLabel>
+          <FormLabel className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Delivery Address</FormLabel>
           <FormControl><Textarea {...field} className="bg-background/50 resize-none" placeholder="Enter delivery address" /></FormControl>
           <FormMessage />
         </FormItem>
@@ -311,14 +311,14 @@ function LoadFormFields({ form }: { form: UseFormReturn<LoadFormValues> }) {
       <div className="grid grid-cols-2 gap-4">
         <FormField control={form.control} name="milesPerSide" render={({ field }) => (
           <FormItem>
-            <FormLabel>Each Side Miles</FormLabel>
+            <FormLabel className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Each Side Miles</FormLabel>
             <FormControl><Input type="number" {...field} className="bg-background/50" placeholder="Miles per side" /></FormControl>
             <FormMessage />
           </FormItem>
         )} />
         <FormField control={form.control} name="totalRoundTripMiles" render={({ field }) => (
           <FormItem>
-            <FormLabel>Total Round Trip Miles</FormLabel>
+            <FormLabel className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Total Round Trip Miles</FormLabel>
             <FormControl><Input type="number" {...field} className="bg-background/50" placeholder="Total miles" /></FormControl>
             <FormMessage />
           </FormItem>
@@ -329,21 +329,21 @@ function LoadFormFields({ form }: { form: UseFormReturn<LoadFormValues> }) {
       <div className="grid grid-cols-3 gap-4">
         <FormField control={form.control} name="commodity" render={({ field }) => (
           <FormItem>
-            <FormLabel>Commodity</FormLabel>
+            <FormLabel className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Commodity</FormLabel>
             <FormControl><Input {...field} className="bg-background/50" placeholder="Type of commodity" /></FormControl>
             <FormMessage />
           </FormItem>
         )} />
         <FormField control={form.control} name="outboundWeightLbs" render={({ field }) => (
           <FormItem>
-            <FormLabel>Outbound Weight (lbs)</FormLabel>
+            <FormLabel className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Outbound Weight (lbs)</FormLabel>
             <FormControl><Input type="number" {...field} className="bg-background/50" placeholder="Weight in lbs" /></FormControl>
             <FormMessage />
           </FormItem>
         )} />
         <FormField control={form.control} name="backhaulWeightLbs" render={({ field }) => (
           <FormItem>
-            <FormLabel>Backhaul Weight (lbs)</FormLabel>
+            <FormLabel className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Backhaul Weight (lbs)</FormLabel>
             <FormControl><Input type="number" {...field} className="bg-background/50" placeholder="Weight in lbs" /></FormControl>
             <FormMessage />
           </FormItem>
@@ -354,14 +354,14 @@ function LoadFormFields({ form }: { form: UseFormReturn<LoadFormValues> }) {
       <div className="grid grid-cols-2 gap-4">
         <FormField control={form.control} name="outboundRate" render={({ field }) => (
           <FormItem>
-            <FormLabel>Total Amount Paid Per Round Trip</FormLabel>
+            <FormLabel className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Total Amount Paid Per Round Trip</FormLabel>
             <FormControl><Input type="number" step="0.01" {...field} className="bg-background/50" placeholder="Enter amount" /></FormControl>
             <FormMessage />
           </FormItem>
         )} />
         <FormField control={form.control} name="startDate" render={({ field }) => (
           <FormItem>
-            <FormLabel>Start Date</FormLabel>
+            <FormLabel className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Start Date</FormLabel>
             <FormControl><Input type="date" {...field} className="bg-background/50" /></FormControl>
             <FormMessage />
           </FormItem>
@@ -372,28 +372,28 @@ function LoadFormFields({ form }: { form: UseFormReturn<LoadFormValues> }) {
       <div className="grid grid-cols-2 gap-4">
         <FormField control={form.control} name="contractType" render={({ field }) => (
           <FormItem>
-            <FormLabel>Contract Type</FormLabel>
+            <FormLabel className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Contract Type</FormLabel>
             <FormControl><Input {...field} className="bg-background/50" placeholder="Contract type" /></FormControl>
             <FormMessage />
           </FormItem>
         )} />
         <FormField control={form.control} name="purpose" render={({ field }) => (
           <FormItem>
-            <FormLabel>Purpose</FormLabel>
+            <FormLabel className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Purpose</FormLabel>
             <FormControl><Input {...field} className="bg-background/50" placeholder="Purpose" /></FormControl>
             <FormMessage />
           </FormItem>
         )} />
         <FormField control={form.control} name="refundableStatus" render={({ field }) => (
           <FormItem>
-            <FormLabel>Refundable Status</FormLabel>
+            <FormLabel className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Refundable Status</FormLabel>
             <FormControl><Input {...field} className="bg-background/50" placeholder="Refundable status" /></FormControl>
             <FormMessage />
           </FormItem>
         )} />
         <FormField control={form.control} name="appliesTowardContract" render={({ field }) => (
           <FormItem>
-            <FormLabel>Applies Toward Contract</FormLabel>
+            <FormLabel className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Applies Toward Contract</FormLabel>
             <Select onValueChange={field.onChange} value={field.value}>
               <FormControl>
                 <SelectTrigger className="bg-background/50">
