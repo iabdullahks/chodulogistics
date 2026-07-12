@@ -103,3 +103,44 @@ export interface AdminUser {
   roleName: string;
 }
 
+export type RolePermissions = {[key: string]: string};
+
+export interface Role {
+  id: number;
+  name: string;
+  permissions: RolePermissions;
+}
+
+export interface AdminUserDetail {
+  id: number;
+  email: string;
+  name: string;
+  roleId: number;
+  roleName: string;
+  isActive: boolean;
+  /** @nullable */
+  lastLoginAt: string | null;
+  createdAt: string;
+}
+
+export interface AdminUserCreateInput {
+  /** @minLength 1 */
+  email: string;
+  /** @minLength 1 */
+  name: string;
+  /** @minLength 8 */
+  password: string;
+  roleId: number;
+}
+
+export interface AdminUserUpdateInput {
+  /** @minLength 1 */
+  email?: string;
+  /** @minLength 1 */
+  name?: string;
+  /** @minLength 8 */
+  password?: string;
+  roleId?: number;
+  isActive?: boolean;
+}
+

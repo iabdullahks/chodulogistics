@@ -8,10 +8,15 @@
 
 export * from './adminLoginInput';
 export * from './adminUser';
+export * from './adminUserCreateInput';
+export * from './adminUserDetail';
+export * from './adminUserUpdateInput';
 export * from './healthStatus';
 export * from './lead';
 export * from './leadInput';
 export * from './leadUpdateInput';
+export * from './role';
+export * from './rolePermissions';
 export * from './shipment';
 export * from './shipmentInput';
 export * from './shipmentUpdateInput';

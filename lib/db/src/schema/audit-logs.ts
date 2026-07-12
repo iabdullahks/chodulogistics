@@ -12,9 +12,9 @@ import { adminUsersTable } from "./admin-users";
 
 export const auditLogsTable = pgTable("audit_logs", {
   id: serial("id").primaryKey(),
-  adminUserId: integer("admin_user_id")
-    .notNull()
-    .references(() => adminUsersTable.id),
+  adminUserId: integer("admin_user_id").references(() => adminUsersTable.id, {
+    onDelete: "set null",
+  }),
   action: text("action").notNull(),
   entityType: text("entity_type").notNull(),
   entityId: text("entity_id").notNull(),

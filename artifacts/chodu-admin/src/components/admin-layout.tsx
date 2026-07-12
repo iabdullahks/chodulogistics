@@ -1,7 +1,7 @@
 import { Link, useLocation } from "wouter";
 import { useAdminMe, useAdminLogout, getAdminMeQueryKey } from "@workspace/api-client-react";
 import { useEffect, useState } from "react";
-import { LayoutDashboard, Truck, Inbox, LogOut, Loader2, Menu, X } from "lucide-react";
+import { LayoutDashboard, Truck, Inbox, Users, LogOut, Loader2, Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { useQueryClient } from "@tanstack/react-query";
@@ -50,6 +50,7 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
     { href: "/", label: "Dashboard", icon: LayoutDashboard },
     { href: "/shipments", label: "Shipments", icon: Truck },
     { href: "/leads", label: "Leads", icon: Inbox },
+    { href: "/users", label: "Admin Users", icon: Users },
   ];
 
   return (

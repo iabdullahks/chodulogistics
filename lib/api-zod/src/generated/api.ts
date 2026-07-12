@@ -249,3 +249,101 @@ export const AdminUpdateLeadResponse = zod.object({
 })
 
 
+/**
+ * @summary List all roles
+ */
+export const AdminListRolesResponseItem = zod.object({
+  "id": zod.number(),
+  "name": zod.string(),
+  "permissions": zod.record(zod.string(), zod.string())
+})
+export const AdminListRolesResponse = zod.array(AdminListRolesResponseItem)
+
+
+/**
+ * @summary List all admin users
+ */
+export const AdminListUsersResponseItem = zod.object({
+  "id": zod.number(),
+  "email": zod.string(),
+  "name": zod.string(),
+  "roleId": zod.number(),
+  "roleName": zod.string(),
+  "isActive": zod.boolean(),
+  "lastLoginAt": zod.coerce.date().nullable(),
+  "createdAt": zod.coerce.date()
+})
+export const AdminListUsersResponse = zod.array(AdminListUsersResponseItem)
+
+
+/**
+ * @summary Create a new admin user
+ */
+
+
+export const adminCreateUserBodyPasswordMin = 8;
+
+
+
+export const AdminCreateUserBody = zod.object({
+  "email": zod.string().min(1),
+  "name": zod.string().min(1),
+  "password": zod.string().min(adminCreateUserBodyPasswordMin),
+  "roleId": zod.number()
+})
+
+export const AdminCreateUserResponse = zod.object({
+  "id": zod.number(),
+  "email": zod.string(),
+  "name": zod.string(),
+  "roleId": zod.number(),
+  "roleName": zod.string(),
+  "isActive": zod.boolean(),
+  "lastLoginAt": zod.coerce.date().nullable(),
+  "createdAt": zod.coerce.date()
+})
+
+
+/**
+ * @summary Update an admin user
+ */
+export const AdminUpdateUserParams = zod.object({
+  "id": zod.coerce.number()
+})
+
+
+
+export const adminUpdateUserBodyPasswordMin = 8;
+
+
+
+export const AdminUpdateUserBody = zod.object({
+  "email": zod.string().min(1).optional(),
+  "name": zod.string().min(1).optional(),
+  "password": zod.string().min(adminUpdateUserBodyPasswordMin).optional(),
+  "roleId": zod.number().optional(),
+  "isActive": zod.boolean().optional()
+})
+
+export const AdminUpdateUserResponse = zod.object({
+  "id": zod.number(),
+  "email": zod.string(),
+  "name": zod.string(),
+  "roleId": zod.number(),
+  "roleName": zod.string(),
+  "isActive": zod.boolean(),
+  "lastLoginAt": zod.coerce.date().nullable(),
+  "createdAt": zod.coerce.date()
+})
+
+
+/**
+ * @summary Delete an admin user
+ */
+export const AdminDeleteUserParams = zod.object({
+  "id": zod.coerce.number()
+})
+
+export const AdminDeleteUserResponse = zod.void()
+
+

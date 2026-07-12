@@ -7,7 +7,7 @@ export const adminSessionsTable = pgTable("admin_sessions", {
   id: serial("id").primaryKey(),
   adminUserId: integer("admin_user_id")
     .notNull()
-    .references(() => adminUsersTable.id),
+    .references(() => adminUsersTable.id, { onDelete: "cascade" }),
   tokenHash: text("token_hash").notNull().unique(),
   expiresAt: timestamp("expires_at", { withTimezone: true }).notNull(),
   createdAt: timestamp("created_at", { withTimezone: true })
