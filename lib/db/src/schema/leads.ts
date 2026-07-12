@@ -11,6 +11,8 @@ export const leadsTable = pgTable("leads", {
   subject: text("subject"),
   serviceInterested: text("service_interested"),
   message: text("message").notNull(),
+  status: text("status").notNull().default("new"),
+  notes: text("notes"),
   createdAt: timestamp("created_at", { withTimezone: true })
     .notNull()
     .defaultNow(),

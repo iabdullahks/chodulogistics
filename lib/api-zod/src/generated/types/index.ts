@@ -6,7 +6,12 @@
  * OpenAPI spec version: 0.1.0
  */
 
+export * from './adminLoginInput';
+export * from './adminUser';
 export * from './healthStatus';
 export * from './lead';
 export * from './leadInput';
+export * from './leadUpdateInput';
 export * from './shipment';
+export * from './shipmentInput';
+export * from './shipmentUpdateInput';

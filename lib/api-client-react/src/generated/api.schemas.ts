@@ -21,6 +21,9 @@ export interface Lead {
   /** @nullable */
   serviceInterested: string | null;
   message: string;
+  status: string;
+  /** @nullable */
+  notes: string | null;
   createdAt: string;
 }
 
@@ -38,6 +41,11 @@ export interface LeadInput {
   message: string;
 }
 
+export interface LeadUpdateInput {
+  status?: string;
+  notes?: string;
+}
+
 export interface Shipment {
   id: number;
   trackingNumber: string;
@@ -47,5 +55,51 @@ export interface Shipment {
   carrierName: string;
   estimatedDelivery: string;
   lastUpdate: string;
+}
+
+export interface ShipmentInput {
+  /** @minLength 1 */
+  trackingNumber: string;
+  /** @minLength 1 */
+  status: string;
+  /** @minLength 1 */
+  origin: string;
+  /** @minLength 1 */
+  destination: string;
+  /** @minLength 1 */
+  carrierName: string;
+  estimatedDelivery: string;
+  /** @minLength 1 */
+  lastUpdate: string;
+}
+
+export interface ShipmentUpdateInput {
+  /** @minLength 1 */
+  trackingNumber?: string;
+  /** @minLength 1 */
+  status?: string;
+  /** @minLength 1 */
+  origin?: string;
+  /** @minLength 1 */
+  destination?: string;
+  /** @minLength 1 */
+  carrierName?: string;
+  estimatedDelivery?: string;
+  /** @minLength 1 */
+  lastUpdate?: string;
+}
+
+export interface AdminLoginInput {
+  /** @minLength 1 */
+  email: string;
+  /** @minLength 1 */
+  password: string;
+}
+
+export interface AdminUser {
+  id: number;
+  email: string;
+  name: string;
+  roleName: string;
 }
 

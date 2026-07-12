@@ -14,6 +14,12 @@ tags:
     description: Freight quote and contact form submissions
   - name: shipments
     description: Shipment tracking
+  - name: admin-auth
+    description: Admin portal authentication
+  - name: admin-shipments
+    description: Admin shipment management
+  - name: admin-leads
+    description: Admin quote/contact submission management
 paths:
   /healthz:
     get:
@@ -68,6 +74,180 @@ paths:
                 $ref: "#/components/schemas/Shipment"
         "404":
           description: Shipment not found
+  /admin/login:
+    post:
+      operationId: adminLogin
+      tags: [admin-auth]
+      summary: Log in to the admin portal
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AdminLoginInput"
+      responses:
+        "200":
+          description: Logged in
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AdminUser"
+        "401":
+          description: Invalid credentials
+  /admin/logout:
+    post:
+      operationId: adminLogout
+      tags: [admin-auth]
+      summary: Log out of the admin portal
+      responses:
+        "204":
+          description: Logged out
+  /admin/me:
+    get:
+      operationId: adminMe
+      tags: [admin-auth]
+      summary: Get the current logged-in admin user
+      responses:
+        "200":
+          description: Current admin user
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AdminUser"
+        "401":
+          description: Not authenticated
+  /admin/shipments:
+    get:
+      operationId: adminListShipments
+      tags: [admin-shipments]
+      summary: List all shipments
+      responses:
+        "200":
+          description: Shipments
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Shipment"
+        "401":
+          description: Not authenticated
+    post:
+      operationId: adminCreateShipment
+      tags: [admin-shipments]
+      summary: Create a shipment
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ShipmentInput"
+      responses:
+        "201":
+          description: Shipment created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Shipment"
+        "401":
+          description: Not authenticated
+        "403":
+          description: Insufficient permissions
+  /admin/shipments/{id}:
+    patch:
+      operationId: adminUpdateShipment
+      tags: [admin-shipments]
+      summary: Update a shipment
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ShipmentUpdateInput"
+      responses:
+        "200":
+          description: Shipment updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Shipment"
+        "401":
+          description: Not authenticated
+        "403":
+          description: Insufficient permissions
+        "404":
+          description: Shipment not found
+    delete:
+      operationId: adminDeleteShipment
+      tags: [admin-shipments]
+      summary: Delete a shipment
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: Shipment deleted
+        "401":
+          description: Not authenticated
+        "403":
+          description: Insufficient permissions
+        "404":
+          description: Shipment not found
+  /admin/leads:
+    get:
+      operationId: adminListLeads
+      tags: [admin-leads]
+      summary: List all quote/contact submissions
+      responses:
+        "200":
+          description: Leads
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Lead"
+        "401":
+          description: Not authenticated
+  /admin/leads/{id}:
+    patch:
+      operationId: adminUpdateLead
+      tags: [admin-leads]
+      summary: Update a lead's status or notes
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LeadUpdateInput"
+      responses:
+        "200":
+          description: Lead updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Lead"
+        "401":
+          description: Not authenticated
+        "403":
+          description: Insufficient permissions
+        "404":
+          description: Lead not found
 components:
   schemas:
     HealthStatus:
@@ -80,7 +260,7 @@ components:
     Lead:
       type: object
       required:
-        [id, fullName, email, phone, companyName, subject, serviceInterested, message, createdAt]
+        [id, fullName, email, phone, companyName, subject, serviceInterested, message, status, notes, createdAt]
       properties:
         id: { type: integer }
         fullName: { type: string }
@@ -90,6 +270,8 @@ components:
         subject: { type: ["string", "null"] }
         serviceInterested: { type: ["string", "null"] }
         message: { type: string }
+        status: { type: string }
+        notes: { type: ["string", "null"] }
         createdAt: { type: string, format: date-time }
     LeadInput:
       type: object
@@ -102,6 +284,11 @@ components:
         subject: { type: string }
         serviceInterested: { type: string }
         message: { type: string, minLength: 1 }
+    LeadUpdateInput:
+      type: object
+      properties:
+        status: { type: string }
+        notes: { type: string }
     Shipment:
       type: object
       required:
@@ -115,4 +302,39 @@ components:
         carrierName: { type: string }
         estimatedDelivery: { type: string, format: date-time }
         lastUpdate: { type: string }
+    ShipmentInput:
+      type: object
+      required: [trackingNumber, status, origin, destination, carrierName, estimatedDelivery, lastUpdate]
+      properties:
+        trackingNumber: { type: string, minLength: 1 }
+        status: { type: string, minLength: 1 }
+        origin: { type: string, minLength: 1 }
+        destination: { type: string, minLength: 1 }
+        carrierName: { type: string, minLength: 1 }
+        estimatedDelivery: { type: string, format: date-time }
+        lastUpdate: { type: string, minLength: 1 }
+    ShipmentUpdateInput:
+      type: object
+      properties:
+        trackingNumber: { type: string, minLength: 1 }
+        status: { type: string, minLength: 1 }
+        origin: { type: string, minLength: 1 }
+        destination: { type: string, minLength: 1 }
+        carrierName: { type: string, minLength: 1 }
+        estimatedDelivery: { type: string, format: date-time }
+        lastUpdate: { type: string, minLength: 1 }
+    AdminLoginInput:
+      type: object
+      required: [email, password]
+      properties:
+        email: { type: string, minLength: 1 }
+        password: { type: string, minLength: 1 }
+    AdminUser:
+      type: object
+      required: [id, email, name, roleName]
+      properties:
+        id: { type: integer }
+        email: { type: string }
+        name: { type: string }
+        roleName: { type: string }
 

@@ -18,5 +18,8 @@ export interface Lead {
   /** @nullable */
   serviceInterested: string | null;
   message: string;
+  status: string;
+  /** @nullable */
+  notes: string | null;
   createdAt: Date;
 }

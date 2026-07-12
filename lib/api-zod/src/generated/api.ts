@@ -45,6 +45,8 @@ export const CreateLeadResponse = zod.object({
   "subject": zod.string().nullable(),
   "serviceInterested": zod.string().nullable(),
   "message": zod.string(),
+  "status": zod.string(),
+  "notes": zod.string().nullable(),
   "createdAt": zod.coerce.date()
 })
 
@@ -65,6 +67,185 @@ export const TrackShipmentResponse = zod.object({
   "carrierName": zod.string(),
   "estimatedDelivery": zod.coerce.date(),
   "lastUpdate": zod.string()
+})
+
+
+/**
+ * @summary Log in to the admin portal
+ */
+
+
+
+
+export const AdminLoginBody = zod.object({
+  "email": zod.string().min(1),
+  "password": zod.string().min(1)
+})
+
+export const AdminLoginResponse = zod.object({
+  "id": zod.number(),
+  "email": zod.string(),
+  "name": zod.string(),
+  "roleName": zod.string()
+})
+
+
+/**
+ * @summary Log out of the admin portal
+ */
+export const AdminLogoutResponse = zod.void()
+
+
+/**
+ * @summary Get the current logged-in admin user
+ */
+export const AdminMeResponse = zod.object({
+  "id": zod.number(),
+  "email": zod.string(),
+  "name": zod.string(),
+  "roleName": zod.string()
+})
+
+
+/**
+ * @summary List all shipments
+ */
+export const AdminListShipmentsResponseItem = zod.object({
+  "id": zod.number(),
+  "trackingNumber": zod.string(),
+  "status": zod.string(),
+  "origin": zod.string(),
+  "destination": zod.string(),
+  "carrierName": zod.string(),
+  "estimatedDelivery": zod.coerce.date(),
+  "lastUpdate": zod.string()
+})
+export const AdminListShipmentsResponse = zod.array(AdminListShipmentsResponseItem)
+
+
+/**
+ * @summary Create a shipment
+ */
+
+
+
+
+
+
+
+
+export const AdminCreateShipmentBody = zod.object({
+  "trackingNumber": zod.string().min(1),
+  "status": zod.string().min(1),
+  "origin": zod.string().min(1),
+  "destination": zod.string().min(1),
+  "carrierName": zod.string().min(1),
+  "estimatedDelivery": zod.coerce.date(),
+  "lastUpdate": zod.string().min(1)
+})
+
+export const AdminCreateShipmentResponse = zod.object({
+  "id": zod.number(),
+  "trackingNumber": zod.string(),
+  "status": zod.string(),
+  "origin": zod.string(),
+  "destination": zod.string(),
+  "carrierName": zod.string(),
+  "estimatedDelivery": zod.coerce.date(),
+  "lastUpdate": zod.string()
+})
+
+
+/**
+ * @summary Update a shipment
+ */
+export const AdminUpdateShipmentParams = zod.object({
+  "id": zod.coerce.number()
+})
+
+
+
+
+
+
+
+
+
+export const AdminUpdateShipmentBody = zod.object({
+  "trackingNumber": zod.string().min(1).optional(),
+  "status": zod.string().min(1).optional(),
+  "origin": zod.string().min(1).optional(),
+  "destination": zod.string().min(1).optional(),
+  "carrierName": zod.string().min(1).optional(),
+  "estimatedDelivery": zod.coerce.date().optional(),
+  "lastUpdate": zod.string().min(1).optional()
+})
+
+export const AdminUpdateShipmentResponse = zod.object({
+  "id": zod.number(),
+  "trackingNumber": zod.string(),
+  "status": zod.string(),
+  "origin": zod.string(),
+  "destination": zod.string(),
+  "carrierName": zod.string(),
+  "estimatedDelivery": zod.coerce.date(),
+  "lastUpdate": zod.string()
+})
+
+
+/**
+ * @summary Delete a shipment
+ */
+export const AdminDeleteShipmentParams = zod.object({
+  "id": zod.coerce.number()
+})
+
+export const AdminDeleteShipmentResponse = zod.void()
+
+
+/**
+ * @summary List all quote/contact submissions
+ */
+export const AdminListLeadsResponseItem = zod.object({
+  "id": zod.number(),
+  "fullName": zod.string(),
+  "email": zod.string(),
+  "phone": zod.string(),
+  "companyName": zod.string().nullable(),
+  "subject": zod.string().nullable(),
+  "serviceInterested": zod.string().nullable(),
+  "message": zod.string(),
+  "status": zod.string(),
+  "notes": zod.string().nullable(),
+  "createdAt": zod.coerce.date()
+})
+export const AdminListLeadsResponse = zod.array(AdminListLeadsResponseItem)
+
+
+/**
+ * @summary Update a lead's status or notes
+ */
+export const AdminUpdateLeadParams = zod.object({
+  "id": zod.coerce.number()
+})
+
+export const AdminUpdateLeadBody = zod.object({
+  "status": zod.string().optional(),
+  "notes": zod.string().optional()
+})
+
+export const AdminUpdateLeadResponse = zod.object({
+  "id": zod.number(),
+  "fullName": zod.string(),
+  "email": zod.string(),
+  "phone": zod.string(),
+  "companyName": zod.string().nullable(),
+  "subject": zod.string().nullable(),
+  "serviceInterested": zod.string().nullable(),
+  "message": zod.string(),
+  "status": zod.string(),
+  "notes": zod.string().nullable(),
+  "createdAt": zod.coerce.date()
 })
 
 
