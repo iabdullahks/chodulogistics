@@ -264,22 +264,20 @@ function LoadFormFields({ form }: { form: UseFormReturn<LoadFormValues> }) {
           </FormItem>
         )} />
       </div>
-      <div className="grid grid-cols-2 gap-4">
-        <FormField control={form.control} name="slotFeeStatus" render={({ field }) => (
-          <FormItem>
-            <FormLabel>Slot Fee Status</FormLabel>
-            <FormControl><Input {...field} className="bg-background/50" placeholder="Slot fee status" /></FormControl>
-            <FormMessage />
-          </FormItem>
-        )} />
-        <FormField control={form.control} name="tripsPerWeek" render={({ field }) => (
-          <FormItem>
-            <FormLabel>Total Trips in a Week</FormLabel>
-            <FormControl><Input type="number" {...field} className="bg-background/50" placeholder="Number of trips" /></FormControl>
-            <FormMessage />
-          </FormItem>
-        )} />
-      </div>
+      <FormField control={form.control} name="slotFeeStatus" render={({ field }) => (
+        <FormItem>
+          <FormLabel>Slot Fee Status</FormLabel>
+          <FormControl><Input {...field} className="bg-background/50" placeholder="Slot fee status" /></FormControl>
+          <FormMessage />
+        </FormItem>
+      )} />
+      <FormField control={form.control} name="tripsPerWeek" render={({ field }) => (
+        <FormItem>
+          <FormLabel>Total Trips in a Week</FormLabel>
+          <FormControl><Input type="number" {...field} className="bg-background/50" placeholder="Number of trips" /></FormControl>
+          <FormMessage />
+        </FormItem>
+      )} />
 
       <SectionHeader icon={Route}>Route Information</SectionHeader>
       <FormField control={form.control} name="outboundRoute" render={({ field }) => (
