@@ -250,6 +250,99 @@ export const AdminUpdateLeadResponse = zod.object({
 
 
 /**
+ * @summary List all loads
+ */
+export const AdminListLoadsResponseItem = zod.object({
+  "id": zod.number(),
+  "trackingId": zod.string(),
+  "status": zod.string(),
+  "carrierName": zod.string(),
+  "dot": zod.string().nullable(),
+  "truck": zod.string().nullable(),
+  "outboundRate": zod.number(),
+  "startDate": zod.coerce.date(),
+  "createdAt": zod.coerce.date()
+})
+export const AdminListLoadsResponse = zod.array(AdminListLoadsResponseItem)
+
+
+/**
+ * @summary Create a load
+ */
+
+
+
+
+
+export const AdminCreateLoadBody = zod.object({
+  "trackingId": zod.string().min(1),
+  "status": zod.string().min(1),
+  "carrierName": zod.string().min(1),
+  "dot": zod.string().optional(),
+  "truck": zod.string().optional(),
+  "outboundRate": zod.number(),
+  "startDate": zod.coerce.date()
+})
+
+export const AdminCreateLoadResponse = zod.object({
+  "id": zod.number(),
+  "trackingId": zod.string(),
+  "status": zod.string(),
+  "carrierName": zod.string(),
+  "dot": zod.string().nullable(),
+  "truck": zod.string().nullable(),
+  "outboundRate": zod.number(),
+  "startDate": zod.coerce.date(),
+  "createdAt": zod.coerce.date()
+})
+
+
+/**
+ * @summary Update a load
+ */
+export const AdminUpdateLoadParams = zod.object({
+  "id": zod.coerce.number()
+})
+
+
+
+
+
+
+export const AdminUpdateLoadBody = zod.object({
+  "trackingId": zod.string().min(1).optional(),
+  "status": zod.string().min(1).optional(),
+  "carrierName": zod.string().min(1).optional(),
+  "dot": zod.string().optional(),
+  "truck": zod.string().optional(),
+  "outboundRate": zod.number().optional(),
+  "startDate": zod.coerce.date().optional()
+})
+
+export const AdminUpdateLoadResponse = zod.object({
+  "id": zod.number(),
+  "trackingId": zod.string(),
+  "status": zod.string(),
+  "carrierName": zod.string(),
+  "dot": zod.string().nullable(),
+  "truck": zod.string().nullable(),
+  "outboundRate": zod.number(),
+  "startDate": zod.coerce.date(),
+  "createdAt": zod.coerce.date()
+})
+
+
+/**
+ * @summary Delete a load
+ */
+export const AdminDeleteLoadParams = zod.object({
+  "id": zod.coerce.number()
+})
+
+export const AdminDeleteLoadResponse = zod.void()
+
+
+/**
  * @summary List all roles
  */
 export const AdminListRolesResponseItem = zod.object({

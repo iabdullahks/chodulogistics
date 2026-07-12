@@ -24,6 +24,8 @@ tags:
     description: Admin user management
   - name: admin-roles
     description: Admin role listing
+  - name: admin-loads
+    description: Admin load/dispatch management
 paths:
   /healthz:
     get:
@@ -252,6 +254,92 @@ paths:
           description: Insufficient permissions
         "404":
           description: Lead not found
+  /admin/loads:
+    get:
+      operationId: adminListLoads
+      tags: [admin-loads]
+      summary: List all loads
+      responses:
+        "200":
+          description: Loads
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Load"
+        "401":
+          description: Not authenticated
+    post:
+      operationId: adminCreateLoad
+      tags: [admin-loads]
+      summary: Create a load
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LoadInput"
+      responses:
+        "201":
+          description: Load created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Load"
+        "401":
+          description: Not authenticated
+        "403":
+          description: Insufficient permissions
+  /admin/loads/{id}:
+    patch:
+      operationId: adminUpdateLoad
+      tags: [admin-loads]
+      summary: Update a load
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LoadUpdateInput"
+      responses:
+        "200":
+          description: Load updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Load"
+        "401":
+          description: Not authenticated
+        "403":
+          description: Insufficient permissions
+        "404":
+          description: Load not found
+    delete:
+      operationId: adminDeleteLoad
+      tags: [admin-loads]
+      summary: Delete a load
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: Load deleted
+        "401":
+          description: Not authenticated
+        "403":
+          description: Insufficient permissions
+        "404":
+          description: Load not found
   /admin/roles:
     get:
       operationId: adminListRoles
@@ -492,4 +580,39 @@ components:
         password: { type: string, minLength: 8 }
         roleId: { type: integer }
         isActive: { type: boolean }
+    Load:
+      type: object
+      required:
+        [id, trackingId, status, carrierName, dot, truck, outboundRate, startDate, createdAt]
+      properties:
+        id: { type: integer }
+        trackingId: { type: string }
+        status: { type: string }
+        carrierName: { type: string }
+        dot: { type: ["string", "null"] }
+        truck: { type: ["string", "null"] }
+        outboundRate: { type: number }
+        startDate: { type: string, format: date }
+        createdAt: { type: string, format: date-time }
+    LoadInput:
+      type: object
+      required: [trackingId, status, carrierName, outboundRate, startDate]
+      properties:
+        trackingId: { type: string, minLength: 1 }
+        status: { type: string, minLength: 1 }
+        carrierName: { type: string, minLength: 1 }
+        dot: { type: string }
+        truck: { type: string }
+        outboundRate: { type: number }
+        startDate: { type: string, format: date }
+    LoadUpdateInput:
+      type: object
+      properties:
+        trackingId: { type: string, minLength: 1 }
+        status: { type: string, minLength: 1 }
+        carrierName: { type: string, minLength: 1 }
+        dot: { type: string }
+        truck: { type: string }
+        outboundRate: { type: number }
+        startDate: { type: string, format: date }
 

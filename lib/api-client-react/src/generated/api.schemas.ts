@@ -144,3 +144,43 @@ export interface AdminUserUpdateInput {
   isActive?: boolean;
 }
 
+export interface Load {
+  id: number;
+  trackingId: string;
+  status: string;
+  carrierName: string;
+  /** @nullable */
+  dot: string | null;
+  /** @nullable */
+  truck: string | null;
+  outboundRate: number;
+  startDate: string;
+  createdAt: string;
+}
+
+export interface LoadInput {
+  /** @minLength 1 */
+  trackingId: string;
+  /** @minLength 1 */
+  status: string;
+  /** @minLength 1 */
+  carrierName: string;
+  dot?: string;
+  truck?: string;
+  outboundRate: number;
+  startDate: string;
+}
+
+export interface LoadUpdateInput {
+  /** @minLength 1 */
+  trackingId?: string;
+  /** @minLength 1 */
+  status?: string;
+  /** @minLength 1 */
+  carrierName?: string;
+  dot?: string;
+  truck?: string;
+  outboundRate?: number;
+  startDate?: string;
+}
+

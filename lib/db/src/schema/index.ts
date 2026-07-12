@@ -19,6 +19,7 @@
 
 export * from "./leads";
 export * from "./shipments";
+export * from "./loads";
 export * from "./roles";
 export * from "./admin-users";
 export * from "./admin-sessions";

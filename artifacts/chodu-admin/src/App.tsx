@@ -8,6 +8,7 @@ import AdminDashboard from '@/pages/dashboard';
 import AdminShipments from '@/pages/shipments';
 import AdminLeads from '@/pages/leads';
 import AdminUsers from '@/pages/users';
+import AdminLoads from '@/pages/loads';
 
 const queryClient = new QueryClient();
 
@@ -19,6 +20,7 @@ function Router() {
       <Route path="/shipments" component={AdminShipments} />
       <Route path="/leads" component={AdminLeads} />
       <Route path="/users" component={AdminUsers} />
+      <Route path="/loads" component={AdminLoads} />
       <Route component={NotFound} />
     </Switch>
   );
