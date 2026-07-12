@@ -26,6 +26,8 @@ tags:
     description: Admin role listing
   - name: admin-loads
     description: Admin load/dispatch management
+  - name: Storage
+    description: Object storage upload and serving endpoints.
 paths:
   /healthz:
     get:
@@ -340,6 +342,57 @@ paths:
           description: Insufficient permissions
         "404":
           description: Load not found
+  /storage/uploads/request-url:
+    post:
+      tags: [Storage]
+      operationId: requestUploadUrl
+      summary: Request a presigned URL for file upload
+      description: |
+        Returns a presigned GCS URL for direct upload. The client sends JSON
+        metadata here, then uploads the file directly to the returned URL.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UploadUrlRequest'
+      responses:
+        '200':
+          description: Presigned upload URL generated.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UploadUrlResponse'
+        '400':
+          description: Missing or invalid required fields.
+        '401':
+          description: Not authenticated
+        '500':
+          description: Failed to generate upload URL.
+  /storage/objects/{objectPath}:
+    get:
+      tags: [Storage]
+      operationId: getStorageObject
+      summary: Serve an object entity from PRIVATE_OBJECT_DIR
+      parameters:
+        - name: objectPath
+          in: path
+          required: true
+          schema:
+            type: string
+          description: Object path within the private object dir (e.g. `uploads/some-uuid`).
+      responses:
+        '200':
+          description: Object content streamed with correct Content-Type.
+          content:
+            '*/*':
+              schema:
+                type: string
+                format: binary
+        '404':
+          description: Object not found.
+        '500':
+          description: Failed to serve object.
   /admin/roles:
     get:
       operationId: adminListRoles
@@ -583,7 +636,10 @@ components:
     Load:
       type: object
       required:
-        [id, trackingId, status, carrierName, dot, truck, outboundRate, startDate, createdAt]
+        [id, trackingId, status, carrierName, dot, truck, slotFeeStatus, tripsPerWeek,
+         outboundRoute, returnRoute, pickupAddress, deliveryAddress, milesPerSide, totalRoundTripMiles,
+         commodity, outboundWeightLbs, backhaulWeightLbs, outboundRate, startDate,
+         contractType, purpose, refundableStatus, appliesTowardContract, billOfLadingPath, createdAt]
       properties:
         id: { type: integer }
         trackingId: { type: string }
@@ -591,8 +647,24 @@ components:
         carrierName: { type: string }
         dot: { type: ["string", "null"] }
         truck: { type: ["string", "null"] }
+        slotFeeStatus: { type: ["string", "null"] }
+        tripsPerWeek: { type: ["integer", "null"] }
+        outboundRoute: { type: ["string", "null"] }
+        returnRoute: { type: ["string", "null"] }
+        pickupAddress: { type: ["string", "null"] }
+        deliveryAddress: { type: ["string", "null"] }
+        milesPerSide: { type: ["integer", "null"] }
+        totalRoundTripMiles: { type: ["integer", "null"] }
+        commodity: { type: ["string", "null"] }
+        outboundWeightLbs: { type: ["integer", "null"] }
+        backhaulWeightLbs: { type: ["integer", "null"] }
         outboundRate: { type: number }
         startDate: { type: string, format: date }
+        contractType: { type: ["string", "null"] }
+        purpose: { type: ["string", "null"] }
+        refundableStatus: { type: ["string", "null"] }
+        appliesTowardContract: { type: ["boolean", "null"] }
+        billOfLadingPath: { type: ["string", "null"] }
         createdAt: { type: string, format: date-time }
     LoadInput:
       type: object
@@ -603,8 +675,24 @@ components:
         carrierName: { type: string, minLength: 1 }
         dot: { type: string }
         truck: { type: string }
+        slotFeeStatus: { type: string }
+        tripsPerWeek: { type: integer }
+        outboundRoute: { type: string }
+        returnRoute: { type: string }
+        pickupAddress: { type: string }
+        deliveryAddress: { type: string }
+        milesPerSide: { type: integer }
+        totalRoundTripMiles: { type: integer }
+        commodity: { type: string }
+        outboundWeightLbs: { type: integer }
+        backhaulWeightLbs: { type: integer }
         outboundRate: { type: number }
         startDate: { type: string, format: date }
+        contractType: { type: string }
+        purpose: { type: string }
+        refundableStatus: { type: string }
+        appliesTowardContract: { type: boolean }
+        billOfLadingPath: { type: string }
     LoadUpdateInput:
       type: object
       properties:
@@ -613,6 +701,50 @@ components:
         carrierName: { type: string, minLength: 1 }
         dot: { type: string }
         truck: { type: string }
+        slotFeeStatus: { type: string }
+        tripsPerWeek: { type: integer }
+        outboundRoute: { type: string }
+        returnRoute: { type: string }
+        pickupAddress: { type: string }
+        deliveryAddress: { type: string }
+        milesPerSide: { type: integer }
+        totalRoundTripMiles: { type: integer }
+        commodity: { type: string }
+        outboundWeightLbs: { type: integer }
+        backhaulWeightLbs: { type: integer }
         outboundRate: { type: number }
         startDate: { type: string, format: date }
+        contractType: { type: string }
+        purpose: { type: string }
+        refundableStatus: { type: string }
+        appliesTowardContract: { type: boolean }
+        billOfLadingPath: { type: string }
 
+    UploadUrlRequest:
+      type: object
+      required: [name, size, contentType]
+      properties:
+        name:
+          type: string
+          minLength: 1
+          description: Original file name.
+        size:
+          type: integer
+          minimum: 1
+          description: File size in bytes.
+        contentType:
+          type: string
+          minLength: 1
+          description: MIME type of the file (e.g. `image/jpeg`).
+    UploadUrlResponse:
+      type: object
+      required: [uploadURL, objectPath]
+      properties:
+        uploadURL:
+          type: string
+          description: Presigned GCS URL for PUT upload.
+        objectPath:
+          type: string
+          description: Normalized object path (e.g. `/objects/uploads/uuid`). Store this in your database.
+        metadata:
+          $ref: '#/components/schemas/UploadUrlRequest'

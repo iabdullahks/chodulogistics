@@ -23,3 +23,5 @@ export * from './rolePermissions';
 export * from './shipment';
 export * from './shipmentInput';
 export * from './shipmentUpdateInput';
+export * from './uploadUrlRequest';
+export * from './uploadUrlResponse';

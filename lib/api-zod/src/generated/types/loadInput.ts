@@ -15,6 +15,22 @@ export interface LoadInput {
   carrierName: string;
   dot?: string;
   truck?: string;
+  slotFeeStatus?: string;
+  tripsPerWeek?: number;
+  outboundRoute?: string;
+  returnRoute?: string;
+  pickupAddress?: string;
+  deliveryAddress?: string;
+  milesPerSide?: number;
+  totalRoundTripMiles?: number;
+  commodity?: string;
+  outboundWeightLbs?: number;
+  backhaulWeightLbs?: number;
   outboundRate: number;
   startDate: Date;
+  contractType?: string;
+  purpose?: string;
+  refundableStatus?: string;
+  appliesTowardContract?: boolean;
+  billOfLadingPath?: string;
 }

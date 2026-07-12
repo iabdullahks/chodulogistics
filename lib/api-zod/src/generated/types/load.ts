@@ -15,7 +15,39 @@ export interface Load {
   dot: string | null;
   /** @nullable */
   truck: string | null;
+  /** @nullable */
+  slotFeeStatus: string | null;
+  /** @nullable */
+  tripsPerWeek: number | null;
+  /** @nullable */
+  outboundRoute: string | null;
+  /** @nullable */
+  returnRoute: string | null;
+  /** @nullable */
+  pickupAddress: string | null;
+  /** @nullable */
+  deliveryAddress: string | null;
+  /** @nullable */
+  milesPerSide: number | null;
+  /** @nullable */
+  totalRoundTripMiles: number | null;
+  /** @nullable */
+  commodity: string | null;
+  /** @nullable */
+  outboundWeightLbs: number | null;
+  /** @nullable */
+  backhaulWeightLbs: number | null;
   outboundRate: number;
   startDate: Date;
+  /** @nullable */
+  contractType: string | null;
+  /** @nullable */
+  purpose: string | null;
+  /** @nullable */
+  refundableStatus: string | null;
+  /** @nullable */
+  appliesTowardContract: boolean | null;
+  /** @nullable */
+  billOfLadingPath: string | null;
   createdAt: Date;
 }

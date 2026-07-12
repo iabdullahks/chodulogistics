@@ -153,8 +153,40 @@ export interface Load {
   dot: string | null;
   /** @nullable */
   truck: string | null;
+  /** @nullable */
+  slotFeeStatus: string | null;
+  /** @nullable */
+  tripsPerWeek: number | null;
+  /** @nullable */
+  outboundRoute: string | null;
+  /** @nullable */
+  returnRoute: string | null;
+  /** @nullable */
+  pickupAddress: string | null;
+  /** @nullable */
+  deliveryAddress: string | null;
+  /** @nullable */
+  milesPerSide: number | null;
+  /** @nullable */
+  totalRoundTripMiles: number | null;
+  /** @nullable */
+  commodity: string | null;
+  /** @nullable */
+  outboundWeightLbs: number | null;
+  /** @nullable */
+  backhaulWeightLbs: number | null;
   outboundRate: number;
   startDate: string;
+  /** @nullable */
+  contractType: string | null;
+  /** @nullable */
+  purpose: string | null;
+  /** @nullable */
+  refundableStatus: string | null;
+  /** @nullable */
+  appliesTowardContract: boolean | null;
+  /** @nullable */
+  billOfLadingPath: string | null;
   createdAt: string;
 }
 
@@ -167,8 +199,24 @@ export interface LoadInput {
   carrierName: string;
   dot?: string;
   truck?: string;
+  slotFeeStatus?: string;
+  tripsPerWeek?: number;
+  outboundRoute?: string;
+  returnRoute?: string;
+  pickupAddress?: string;
+  deliveryAddress?: string;
+  milesPerSide?: number;
+  totalRoundTripMiles?: number;
+  commodity?: string;
+  outboundWeightLbs?: number;
+  backhaulWeightLbs?: number;
   outboundRate: number;
   startDate: string;
+  contractType?: string;
+  purpose?: string;
+  refundableStatus?: string;
+  appliesTowardContract?: boolean;
+  billOfLadingPath?: string;
 }
 
 export interface LoadUpdateInput {
@@ -180,7 +228,49 @@ export interface LoadUpdateInput {
   carrierName?: string;
   dot?: string;
   truck?: string;
+  slotFeeStatus?: string;
+  tripsPerWeek?: number;
+  outboundRoute?: string;
+  returnRoute?: string;
+  pickupAddress?: string;
+  deliveryAddress?: string;
+  milesPerSide?: number;
+  totalRoundTripMiles?: number;
+  commodity?: string;
+  outboundWeightLbs?: number;
+  backhaulWeightLbs?: number;
   outboundRate?: number;
   startDate?: string;
+  contractType?: string;
+  purpose?: string;
+  refundableStatus?: string;
+  appliesTowardContract?: boolean;
+  billOfLadingPath?: string;
+}
+
+export interface UploadUrlRequest {
+  /**
+     * Original file name.
+     * @minLength 1
+     */
+  name: string;
+  /**
+     * File size in bytes.
+     * @minimum 1
+     */
+  size: number;
+  /**
+     * MIME type of the file (e.g. `image/jpeg`).
+     * @minLength 1
+     */
+  contentType: string;
+}
+
+export interface UploadUrlResponse {
+  /** Presigned GCS URL for PUT upload. */
+  uploadURL: string;
+  /** Normalized object path (e.g. `/objects/uploads/uuid`). Store this in your database. */
+  objectPath: string;
+  metadata?: UploadUrlRequest;
 }
 

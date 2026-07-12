@@ -259,8 +259,24 @@ export const AdminListLoadsResponseItem = zod.object({
   "carrierName": zod.string(),
   "dot": zod.string().nullable(),
   "truck": zod.string().nullable(),
+  "slotFeeStatus": zod.string().nullable(),
+  "tripsPerWeek": zod.number().nullable(),
+  "outboundRoute": zod.string().nullable(),
+  "returnRoute": zod.string().nullable(),
+  "pickupAddress": zod.string().nullable(),
+  "deliveryAddress": zod.string().nullable(),
+  "milesPerSide": zod.number().nullable(),
+  "totalRoundTripMiles": zod.number().nullable(),
+  "commodity": zod.string().nullable(),
+  "outboundWeightLbs": zod.number().nullable(),
+  "backhaulWeightLbs": zod.number().nullable(),
   "outboundRate": zod.number(),
   "startDate": zod.coerce.date(),
+  "contractType": zod.string().nullable(),
+  "purpose": zod.string().nullable(),
+  "refundableStatus": zod.string().nullable(),
+  "appliesTowardContract": zod.boolean().nullable(),
+  "billOfLadingPath": zod.string().nullable(),
   "createdAt": zod.coerce.date()
 })
 export const AdminListLoadsResponse = zod.array(AdminListLoadsResponseItem)
@@ -280,8 +296,24 @@ export const AdminCreateLoadBody = zod.object({
   "carrierName": zod.string().min(1),
   "dot": zod.string().optional(),
   "truck": zod.string().optional(),
+  "slotFeeStatus": zod.string().optional(),
+  "tripsPerWeek": zod.number().optional(),
+  "outboundRoute": zod.string().optional(),
+  "returnRoute": zod.string().optional(),
+  "pickupAddress": zod.string().optional(),
+  "deliveryAddress": zod.string().optional(),
+  "milesPerSide": zod.number().optional(),
+  "totalRoundTripMiles": zod.number().optional(),
+  "commodity": zod.string().optional(),
+  "outboundWeightLbs": zod.number().optional(),
+  "backhaulWeightLbs": zod.number().optional(),
   "outboundRate": zod.number(),
-  "startDate": zod.coerce.date()
+  "startDate": zod.coerce.date(),
+  "contractType": zod.string().optional(),
+  "purpose": zod.string().optional(),
+  "refundableStatus": zod.string().optional(),
+  "appliesTowardContract": zod.boolean().optional(),
+  "billOfLadingPath": zod.string().optional()
 })
 
 export const AdminCreateLoadResponse = zod.object({
@@ -291,8 +323,24 @@ export const AdminCreateLoadResponse = zod.object({
   "carrierName": zod.string(),
   "dot": zod.string().nullable(),
   "truck": zod.string().nullable(),
+  "slotFeeStatus": zod.string().nullable(),
+  "tripsPerWeek": zod.number().nullable(),
+  "outboundRoute": zod.string().nullable(),
+  "returnRoute": zod.string().nullable(),
+  "pickupAddress": zod.string().nullable(),
+  "deliveryAddress": zod.string().nullable(),
+  "milesPerSide": zod.number().nullable(),
+  "totalRoundTripMiles": zod.number().nullable(),
+  "commodity": zod.string().nullable(),
+  "outboundWeightLbs": zod.number().nullable(),
+  "backhaulWeightLbs": zod.number().nullable(),
   "outboundRate": zod.number(),
   "startDate": zod.coerce.date(),
+  "contractType": zod.string().nullable(),
+  "purpose": zod.string().nullable(),
+  "refundableStatus": zod.string().nullable(),
+  "appliesTowardContract": zod.boolean().nullable(),
+  "billOfLadingPath": zod.string().nullable(),
   "createdAt": zod.coerce.date()
 })
 
@@ -315,8 +363,24 @@ export const AdminUpdateLoadBody = zod.object({
   "carrierName": zod.string().min(1).optional(),
   "dot": zod.string().optional(),
   "truck": zod.string().optional(),
+  "slotFeeStatus": zod.string().optional(),
+  "tripsPerWeek": zod.number().optional(),
+  "outboundRoute": zod.string().optional(),
+  "returnRoute": zod.string().optional(),
+  "pickupAddress": zod.string().optional(),
+  "deliveryAddress": zod.string().optional(),
+  "milesPerSide": zod.number().optional(),
+  "totalRoundTripMiles": zod.number().optional(),
+  "commodity": zod.string().optional(),
+  "outboundWeightLbs": zod.number().optional(),
+  "backhaulWeightLbs": zod.number().optional(),
   "outboundRate": zod.number().optional(),
-  "startDate": zod.coerce.date().optional()
+  "startDate": zod.coerce.date().optional(),
+  "contractType": zod.string().optional(),
+  "purpose": zod.string().optional(),
+  "refundableStatus": zod.string().optional(),
+  "appliesTowardContract": zod.boolean().optional(),
+  "billOfLadingPath": zod.string().optional()
 })
 
 export const AdminUpdateLoadResponse = zod.object({
@@ -326,8 +390,24 @@ export const AdminUpdateLoadResponse = zod.object({
   "carrierName": zod.string(),
   "dot": zod.string().nullable(),
   "truck": zod.string().nullable(),
+  "slotFeeStatus": zod.string().nullable(),
+  "tripsPerWeek": zod.number().nullable(),
+  "outboundRoute": zod.string().nullable(),
+  "returnRoute": zod.string().nullable(),
+  "pickupAddress": zod.string().nullable(),
+  "deliveryAddress": zod.string().nullable(),
+  "milesPerSide": zod.number().nullable(),
+  "totalRoundTripMiles": zod.number().nullable(),
+  "commodity": zod.string().nullable(),
+  "outboundWeightLbs": zod.number().nullable(),
+  "backhaulWeightLbs": zod.number().nullable(),
   "outboundRate": zod.number(),
   "startDate": zod.coerce.date(),
+  "contractType": zod.string().nullable(),
+  "purpose": zod.string().nullable(),
+  "refundableStatus": zod.string().nullable(),
+  "appliesTowardContract": zod.boolean().nullable(),
+  "billOfLadingPath": zod.string().nullable(),
   "createdAt": zod.coerce.date()
 })
 
@@ -340,6 +420,48 @@ export const AdminDeleteLoadParams = zod.object({
 })
 
 export const AdminDeleteLoadResponse = zod.void()
+
+
+/**
+ * Returns a presigned GCS URL for direct upload. The client sends JSON
+ * metadata here, then uploads the file directly to the returned URL.
+ * @summary Request a presigned URL for file upload
+ */
+
+
+
+
+
+export const RequestUploadUrlBody = zod.object({
+  "name": zod.string().min(1).describe('Original file name.'),
+  "size": zod.number().min(1).describe('File size in bytes.'),
+  "contentType": zod.string().min(1).describe('MIME type of the file (e.g. `image\/jpeg`).')
+})
+
+
+
+
+
+
+export const RequestUploadUrlResponse = zod.object({
+  "uploadURL": zod.string().describe('Presigned GCS URL for PUT upload.'),
+  "objectPath": zod.string().describe('Normalized object path (e.g. `\/objects\/uploads\/uuid`). Store this in your database.'),
+  "metadata": zod.object({
+  "name": zod.string().min(1).describe('Original file name.'),
+  "size": zod.number().min(1).describe('File size in bytes.'),
+  "contentType": zod.string().min(1).describe('MIME type of the file (e.g. `image\/jpeg`).')
+}).optional()
+})
+
+
+/**
+ * @summary Serve an object entity from PRIVATE_OBJECT_DIR
+ */
+export const GetStorageObjectParams = zod.object({
+  "objectPath": zod.coerce.string().describe('Object path within the private object dir (e.g. `uploads\/some-uuid`).')
+})
+
+export const GetStorageObjectResponse = zod.unknown()
 
 
 /**

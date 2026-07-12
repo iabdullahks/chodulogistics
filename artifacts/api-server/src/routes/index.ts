@@ -8,6 +8,7 @@ import adminLeadsRouter from "./admin/leads";
 import adminUsersRouter from "./admin/users";
 import adminRolesRouter from "./admin/roles";
 import adminLoadsRouter from "./admin/loads";
+import storageRouter from "./storage";
 
 const router: IRouter = Router();
 
@@ -20,5 +21,6 @@ router.use(adminLeadsRouter);
 router.use(adminUsersRouter);
 router.use(adminRolesRouter);
 router.use(adminLoadsRouter);
+router.use(storageRouter);
 
 export default router;
