@@ -538,7 +538,7 @@ export default function AdminLoads() {
                   Add New Load
                 </Button>
               </DialogTrigger>
-              <DialogContent className="sm:max-w-[680px] max-h-[85vh] overflow-y-auto bg-card border-border">
+              <DialogContent className="sm:max-w-[960px] max-h-[85vh] overflow-y-auto bg-card border-border">
                 <DialogHeader>
                   <DialogTitle>Add New Load</DialogTitle>
                 </DialogHeader>
@@ -666,7 +666,7 @@ export default function AdminLoads() {
       </div>
 
       <Dialog open={!!editingLoad} onOpenChange={(open) => !open && setEditingLoad(null)}>
-        <DialogContent className="sm:max-w-[680px] max-h-[85vh] overflow-y-auto bg-card border-border">
+        <DialogContent className="sm:max-w-[960px] max-h-[85vh] overflow-y-auto bg-card border-border">
           <DialogHeader>
             <DialogTitle>Edit Load #{editingLoad?.trackingId}</DialogTitle>
           </DialogHeader>
