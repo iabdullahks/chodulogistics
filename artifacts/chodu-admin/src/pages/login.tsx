@@ -22,16 +22,16 @@ export default function AdminLogin() {
   const [_, setLocation] = useLocation();
   const queryClient = useQueryClient();
   const { toast } = useToast();
-  
-  const { data: admin, isLoading: isChecking } = useAdminMe({ 
-    query: { retry: false, queryKey: getAdminMeQueryKey() } 
+
+  const { data: admin, isLoading: isChecking } = useAdminMe({
+    query: { retry: false, queryKey: getAdminMeQueryKey() }
   });
 
   const login = useAdminLogin();
 
   useEffect(() => {
     if (admin) {
-      setLocation("/admin");
+      setLocation("/");
     }
   }, [admin, setLocation]);
 
@@ -47,7 +47,7 @@ export default function AdminLogin() {
     login.mutate({ data: values }, {
       onSuccess: (data) => {
         queryClient.setQueryData(getAdminMeQueryKey(), data);
-        setLocation("/admin");
+        setLocation("/");
       },
       onError: (error) => {
         toast({
@@ -78,7 +78,7 @@ export default function AdminLogin() {
           <div className="p-8 border-b border-border/50 flex flex-col items-center justify-center bg-black/20 relative overflow-hidden">
             {/* abstract scanner line */}
             <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-[#D4AF37]/50 to-transparent animate-[scan_3s_ease-in-out_infinite]" />
-            
+
             <div className="bg-gradient-to-br from-[#D4AF37]/20 to-[#F4C542]/5 border border-[#D4AF37]/20 w-16 h-16 rounded-2xl flex items-center justify-center shadow-[0_0_20px_rgba(212,175,55,0.15)] mb-6">
               <LockKeyhole className="w-7 h-7 text-[#D4AF37]" strokeWidth={1.5} />
             </div>
@@ -100,9 +100,9 @@ export default function AdminLogin() {
                     <FormItem>
                       <FormLabel className="text-xs uppercase tracking-wider text-muted-foreground font-mono">Email Address</FormLabel>
                       <FormControl>
-                        <Input 
-                          placeholder="admin@chodulogistics.com" 
-                          {...field} 
+                        <Input
+                          placeholder="admin@chodulogistics.com"
+                          {...field}
                           className="bg-background/50 border-border focus-visible:ring-[#D4AF37]/50 h-11"
                         />
                       </FormControl>
@@ -110,7 +110,7 @@ export default function AdminLogin() {
                     </FormItem>
                   )}
                 />
-                
+
                 <FormField
                   control={form.control}
                   name="password"
@@ -118,10 +118,10 @@ export default function AdminLogin() {
                     <FormItem>
                       <FormLabel className="text-xs uppercase tracking-wider text-muted-foreground font-mono">Password</FormLabel>
                       <FormControl>
-                        <Input 
-                          type="password" 
-                          placeholder="••••••••" 
-                          {...field} 
+                        <Input
+                          type="password"
+                          placeholder="••••••••"
+                          {...field}
                           className="bg-background/50 border-border focus-visible:ring-[#D4AF37]/50 h-11 font-mono"
                         />
                       </FormControl>
@@ -130,8 +130,8 @@ export default function AdminLogin() {
                   )}
                 />
 
-                <Button 
-                  type="submit" 
+                <Button
+                  type="submit"
                   className="w-full h-11 bg-[#D4AF37] hover:bg-[#F4C542] text-[#0B1220] font-bold tracking-wide mt-2 rounded-xl transition-all"
                   disabled={login.isPending}
                 >
@@ -146,7 +146,7 @@ export default function AdminLogin() {
               </form>
             </Form>
           </div>
-          
+
           <div className="p-4 bg-black/40 border-t border-border text-center text-xs text-muted-foreground font-mono uppercase tracking-wider">
             All access is monitored and logged
           </div>

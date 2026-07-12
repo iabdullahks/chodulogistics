@@ -1,0 +1,27 @@
+kind = "web"
+previewPath = "/admin/"
+title = "CHODU Admin Portal"
+version = "1.0.0"
+id = "artifacts/chodu-admin"
+router = "path"
+
+[[services]]
+name = "web"
+paths = [ "/admin/" ]
+localPort = 23907
+
+[services.development]
+run = "pnpm --filter @workspace/chodu-admin run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/chodu-admin", "run", "build" ]
+serve = "static"
+publicDir = "artifacts/chodu-admin/dist/public"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "23907"
+BASE_PATH = "/admin/"

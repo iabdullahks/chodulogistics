@@ -1,26 +1,26 @@
-import { AdminLayout } from "@/components/admin/admin-layout";
-import { 
-  useAdminListShipments, 
-  useAdminCreateShipment, 
-  useAdminUpdateShipment, 
+import { AdminLayout } from "@/components/admin-layout";
+import {
+  useAdminListShipments,
+  useAdminCreateShipment,
+  useAdminUpdateShipment,
   useAdminDeleteShipment,
   getAdminListShipmentsQueryKey
 } from "@workspace/api-client-react";
 import { useState } from "react";
 import { useQueryClient } from "@tanstack/react-query";
-import { 
-  Table, TableBody, TableCell, TableHead, TableHeader, TableRow 
+import {
+  Table, TableBody, TableCell, TableHead, TableHeader, TableRow
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Plus, Pencil, Trash2, Search, Loader2 } from "lucide-react";
-import { 
+import {
   Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogFooter
 } from "@/components/ui/dialog";
-import { 
-  AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, 
-  AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, 
-  AlertDialogTrigger 
+import {
+  AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent,
+  AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle,
+  AlertDialogTrigger
 } from "@/components/ui/alert-dialog";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { useForm } from "react-hook-form";
@@ -55,7 +55,7 @@ export default function AdminShipments() {
   const updateMutation = useAdminUpdateShipment();
   const deleteMutation = useAdminDeleteShipment();
 
-  const filteredShipments = shipments?.filter(s => 
+  const filteredShipments = shipments?.filter(s =>
     s.trackingNumber.toLowerCase().includes(search.toLowerCase()) ||
     s.origin.toLowerCase().includes(search.toLowerCase()) ||
     s.destination.toLowerCase().includes(search.toLowerCase())
@@ -232,8 +232,8 @@ export default function AdminShipments() {
 
         <div className="flex items-center space-x-2 bg-card border border-border rounded-xl p-2 max-w-sm">
           <Search className="w-4 h-4 text-muted-foreground ml-2" />
-          <Input 
-            placeholder="Search tracking, origin, destination..." 
+          <Input
+            placeholder="Search tracking, origin, destination..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             className="border-0 bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0 h-8"
@@ -302,7 +302,7 @@ export default function AdminShipments() {
                             </AlertDialogHeader>
                             <AlertDialogFooter>
                               <AlertDialogCancel className="bg-transparent border-border">Cancel</AlertDialogCancel>
-                              <AlertDialogAction 
+                              <AlertDialogAction
                                 onClick={() => onDelete(shipment.id)}
                                 className="bg-destructive hover:bg-destructive/90 text-destructive-foreground"
                               >

@@ -1,20 +1,20 @@
-import { AdminLayout } from "@/components/admin/admin-layout";
-import { 
-  useAdminListLeads, 
+import { AdminLayout } from "@/components/admin-layout";
+import {
+  useAdminListLeads,
   useAdminUpdateLead,
   getAdminListLeadsQueryKey
 } from "@workspace/api-client-react";
 import { useState } from "react";
 import { useQueryClient } from "@tanstack/react-query";
-import { 
-  Table, TableBody, TableCell, TableHead, TableHeader, TableRow 
+import {
+  Table, TableBody, TableCell, TableHead, TableHeader, TableRow
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Search, Loader2, Mail, Phone, Building, ExternalLink, Calendar } from "lucide-react";
-import { 
-  Sheet, SheetContent, SheetHeader, SheetTitle, SheetDescription 
+import {
+  Sheet, SheetContent, SheetHeader, SheetTitle, SheetDescription
 } from "@/components/ui/sheet";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
@@ -25,7 +25,7 @@ export default function AdminLeads() {
   const { data: leads, isLoading } = useAdminListLeads();
   const [search, setSearch] = useState("");
   const [selectedLead, setSelectedLead] = useState<Lead | null>(null);
-  
+
   const queryClient = useQueryClient();
   const { toast } = useToast();
   const updateMutation = useAdminUpdateLead();
@@ -33,7 +33,7 @@ export default function AdminLeads() {
   const [editStatus, setEditStatus] = useState<string>("");
   const [editNotes, setEditNotes] = useState<string>("");
 
-  const filteredLeads = leads?.filter(l => 
+  const filteredLeads = leads?.filter(l =>
     l.fullName.toLowerCase().includes(search.toLowerCase()) ||
     l.email.toLowerCase().includes(search.toLowerCase()) ||
     (l.companyName && l.companyName.toLowerCase().includes(search.toLowerCase())) ||
@@ -48,9 +48,9 @@ export default function AdminLeads() {
 
   const handleSaveLead = () => {
     if (!selectedLead) return;
-    updateMutation.mutate({ 
-      id: selectedLead.id, 
-      data: { status: editStatus, notes: editNotes } 
+    updateMutation.mutate({
+      id: selectedLead.id,
+      data: { status: editStatus, notes: editNotes }
     }, {
       onSuccess: () => {
         queryClient.invalidateQueries({ queryKey: getAdminListLeadsQueryKey() });
@@ -84,8 +84,8 @@ export default function AdminLeads() {
 
         <div className="flex items-center space-x-2 bg-card border border-border rounded-xl p-2 max-w-sm">
           <Search className="w-4 h-4 text-muted-foreground ml-2" />
-          <Input 
-            placeholder="Search name, email, company..." 
+          <Input
+            placeholder="Search name, email, company..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             className="border-0 bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0 h-8"
@@ -228,7 +228,7 @@ export default function AdminLeads() {
 
                 <div className="space-y-4">
                   <h4 className="text-xs font-mono uppercase tracking-wider text-muted-foreground border-b border-border pb-2">Lead Management</h4>
-                  
+
                   <div className="space-y-4">
                     <div className="space-y-2">
                       <label className="text-sm font-medium">Update Status</label>
@@ -247,7 +247,7 @@ export default function AdminLeads() {
 
                     <div className="space-y-2">
                       <label className="text-sm font-medium">Internal Notes</label>
-                      <Textarea 
+                      <Textarea
                         placeholder="Add notes about this lead..."
                         className="min-h-[100px] bg-background/50 border-border resize-none"
                         value={editNotes}
@@ -255,8 +255,8 @@ export default function AdminLeads() {
                       />
                     </div>
 
-                    <Button 
-                      onClick={handleSaveLead} 
+                    <Button
+                      onClick={handleSaveLead}
                       className="w-full bg-[#D4AF37] hover:bg-[#F4C542] text-black font-bold"
                       disabled={updateMutation.isPending || (editStatus === selectedLead.status && editNotes === (selectedLead.notes || ""))}
                     >

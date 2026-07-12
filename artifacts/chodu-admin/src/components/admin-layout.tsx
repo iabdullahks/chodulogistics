@@ -17,7 +17,7 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     if (isError) {
-      setLocation("/admin/login");
+      setLocation("/login");
     }
   }, [isError, setLocation]);
 
@@ -25,7 +25,7 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
     logout.mutate(undefined, {
       onSuccess: () => {
         queryClient.clear();
-        setLocation("/admin/login");
+        setLocation("/login");
       }
     });
   };
@@ -47,9 +47,9 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
   if (!admin) return null;
 
   const navItems = [
-    { href: "/admin", label: "Dashboard", icon: LayoutDashboard },
-    { href: "/admin/shipments", label: "Shipments", icon: Truck },
-    { href: "/admin/leads", label: "Leads", icon: Inbox },
+    { href: "/", label: "Dashboard", icon: LayoutDashboard },
+    { href: "/shipments", label: "Shipments", icon: Truck },
+    { href: "/leads", label: "Leads", icon: Inbox },
   ];
 
   return (
@@ -94,8 +94,8 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
             return (
               <Link key={item.href} href={item.href} className={cn(
                 "flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-200",
-                isActive 
-                  ? "bg-[#D4AF37]/10 text-[#D4AF37] border border-[#D4AF37]/20" 
+                isActive
+                  ? "bg-[#D4AF37]/10 text-[#D4AF37] border border-[#D4AF37]/20"
                   : "text-muted-foreground hover:bg-white/5 hover:text-foreground border border-transparent"
               )}>
                 <item.icon className="w-4 h-4" />

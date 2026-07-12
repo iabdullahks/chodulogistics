@@ -17,11 +17,6 @@ import InsuranceAssistance from '@/pages/services/insurance-assistance';
 import FactoringRegistration from '@/pages/services/factoring-registration';
 import LiquorPermit from '@/pages/services/liquor-permit';
 
-// Admin Pages
-import AdminLogin from '@/pages/admin/login';
-import AdminDashboard from '@/pages/admin/dashboard';
-import AdminShipments from '@/pages/admin/shipments';
-import AdminLeads from '@/pages/admin/leads';
 
 const queryClient = new QueryClient();
 
@@ -40,12 +35,6 @@ function Router() {
       <Route path="/services/insurance-assistance" component={InsuranceAssistance} />
       <Route path="/services/factoring-registration" component={FactoringRegistration} />
       <Route path="/services/liquor-permit" component={LiquorPermit} />
-      
-      {/* Admin Routes */}
-      <Route path="/admin/login" component={AdminLogin} />
-      <Route path="/admin" component={AdminDashboard} />
-      <Route path="/admin/shipments" component={AdminShipments} />
-      <Route path="/admin/leads" component={AdminLeads} />
 
       <Route component={NotFound} />
     </Switch>

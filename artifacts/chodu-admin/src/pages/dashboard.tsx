@@ -1,4 +1,4 @@
-import { AdminLayout } from "@/components/admin/admin-layout";
+import { AdminLayout } from "@/components/admin-layout";
 import { useAdminListShipments, useAdminListLeads } from "@workspace/api-client-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Truck, Inbox, Activity, CheckCircle2, Clock, AlertCircle } from "lucide-react";
@@ -10,9 +10,9 @@ export default function AdminDashboard() {
 
   // Shipments calculations
   const totalShipments = shipments?.length || 0;
-  const inTransitCount = shipments?.filter(s => s.status.toLowerCase() === 'in_transit').length || 0;
+  const inTransitCount = shipments?.filter(s => s.status.toLowerCase() === 'in transit').length || 0;
   const deliveredCount = shipments?.filter(s => s.status.toLowerCase() === 'delivered').length || 0;
-  const pendingCount = shipments?.filter(s => s.status.toLowerCase() === 'pending').length || 0;
+  const pendingCount = shipments?.filter(s => s.status.toLowerCase() === 'pending pickup').length || 0;
   const exceptionCount = shipments?.filter(s => s.status.toLowerCase() === 'exception').length || 0;
 
   // Leads calculations
@@ -98,7 +98,7 @@ export default function AdminDashboard() {
                 <CardTitle className="text-lg">Recent Shipments</CardTitle>
                 <p className="text-sm text-muted-foreground">Latest active tracking numbers.</p>
               </div>
-              <Link href="/admin/shipments" className="text-xs font-mono uppercase text-[#D4AF37] hover:underline">View All</Link>
+              <Link href="/shipments" className="text-xs font-mono uppercase text-[#D4AF37] hover:underline">View All</Link>
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
@@ -129,7 +129,7 @@ export default function AdminDashboard() {
                 <CardTitle className="text-lg">Recent Leads</CardTitle>
                 <p className="text-sm text-muted-foreground">Latest contact & quote requests.</p>
               </div>
-              <Link href="/admin/leads" className="text-xs font-mono uppercase text-[#D4AF37] hover:underline">View All</Link>
+              <Link href="/leads" className="text-xs font-mono uppercase text-[#D4AF37] hover:underline">View All</Link>
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
