@@ -32,6 +32,9 @@ import type {
   Load,
   LoadInput,
   LoadUpdateInput,
+  RateConfirmation,
+  RateConfirmationInput,
+  RateConfirmationUpdateInput,
   Role,
   Shipment,
   ShipmentInput,
@@ -1098,6 +1101,374 @@ export const useAdminCreateLoad = <TError = ErrorType<void>,
         TContext
       > => {
       return useMutation(getAdminCreateLoadMutationOptions(options));
+    }
+
+export const getAdminListRateConfirmationsUrl = () => {
+
+
+
+
+  return `/api/admin/rate-confirmations`
+}
+
+/**
+ * @summary List all rate confirmations
+ */
+export const adminListRateConfirmations = async ( options?: RequestInit): Promise<RateConfirmation[]> => {
+
+  return customFetch<RateConfirmation[]>(getAdminListRateConfirmationsUrl(),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getAdminListRateConfirmationsQueryKey = () => {
+    return [
+    `/api/admin/rate-confirmations`
+    ] as const;
+    }
+
+
+export const getAdminListRateConfirmationsQueryOptions = <TData = Awaited<ReturnType<typeof adminListRateConfirmations>>, TError = ErrorType<void>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof adminListRateConfirmations>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getAdminListRateConfirmationsQueryKey();
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof adminListRateConfirmations>>> = ({ signal }) => adminListRateConfirmations({ signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof adminListRateConfirmations>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type AdminListRateConfirmationsQueryResult = NonNullable<Awaited<ReturnType<typeof adminListRateConfirmations>>>
+export type AdminListRateConfirmationsQueryError = ErrorType<void>
+
+
+/**
+ * @summary List all rate confirmations
+ */
+
+export function useAdminListRateConfirmations<TData = Awaited<ReturnType<typeof adminListRateConfirmations>>, TError = ErrorType<void>>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof adminListRateConfirmations>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getAdminListRateConfirmationsQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+
+export const getAdminCreateRateConfirmationUrl = () => {
+
+
+
+
+  return `/api/admin/rate-confirmations`
+}
+
+/**
+ * @summary Create a rate confirmation
+ */
+export const adminCreateRateConfirmation = async (rateConfirmationInput: RateConfirmationInput, options?: RequestInit): Promise<RateConfirmation> => {
+
+  return customFetch<RateConfirmation>(getAdminCreateRateConfirmationUrl(),
+  {
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    body: JSON.stringify(rateConfirmationInput)
+  }
+);}
+
+
+
+
+
+export const getAdminCreateRateConfirmationMutationOptions = <TError = ErrorType<void>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof adminCreateRateConfirmation>>, TError,{data: BodyType<RateConfirmationInput>}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof adminCreateRateConfirmation>>, TError,{data: BodyType<RateConfirmationInput>}, TContext> => {
+
+const mutationKey = ['adminCreateRateConfirmation'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof adminCreateRateConfirmation>>, {data: BodyType<RateConfirmationInput>}> = (props) => {
+          const {data} = props ?? {};
+
+          return  adminCreateRateConfirmation(data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type AdminCreateRateConfirmationMutationResult = NonNullable<Awaited<ReturnType<typeof adminCreateRateConfirmation>>>
+    export type AdminCreateRateConfirmationMutationBody = BodyType<RateConfirmationInput>
+    export type AdminCreateRateConfirmationMutationError = ErrorType<void>
+
+    /**
+ * @summary Create a rate confirmation
+ */
+export const useAdminCreateRateConfirmation = <TError = ErrorType<void>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof adminCreateRateConfirmation>>, TError,{data: BodyType<RateConfirmationInput>}, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof adminCreateRateConfirmation>>,
+        TError,
+        {data: BodyType<RateConfirmationInput>},
+        TContext
+      > => {
+      return useMutation(getAdminCreateRateConfirmationMutationOptions(options));
+    }
+
+export const getAdminGetRateConfirmationUrl = (id: number,) => {
+
+
+
+
+  return `/api/admin/rate-confirmations/${id}`
+}
+
+/**
+ * @summary Get a rate confirmation
+ */
+export const adminGetRateConfirmation = async (id: number, options?: RequestInit): Promise<RateConfirmation> => {
+
+  return customFetch<RateConfirmation>(getAdminGetRateConfirmationUrl(id),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getAdminGetRateConfirmationQueryKey = (id: number,) => {
+    return [
+    `/api/admin/rate-confirmations/${id}`
+    ] as const;
+    }
+
+
+export const getAdminGetRateConfirmationQueryOptions = <TData = Awaited<ReturnType<typeof adminGetRateConfirmation>>, TError = ErrorType<void>>(id: number, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof adminGetRateConfirmation>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getAdminGetRateConfirmationQueryKey(id);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof adminGetRateConfirmation>>> = ({ signal }) => adminGetRateConfirmation(id, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, enabled: id !== null && id !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof adminGetRateConfirmation>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type AdminGetRateConfirmationQueryResult = NonNullable<Awaited<ReturnType<typeof adminGetRateConfirmation>>>
+export type AdminGetRateConfirmationQueryError = ErrorType<void>
+
+
+/**
+ * @summary Get a rate confirmation
+ */
+
+export function useAdminGetRateConfirmation<TData = Awaited<ReturnType<typeof adminGetRateConfirmation>>, TError = ErrorType<void>>(
+ id: number, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof adminGetRateConfirmation>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getAdminGetRateConfirmationQueryOptions(id,options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+
+export const getAdminUpdateRateConfirmationUrl = (id: number,) => {
+
+
+
+
+  return `/api/admin/rate-confirmations/${id}`
+}
+
+/**
+ * @summary Update a rate confirmation
+ */
+export const adminUpdateRateConfirmation = async (id: number,
+    rateConfirmationUpdateInput: RateConfirmationUpdateInput, options?: RequestInit): Promise<RateConfirmation> => {
+
+  return customFetch<RateConfirmation>(getAdminUpdateRateConfirmationUrl(id),
+  {
+    ...options,
+    method: 'PATCH',
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    body: JSON.stringify(rateConfirmationUpdateInput)
+  }
+);}
+
+
+
+
+
+export const getAdminUpdateRateConfirmationMutationOptions = <TError = ErrorType<void>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof adminUpdateRateConfirmation>>, TError,{id: number;data: BodyType<RateConfirmationUpdateInput>}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof adminUpdateRateConfirmation>>, TError,{id: number;data: BodyType<RateConfirmationUpdateInput>}, TContext> => {
+
+const mutationKey = ['adminUpdateRateConfirmation'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof adminUpdateRateConfirmation>>, {id: number;data: BodyType<RateConfirmationUpdateInput>}> = (props) => {
+          const {id,data} = props ?? {};
+
+          return  adminUpdateRateConfirmation(id,data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type AdminUpdateRateConfirmationMutationResult = NonNullable<Awaited<ReturnType<typeof adminUpdateRateConfirmation>>>
+    export type AdminUpdateRateConfirmationMutationBody = BodyType<RateConfirmationUpdateInput>
+    export type AdminUpdateRateConfirmationMutationError = ErrorType<void>
+
+    /**
+ * @summary Update a rate confirmation
+ */
+export const useAdminUpdateRateConfirmation = <TError = ErrorType<void>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof adminUpdateRateConfirmation>>, TError,{id: number;data: BodyType<RateConfirmationUpdateInput>}, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof adminUpdateRateConfirmation>>,
+        TError,
+        {id: number;data: BodyType<RateConfirmationUpdateInput>},
+        TContext
+      > => {
+      return useMutation(getAdminUpdateRateConfirmationMutationOptions(options));
+    }
+
+export const getAdminDeleteRateConfirmationUrl = (id: number,) => {
+
+
+
+
+  return `/api/admin/rate-confirmations/${id}`
+}
+
+/**
+ * @summary Delete a rate confirmation
+ */
+export const adminDeleteRateConfirmation = async (id: number, options?: RequestInit): Promise<void> => {
+
+  return customFetch<void>(getAdminDeleteRateConfirmationUrl(id),
+  {
+    ...options,
+    method: 'DELETE'
+
+
+  }
+);}
+
+
+
+
+
+export const getAdminDeleteRateConfirmationMutationOptions = <TError = ErrorType<void>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof adminDeleteRateConfirmation>>, TError,{id: number}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof adminDeleteRateConfirmation>>, TError,{id: number}, TContext> => {
+
+const mutationKey = ['adminDeleteRateConfirmation'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof adminDeleteRateConfirmation>>, {id: number}> = (props) => {
+          const {id} = props ?? {};
+
+          return  adminDeleteRateConfirmation(id,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type AdminDeleteRateConfirmationMutationResult = NonNullable<Awaited<ReturnType<typeof adminDeleteRateConfirmation>>>
+
+    export type AdminDeleteRateConfirmationMutationError = ErrorType<void>
+
+    /**
+ * @summary Delete a rate confirmation
+ */
+export const useAdminDeleteRateConfirmation = <TError = ErrorType<void>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof adminDeleteRateConfirmation>>, TError,{id: number}, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof adminDeleteRateConfirmation>>,
+        TError,
+        {id: number},
+        TContext
+      > => {
+      return useMutation(getAdminDeleteRateConfirmationMutationOptions(options));
     }
 
 export const getAdminUpdateLoadUrl = (id: number,) => {

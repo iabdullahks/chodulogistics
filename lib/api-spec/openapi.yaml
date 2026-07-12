@@ -293,6 +293,113 @@ paths:
           description: Not authenticated
         "403":
           description: Insufficient permissions
+  /admin/rate-confirmations:
+    get:
+      operationId: adminListRateConfirmations
+      tags: [admin-rate-confirmations]
+      summary: List all rate confirmations
+      responses:
+        "200":
+          description: Rate confirmations
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/RateConfirmation"
+        "401":
+          description: Not authenticated
+    post:
+      operationId: adminCreateRateConfirmation
+      tags: [admin-rate-confirmations]
+      summary: Create a rate confirmation
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/RateConfirmationInput"
+      responses:
+        "201":
+          description: Rate confirmation created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RateConfirmation"
+        "401":
+          description: Not authenticated
+        "403":
+          description: Insufficient permissions
+  /admin/rate-confirmations/{id}:
+    get:
+      operationId: adminGetRateConfirmation
+      tags: [admin-rate-confirmations]
+      summary: Get a rate confirmation
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Rate confirmation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RateConfirmation"
+        "401":
+          description: Not authenticated
+        "404":
+          description: Rate confirmation not found
+    patch:
+      operationId: adminUpdateRateConfirmation
+      tags: [admin-rate-confirmations]
+      summary: Update a rate confirmation
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/RateConfirmationUpdateInput"
+      responses:
+        "200":
+          description: Rate confirmation updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RateConfirmation"
+        "401":
+          description: Not authenticated
+        "403":
+          description: Insufficient permissions
+        "404":
+          description: Rate confirmation not found
+    delete:
+      operationId: adminDeleteRateConfirmation
+      tags: [admin-rate-confirmations]
+      summary: Delete a rate confirmation
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: Rate confirmation deleted
+        "401":
+          description: Not authenticated
+        "403":
+          description: Insufficient permissions
+        "404":
+          description: Rate confirmation not found
   /admin/loads/{id}:
     patch:
       operationId: adminUpdateLoad
@@ -719,6 +826,152 @@ components:
         refundableStatus: { type: string }
         appliesTowardContract: { type: boolean }
         billOfLadingPath: { type: string }
+
+    RateConfirmation:
+      type: object
+      required:
+        [id, proNumber, daysDedicatedLane, rcDateTime, fromCompany, fromPhone, fromEmail,
+         carrierName, carrierPhone, mcNumber, dotNumber, driverName, truckNumber, trailerNumber, driverCell,
+         miles, sizeType, pieces, description, weightLbs, hotLoad,
+         lineHaulRate, totalRateUsd,
+         outboundPickupAddress, outboundDeliveryAddress, outboundHours, outboundPhoneContact,
+         outboundAppointmentDate, outboundAppointmentTime, outboundPieces, outboundWeight, dispatchNotes,
+         returnPickupAddress, returnDeliveryAddress, returnHours, returnPhoneContact,
+         returnAppointmentDate, returnAppointmentTime, returnPieces, returnWeight,
+         specialInstructions, remarks, createdAt]
+      properties:
+        id: { type: integer }
+        proNumber: { type: ["string", "null"] }
+        daysDedicatedLane: { type: ["string", "null"] }
+        rcDateTime: { type: string, format: date-time }
+        fromCompany: { type: string }
+        fromPhone: { type: ["string", "null"] }
+        fromEmail: { type: ["string", "null"] }
+        carrierName: { type: string }
+        carrierPhone: { type: ["string", "null"] }
+        mcNumber: { type: ["string", "null"] }
+        dotNumber: { type: ["string", "null"] }
+        driverName: { type: ["string", "null"] }
+        truckNumber: { type: ["string", "null"] }
+        trailerNumber: { type: ["string", "null"] }
+        driverCell: { type: ["string", "null"] }
+        miles: { type: ["integer", "null"] }
+        sizeType: { type: ["string", "null"] }
+        pieces: { type: ["integer", "null"] }
+        description: { type: ["string", "null"] }
+        weightLbs: { type: ["integer", "null"] }
+        hotLoad: { type: boolean }
+        lineHaulRate: { type: ["number", "null"] }
+        totalRateUsd: { type: ["number", "null"] }
+        outboundPickupAddress: { type: ["string", "null"] }
+        outboundDeliveryAddress: { type: ["string", "null"] }
+        outboundHours: { type: ["string", "null"] }
+        outboundPhoneContact: { type: ["string", "null"] }
+        outboundAppointmentDate: { type: ["string", "null"], format: date }
+        outboundAppointmentTime: { type: ["string", "null"] }
+        outboundPieces: { type: ["integer", "null"] }
+        outboundWeight: { type: ["integer", "null"] }
+        dispatchNotes: { type: ["string", "null"] }
+        returnPickupAddress: { type: ["string", "null"] }
+        returnDeliveryAddress: { type: ["string", "null"] }
+        returnHours: { type: ["string", "null"] }
+        returnPhoneContact: { type: ["string", "null"] }
+        returnAppointmentDate: { type: ["string", "null"], format: date }
+        returnAppointmentTime: { type: ["string", "null"] }
+        returnPieces: { type: ["integer", "null"] }
+        returnWeight: { type: ["integer", "null"] }
+        specialInstructions: { type: ["string", "null"] }
+        remarks: { type: ["string", "null"] }
+        createdAt: { type: string, format: date-time }
+    RateConfirmationInput:
+      type: object
+      required: [carrierName]
+      properties:
+        proNumber: { type: string }
+        daysDedicatedLane: { type: string }
+        rcDateTime: { type: string, format: date-time }
+        fromCompany: { type: string }
+        fromPhone: { type: string }
+        fromEmail: { type: string }
+        carrierName: { type: string, minLength: 1 }
+        carrierPhone: { type: string }
+        mcNumber: { type: string }
+        dotNumber: { type: string }
+        driverName: { type: string }
+        truckNumber: { type: string }
+        trailerNumber: { type: string }
+        driverCell: { type: string }
+        miles: { type: integer }
+        sizeType: { type: string }
+        pieces: { type: integer }
+        description: { type: string }
+        weightLbs: { type: integer }
+        hotLoad: { type: boolean }
+        lineHaulRate: { type: number }
+        totalRateUsd: { type: number }
+        outboundPickupAddress: { type: string }
+        outboundDeliveryAddress: { type: string }
+        outboundHours: { type: string }
+        outboundPhoneContact: { type: string }
+        outboundAppointmentDate: { type: string, format: date }
+        outboundAppointmentTime: { type: string }
+        outboundPieces: { type: integer }
+        outboundWeight: { type: integer }
+        dispatchNotes: { type: string }
+        returnPickupAddress: { type: string }
+        returnDeliveryAddress: { type: string }
+        returnHours: { type: string }
+        returnPhoneContact: { type: string }
+        returnAppointmentDate: { type: string, format: date }
+        returnAppointmentTime: { type: string }
+        returnPieces: { type: integer }
+        returnWeight: { type: integer }
+        specialInstructions: { type: string }
+        remarks: { type: string }
+    RateConfirmationUpdateInput:
+      type: object
+      properties:
+        proNumber: { type: string }
+        daysDedicatedLane: { type: string }
+        rcDateTime: { type: string, format: date-time }
+        fromCompany: { type: string }
+        fromPhone: { type: string }
+        fromEmail: { type: string }
+        carrierName: { type: string, minLength: 1 }
+        carrierPhone: { type: string }
+        mcNumber: { type: string }
+        dotNumber: { type: string }
+        driverName: { type: string }
+        truckNumber: { type: string }
+        trailerNumber: { type: string }
+        driverCell: { type: string }
+        miles: { type: integer }
+        sizeType: { type: string }
+        pieces: { type: integer }
+        description: { type: string }
+        weightLbs: { type: integer }
+        hotLoad: { type: boolean }
+        lineHaulRate: { type: number }
+        totalRateUsd: { type: number }
+        outboundPickupAddress: { type: string }
+        outboundDeliveryAddress: { type: string }
+        outboundHours: { type: string }
+        outboundPhoneContact: { type: string }
+        outboundAppointmentDate: { type: string, format: date }
+        outboundAppointmentTime: { type: string }
+        outboundPieces: { type: integer }
+        outboundWeight: { type: integer }
+        dispatchNotes: { type: string }
+        returnPickupAddress: { type: string }
+        returnDeliveryAddress: { type: string }
+        returnHours: { type: string }
+        returnPhoneContact: { type: string }
+        returnAppointmentDate: { type: string, format: date }
+        returnAppointmentTime: { type: string }
+        returnPieces: { type: integer }
+        returnWeight: { type: integer }
+        specialInstructions: { type: string }
+        remarks: { type: string }
 
     UploadUrlRequest:
       type: object

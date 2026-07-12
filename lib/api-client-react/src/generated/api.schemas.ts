@@ -248,6 +248,179 @@ export interface LoadUpdateInput {
   billOfLadingPath?: string;
 }
 
+export interface RateConfirmation {
+  id: number;
+  /** @nullable */
+  proNumber: string | null;
+  /** @nullable */
+  daysDedicatedLane: string | null;
+  rcDateTime: string;
+  fromCompany: string;
+  /** @nullable */
+  fromPhone: string | null;
+  /** @nullable */
+  fromEmail: string | null;
+  carrierName: string;
+  /** @nullable */
+  carrierPhone: string | null;
+  /** @nullable */
+  mcNumber: string | null;
+  /** @nullable */
+  dotNumber: string | null;
+  /** @nullable */
+  driverName: string | null;
+  /** @nullable */
+  truckNumber: string | null;
+  /** @nullable */
+  trailerNumber: string | null;
+  /** @nullable */
+  driverCell: string | null;
+  /** @nullable */
+  miles: number | null;
+  /** @nullable */
+  sizeType: string | null;
+  /** @nullable */
+  pieces: number | null;
+  /** @nullable */
+  description: string | null;
+  /** @nullable */
+  weightLbs: number | null;
+  hotLoad: boolean;
+  /** @nullable */
+  lineHaulRate: number | null;
+  /** @nullable */
+  totalRateUsd: number | null;
+  /** @nullable */
+  outboundPickupAddress: string | null;
+  /** @nullable */
+  outboundDeliveryAddress: string | null;
+  /** @nullable */
+  outboundHours: string | null;
+  /** @nullable */
+  outboundPhoneContact: string | null;
+  /** @nullable */
+  outboundAppointmentDate: string | null;
+  /** @nullable */
+  outboundAppointmentTime: string | null;
+  /** @nullable */
+  outboundPieces: number | null;
+  /** @nullable */
+  outboundWeight: number | null;
+  /** @nullable */
+  dispatchNotes: string | null;
+  /** @nullable */
+  returnPickupAddress: string | null;
+  /** @nullable */
+  returnDeliveryAddress: string | null;
+  /** @nullable */
+  returnHours: string | null;
+  /** @nullable */
+  returnPhoneContact: string | null;
+  /** @nullable */
+  returnAppointmentDate: string | null;
+  /** @nullable */
+  returnAppointmentTime: string | null;
+  /** @nullable */
+  returnPieces: number | null;
+  /** @nullable */
+  returnWeight: number | null;
+  /** @nullable */
+  specialInstructions: string | null;
+  /** @nullable */
+  remarks: string | null;
+  createdAt: string;
+}
+
+export interface RateConfirmationInput {
+  proNumber?: string;
+  daysDedicatedLane?: string;
+  rcDateTime?: string;
+  fromCompany?: string;
+  fromPhone?: string;
+  fromEmail?: string;
+  /** @minLength 1 */
+  carrierName: string;
+  carrierPhone?: string;
+  mcNumber?: string;
+  dotNumber?: string;
+  driverName?: string;
+  truckNumber?: string;
+  trailerNumber?: string;
+  driverCell?: string;
+  miles?: number;
+  sizeType?: string;
+  pieces?: number;
+  description?: string;
+  weightLbs?: number;
+  hotLoad?: boolean;
+  lineHaulRate?: number;
+  totalRateUsd?: number;
+  outboundPickupAddress?: string;
+  outboundDeliveryAddress?: string;
+  outboundHours?: string;
+  outboundPhoneContact?: string;
+  outboundAppointmentDate?: string;
+  outboundAppointmentTime?: string;
+  outboundPieces?: number;
+  outboundWeight?: number;
+  dispatchNotes?: string;
+  returnPickupAddress?: string;
+  returnDeliveryAddress?: string;
+  returnHours?: string;
+  returnPhoneContact?: string;
+  returnAppointmentDate?: string;
+  returnAppointmentTime?: string;
+  returnPieces?: number;
+  returnWeight?: number;
+  specialInstructions?: string;
+  remarks?: string;
+}
+
+export interface RateConfirmationUpdateInput {
+  proNumber?: string;
+  daysDedicatedLane?: string;
+  rcDateTime?: string;
+  fromCompany?: string;
+  fromPhone?: string;
+  fromEmail?: string;
+  /** @minLength 1 */
+  carrierName?: string;
+  carrierPhone?: string;
+  mcNumber?: string;
+  dotNumber?: string;
+  driverName?: string;
+  truckNumber?: string;
+  trailerNumber?: string;
+  driverCell?: string;
+  miles?: number;
+  sizeType?: string;
+  pieces?: number;
+  description?: string;
+  weightLbs?: number;
+  hotLoad?: boolean;
+  lineHaulRate?: number;
+  totalRateUsd?: number;
+  outboundPickupAddress?: string;
+  outboundDeliveryAddress?: string;
+  outboundHours?: string;
+  outboundPhoneContact?: string;
+  outboundAppointmentDate?: string;
+  outboundAppointmentTime?: string;
+  outboundPieces?: number;
+  outboundWeight?: number;
+  dispatchNotes?: string;
+  returnPickupAddress?: string;
+  returnDeliveryAddress?: string;
+  returnHours?: string;
+  returnPhoneContact?: string;
+  returnAppointmentDate?: string;
+  returnAppointmentTime?: string;
+  returnPieces?: number;
+  returnWeight?: number;
+  specialInstructions?: string;
+  remarks?: string;
+}
+
 export interface UploadUrlRequest {
   /**
      * Original file name.

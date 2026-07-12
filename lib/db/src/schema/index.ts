@@ -24,3 +24,4 @@ export * from "./roles";
 export * from "./admin-users";
 export * from "./admin-sessions";
 export * from "./audit-logs";
+export * from "./rate-confirmations";

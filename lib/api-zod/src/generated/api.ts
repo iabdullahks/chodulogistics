@@ -346,6 +346,319 @@ export const AdminCreateLoadResponse = zod.object({
 
 
 /**
+ * @summary List all rate confirmations
+ */
+export const AdminListRateConfirmationsResponseItem = zod.object({
+  "id": zod.number(),
+  "proNumber": zod.string().nullable(),
+  "daysDedicatedLane": zod.string().nullable(),
+  "rcDateTime": zod.coerce.date(),
+  "fromCompany": zod.string(),
+  "fromPhone": zod.string().nullable(),
+  "fromEmail": zod.string().nullable(),
+  "carrierName": zod.string(),
+  "carrierPhone": zod.string().nullable(),
+  "mcNumber": zod.string().nullable(),
+  "dotNumber": zod.string().nullable(),
+  "driverName": zod.string().nullable(),
+  "truckNumber": zod.string().nullable(),
+  "trailerNumber": zod.string().nullable(),
+  "driverCell": zod.string().nullable(),
+  "miles": zod.number().nullable(),
+  "sizeType": zod.string().nullable(),
+  "pieces": zod.number().nullable(),
+  "description": zod.string().nullable(),
+  "weightLbs": zod.number().nullable(),
+  "hotLoad": zod.boolean(),
+  "lineHaulRate": zod.number().nullable(),
+  "totalRateUsd": zod.number().nullable(),
+  "outboundPickupAddress": zod.string().nullable(),
+  "outboundDeliveryAddress": zod.string().nullable(),
+  "outboundHours": zod.string().nullable(),
+  "outboundPhoneContact": zod.string().nullable(),
+  "outboundAppointmentDate": zod.coerce.date().nullable(),
+  "outboundAppointmentTime": zod.string().nullable(),
+  "outboundPieces": zod.number().nullable(),
+  "outboundWeight": zod.number().nullable(),
+  "dispatchNotes": zod.string().nullable(),
+  "returnPickupAddress": zod.string().nullable(),
+  "returnDeliveryAddress": zod.string().nullable(),
+  "returnHours": zod.string().nullable(),
+  "returnPhoneContact": zod.string().nullable(),
+  "returnAppointmentDate": zod.coerce.date().nullable(),
+  "returnAppointmentTime": zod.string().nullable(),
+  "returnPieces": zod.number().nullable(),
+  "returnWeight": zod.number().nullable(),
+  "specialInstructions": zod.string().nullable(),
+  "remarks": zod.string().nullable(),
+  "createdAt": zod.coerce.date()
+})
+export const AdminListRateConfirmationsResponse = zod.array(AdminListRateConfirmationsResponseItem)
+
+
+/**
+ * @summary Create a rate confirmation
+ */
+
+
+
+export const AdminCreateRateConfirmationBody = zod.object({
+  "proNumber": zod.string().optional(),
+  "daysDedicatedLane": zod.string().optional(),
+  "rcDateTime": zod.coerce.date().optional(),
+  "fromCompany": zod.string().optional(),
+  "fromPhone": zod.string().optional(),
+  "fromEmail": zod.string().optional(),
+  "carrierName": zod.string().min(1),
+  "carrierPhone": zod.string().optional(),
+  "mcNumber": zod.string().optional(),
+  "dotNumber": zod.string().optional(),
+  "driverName": zod.string().optional(),
+  "truckNumber": zod.string().optional(),
+  "trailerNumber": zod.string().optional(),
+  "driverCell": zod.string().optional(),
+  "miles": zod.number().optional(),
+  "sizeType": zod.string().optional(),
+  "pieces": zod.number().optional(),
+  "description": zod.string().optional(),
+  "weightLbs": zod.number().optional(),
+  "hotLoad": zod.boolean().optional(),
+  "lineHaulRate": zod.number().optional(),
+  "totalRateUsd": zod.number().optional(),
+  "outboundPickupAddress": zod.string().optional(),
+  "outboundDeliveryAddress": zod.string().optional(),
+  "outboundHours": zod.string().optional(),
+  "outboundPhoneContact": zod.string().optional(),
+  "outboundAppointmentDate": zod.coerce.date().optional(),
+  "outboundAppointmentTime": zod.string().optional(),
+  "outboundPieces": zod.number().optional(),
+  "outboundWeight": zod.number().optional(),
+  "dispatchNotes": zod.string().optional(),
+  "returnPickupAddress": zod.string().optional(),
+  "returnDeliveryAddress": zod.string().optional(),
+  "returnHours": zod.string().optional(),
+  "returnPhoneContact": zod.string().optional(),
+  "returnAppointmentDate": zod.coerce.date().optional(),
+  "returnAppointmentTime": zod.string().optional(),
+  "returnPieces": zod.number().optional(),
+  "returnWeight": zod.number().optional(),
+  "specialInstructions": zod.string().optional(),
+  "remarks": zod.string().optional()
+})
+
+export const AdminCreateRateConfirmationResponse = zod.object({
+  "id": zod.number(),
+  "proNumber": zod.string().nullable(),
+  "daysDedicatedLane": zod.string().nullable(),
+  "rcDateTime": zod.coerce.date(),
+  "fromCompany": zod.string(),
+  "fromPhone": zod.string().nullable(),
+  "fromEmail": zod.string().nullable(),
+  "carrierName": zod.string(),
+  "carrierPhone": zod.string().nullable(),
+  "mcNumber": zod.string().nullable(),
+  "dotNumber": zod.string().nullable(),
+  "driverName": zod.string().nullable(),
+  "truckNumber": zod.string().nullable(),
+  "trailerNumber": zod.string().nullable(),
+  "driverCell": zod.string().nullable(),
+  "miles": zod.number().nullable(),
+  "sizeType": zod.string().nullable(),
+  "pieces": zod.number().nullable(),
+  "description": zod.string().nullable(),
+  "weightLbs": zod.number().nullable(),
+  "hotLoad": zod.boolean(),
+  "lineHaulRate": zod.number().nullable(),
+  "totalRateUsd": zod.number().nullable(),
+  "outboundPickupAddress": zod.string().nullable(),
+  "outboundDeliveryAddress": zod.string().nullable(),
+  "outboundHours": zod.string().nullable(),
+  "outboundPhoneContact": zod.string().nullable(),
+  "outboundAppointmentDate": zod.coerce.date().nullable(),
+  "outboundAppointmentTime": zod.string().nullable(),
+  "outboundPieces": zod.number().nullable(),
+  "outboundWeight": zod.number().nullable(),
+  "dispatchNotes": zod.string().nullable(),
+  "returnPickupAddress": zod.string().nullable(),
+  "returnDeliveryAddress": zod.string().nullable(),
+  "returnHours": zod.string().nullable(),
+  "returnPhoneContact": zod.string().nullable(),
+  "returnAppointmentDate": zod.coerce.date().nullable(),
+  "returnAppointmentTime": zod.string().nullable(),
+  "returnPieces": zod.number().nullable(),
+  "returnWeight": zod.number().nullable(),
+  "specialInstructions": zod.string().nullable(),
+  "remarks": zod.string().nullable(),
+  "createdAt": zod.coerce.date()
+})
+
+
+/**
+ * @summary Get a rate confirmation
+ */
+export const AdminGetRateConfirmationParams = zod.object({
+  "id": zod.coerce.number()
+})
+
+export const AdminGetRateConfirmationResponse = zod.object({
+  "id": zod.number(),
+  "proNumber": zod.string().nullable(),
+  "daysDedicatedLane": zod.string().nullable(),
+  "rcDateTime": zod.coerce.date(),
+  "fromCompany": zod.string(),
+  "fromPhone": zod.string().nullable(),
+  "fromEmail": zod.string().nullable(),
+  "carrierName": zod.string(),
+  "carrierPhone": zod.string().nullable(),
+  "mcNumber": zod.string().nullable(),
+  "dotNumber": zod.string().nullable(),
+  "driverName": zod.string().nullable(),
+  "truckNumber": zod.string().nullable(),
+  "trailerNumber": zod.string().nullable(),
+  "driverCell": zod.string().nullable(),
+  "miles": zod.number().nullable(),
+  "sizeType": zod.string().nullable(),
+  "pieces": zod.number().nullable(),
+  "description": zod.string().nullable(),
+  "weightLbs": zod.number().nullable(),
+  "hotLoad": zod.boolean(),
+  "lineHaulRate": zod.number().nullable(),
+  "totalRateUsd": zod.number().nullable(),
+  "outboundPickupAddress": zod.string().nullable(),
+  "outboundDeliveryAddress": zod.string().nullable(),
+  "outboundHours": zod.string().nullable(),
+  "outboundPhoneContact": zod.string().nullable(),
+  "outboundAppointmentDate": zod.coerce.date().nullable(),
+  "outboundAppointmentTime": zod.string().nullable(),
+  "outboundPieces": zod.number().nullable(),
+  "outboundWeight": zod.number().nullable(),
+  "dispatchNotes": zod.string().nullable(),
+  "returnPickupAddress": zod.string().nullable(),
+  "returnDeliveryAddress": zod.string().nullable(),
+  "returnHours": zod.string().nullable(),
+  "returnPhoneContact": zod.string().nullable(),
+  "returnAppointmentDate": zod.coerce.date().nullable(),
+  "returnAppointmentTime": zod.string().nullable(),
+  "returnPieces": zod.number().nullable(),
+  "returnWeight": zod.number().nullable(),
+  "specialInstructions": zod.string().nullable(),
+  "remarks": zod.string().nullable(),
+  "createdAt": zod.coerce.date()
+})
+
+
+/**
+ * @summary Update a rate confirmation
+ */
+export const AdminUpdateRateConfirmationParams = zod.object({
+  "id": zod.coerce.number()
+})
+
+
+
+
+export const AdminUpdateRateConfirmationBody = zod.object({
+  "proNumber": zod.string().optional(),
+  "daysDedicatedLane": zod.string().optional(),
+  "rcDateTime": zod.coerce.date().optional(),
+  "fromCompany": zod.string().optional(),
+  "fromPhone": zod.string().optional(),
+  "fromEmail": zod.string().optional(),
+  "carrierName": zod.string().min(1).optional(),
+  "carrierPhone": zod.string().optional(),
+  "mcNumber": zod.string().optional(),
+  "dotNumber": zod.string().optional(),
+  "driverName": zod.string().optional(),
+  "truckNumber": zod.string().optional(),
+  "trailerNumber": zod.string().optional(),
+  "driverCell": zod.string().optional(),
+  "miles": zod.number().optional(),
+  "sizeType": zod.string().optional(),
+  "pieces": zod.number().optional(),
+  "description": zod.string().optional(),
+  "weightLbs": zod.number().optional(),
+  "hotLoad": zod.boolean().optional(),
+  "lineHaulRate": zod.number().optional(),
+  "totalRateUsd": zod.number().optional(),
+  "outboundPickupAddress": zod.string().optional(),
+  "outboundDeliveryAddress": zod.string().optional(),
+  "outboundHours": zod.string().optional(),
+  "outboundPhoneContact": zod.string().optional(),
+  "outboundAppointmentDate": zod.coerce.date().optional(),
+  "outboundAppointmentTime": zod.string().optional(),
+  "outboundPieces": zod.number().optional(),
+  "outboundWeight": zod.number().optional(),
+  "dispatchNotes": zod.string().optional(),
+  "returnPickupAddress": zod.string().optional(),
+  "returnDeliveryAddress": zod.string().optional(),
+  "returnHours": zod.string().optional(),
+  "returnPhoneContact": zod.string().optional(),
+  "returnAppointmentDate": zod.coerce.date().optional(),
+  "returnAppointmentTime": zod.string().optional(),
+  "returnPieces": zod.number().optional(),
+  "returnWeight": zod.number().optional(),
+  "specialInstructions": zod.string().optional(),
+  "remarks": zod.string().optional()
+})
+
+export const AdminUpdateRateConfirmationResponse = zod.object({
+  "id": zod.number(),
+  "proNumber": zod.string().nullable(),
+  "daysDedicatedLane": zod.string().nullable(),
+  "rcDateTime": zod.coerce.date(),
+  "fromCompany": zod.string(),
+  "fromPhone": zod.string().nullable(),
+  "fromEmail": zod.string().nullable(),
+  "carrierName": zod.string(),
+  "carrierPhone": zod.string().nullable(),
+  "mcNumber": zod.string().nullable(),
+  "dotNumber": zod.string().nullable(),
+  "driverName": zod.string().nullable(),
+  "truckNumber": zod.string().nullable(),
+  "trailerNumber": zod.string().nullable(),
+  "driverCell": zod.string().nullable(),
+  "miles": zod.number().nullable(),
+  "sizeType": zod.string().nullable(),
+  "pieces": zod.number().nullable(),
+  "description": zod.string().nullable(),
+  "weightLbs": zod.number().nullable(),
+  "hotLoad": zod.boolean(),
+  "lineHaulRate": zod.number().nullable(),
+  "totalRateUsd": zod.number().nullable(),
+  "outboundPickupAddress": zod.string().nullable(),
+  "outboundDeliveryAddress": zod.string().nullable(),
+  "outboundHours": zod.string().nullable(),
+  "outboundPhoneContact": zod.string().nullable(),
+  "outboundAppointmentDate": zod.coerce.date().nullable(),
+  "outboundAppointmentTime": zod.string().nullable(),
+  "outboundPieces": zod.number().nullable(),
+  "outboundWeight": zod.number().nullable(),
+  "dispatchNotes": zod.string().nullable(),
+  "returnPickupAddress": zod.string().nullable(),
+  "returnDeliveryAddress": zod.string().nullable(),
+  "returnHours": zod.string().nullable(),
+  "returnPhoneContact": zod.string().nullable(),
+  "returnAppointmentDate": zod.coerce.date().nullable(),
+  "returnAppointmentTime": zod.string().nullable(),
+  "returnPieces": zod.number().nullable(),
+  "returnWeight": zod.number().nullable(),
+  "specialInstructions": zod.string().nullable(),
+  "remarks": zod.string().nullable(),
+  "createdAt": zod.coerce.date()
+})
+
+
+/**
+ * @summary Delete a rate confirmation
+ */
+export const AdminDeleteRateConfirmationParams = zod.object({
+  "id": zod.coerce.number()
+})
+
+export const AdminDeleteRateConfirmationResponse = zod.void()
+
+
+/**
  * @summary Update a load
  */
 export const AdminUpdateLoadParams = zod.object({

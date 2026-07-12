@@ -1,4 +1,5 @@
 import { AdminLayout } from "@/components/admin-layout";
+import { useLocation } from "wouter";
 import {
   useAdminListLoads,
   useAdminCreateLoad,
@@ -416,6 +417,7 @@ function LoadFormFields({ form }: { form: UseFormReturn<LoadFormValues> }) {
 }
 
 export default function AdminLoads() {
+  const [, setLocation] = useLocation();
   const { data: loads, isLoading } = useAdminListLoads();
   const [isCreateOpen, setIsCreateOpen] = useState(false);
   const [editingLoad, setEditingLoad] = useState<Load | null>(null);
@@ -560,7 +562,7 @@ export default function AdminLoads() {
             <Button
               variant="outline"
               className="rounded-xl border-border flex-1 sm:flex-none"
-              onClick={() => toast({ title: "Rate confirmation documents are coming soon" })}
+              onClick={() => setLocation("/rate-confirmations")}
             >
               <FileText className="w-4 h-4 mr-2" />
               Rate Confirmation

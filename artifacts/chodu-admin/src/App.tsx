@@ -9,6 +9,8 @@ import AdminShipments from '@/pages/shipments';
 import AdminLeads from '@/pages/leads';
 import AdminUsers from '@/pages/users';
 import AdminLoads from '@/pages/loads';
+import AdminRateConfirmations from '@/pages/rate-confirmations';
+import RateConfirmationPrint from '@/pages/rate-confirmation-print';
 
 const queryClient = new QueryClient();
 
@@ -21,6 +23,8 @@ function Router() {
       <Route path="/leads" component={AdminLeads} />
       <Route path="/users" component={AdminUsers} />
       <Route path="/loads" component={AdminLoads} />
+      <Route path="/rate-confirmations" component={AdminRateConfirmations} />
+      <Route path="/rate-confirmations/:id/print" component={RateConfirmationPrint} />
       <Route component={NotFound} />
     </Switch>
   );
