@@ -627,7 +627,7 @@ export default function LiquorPermitServiceAgreement() {
             <div><span className="text-white">Payment:</span> {data.paymentMethod}</div>
             <div><span className="text-white">Date:</span> {TODAY}</div>
           </div>
-          <a href="/services/liquor-permit" className="inline-block bg-[#D4AF37] text-black text-sm font-bold px-6 py-2.5 rounded-md hover:bg-[#C9A227] transition-colors">
+          <a href="/" className="inline-block bg-[#D4AF37] text-black text-sm font-bold px-6 py-2.5 rounded-md hover:bg-[#C9A227] transition-colors">
             Back to Services
           </a>
         </div>

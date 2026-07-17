@@ -1,0 +1,27 @@
+kind = "web"
+previewPath = "/liquor-permit-agreement/"
+title = "Liquor Permit Service Agreement"
+version = "1.0.0"
+id = "artifacts/liquor-permit-agreement"
+router = "path"
+
+[[services]]
+name = "web"
+paths = [ "/liquor-permit-agreement/" ]
+localPort = 18944
+
+[services.development]
+run = "pnpm --filter @workspace/liquor-permit-agreement run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/liquor-permit-agreement", "run", "build" ]
+serve = "static"
+publicDir = "artifacts/liquor-permit-agreement/dist/public"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "18944"
+BASE_PATH = "/liquor-permit-agreement/"

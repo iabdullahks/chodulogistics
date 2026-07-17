@@ -1,0 +1,27 @@
+kind = "web"
+previewPath = "/carrier-setup-agreement/"
+title = "Carrier Setup Agreement"
+version = "1.0.0"
+id = "artifacts/carrier-setup-agreement"
+router = "path"
+
+[[services]]
+name = "web"
+paths = [ "/carrier-setup-agreement/" ]
+localPort = 23055
+
+[services.development]
+run = "pnpm --filter @workspace/carrier-setup-agreement run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/carrier-setup-agreement", "run", "build" ]
+serve = "static"
+publicDir = "artifacts/carrier-setup-agreement/dist/public"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "23055"
+BASE_PATH = "/carrier-setup-agreement/"
