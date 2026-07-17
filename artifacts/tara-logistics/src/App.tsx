@@ -16,6 +16,7 @@ import TwicCardAssistance from '@/pages/services/twic-card-assistance';
 import InsuranceAssistance from '@/pages/services/insurance-assistance';
 import FactoringRegistration from '@/pages/services/factoring-registration';
 import LiquorPermit from '@/pages/services/liquor-permit';
+import LiquorPermitServiceAgreement from '@/pages/carrier-agreement/liquor-permit-service-agreement';
 
 
 const queryClient = new QueryClient();
@@ -35,6 +36,7 @@ function Router() {
       <Route path="/services/insurance-assistance" component={InsuranceAssistance} />
       <Route path="/services/factoring-registration" component={FactoringRegistration} />
       <Route path="/services/liquor-permit" component={LiquorPermit} />
+      <Route path="/carrier-agreement/liquor-permit-service-agreement" component={LiquorPermitServiceAgreement} />
 
       <Route component={NotFound} />
     </Switch>
