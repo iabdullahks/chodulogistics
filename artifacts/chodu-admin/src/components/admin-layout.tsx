@@ -63,8 +63,8 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
           <div className="bg-gradient-to-br from-[#D4AF37]/20 to-[#F4C542]/5 border border-[#D4AF37]/20 w-8 h-8 rounded-lg flex items-center justify-center shadow-[0_0_15px_rgba(212,175,55,0.15)]">
             <Truck className="w-4 h-4 text-[#D4AF37]" strokeWidth={2} />
           </div>
-          <span className="font-bold text-lg tracking-tight text-foreground">
-            OPS<span className="text-[#D4AF37]">Portal</span>
+          <span className="font-bold text-sm tracking-tight text-foreground leading-tight">
+            Brokerage<span className="text-[#D4AF37]"> Co. of American INC</span>
           </span>
         </div>
         <button className="p-2" onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
@@ -83,10 +83,10 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
               <Truck className="w-5 h-5 text-[#D4AF37]" strokeWidth={2} />
             </div>
             <div className="flex flex-col">
-              <span className="font-bold text-xl tracking-tight text-foreground leading-none">
-                OPS<span className="text-[#D4AF37]">Portal</span>
+              <span className="font-bold text-sm tracking-tight text-foreground leading-none">
+                Brokerage<span className="text-[#D4AF37]"> Co. of American INC</span>
               </span>
-              <span className="text-[10px] text-muted-foreground uppercase tracking-widest mt-1">Control Room</span>
+              <span className="text-[10px] text-muted-foreground uppercase tracking-widest mt-1">Admin Portal</span>
             </div>
           </div>
         </div>

@@ -101,7 +101,7 @@ export default function AdminLogin() {
                       <FormLabel className="text-xs uppercase tracking-wider text-muted-foreground font-mono">Email Address</FormLabel>
                       <FormControl>
                         <Input
-                          placeholder="admin@chodulogistics.com"
+                          placeholder="admin@brokeragecoofamerican.com"
                           {...field}
                           className="bg-background/50 border-border focus-visible:ring-[#D4AF37]/50 h-11"
                         />
