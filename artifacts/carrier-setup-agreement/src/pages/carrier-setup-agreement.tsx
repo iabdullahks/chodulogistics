@@ -166,7 +166,7 @@ function StepCompanyInfo({ data, setData }: { data: FormData; setData: (d: FormD
         <br />
         MC #: <strong className="text-white">1551407</strong> | DOT #: <strong className="text-white">4079068</strong>
         <br />
-        Address: <strong className="text-white">1308 WESLEY AVE BERWYN, IL 60402</strong>
+        Address: <strong className="text-white">50 EMJAY BLVD BRENTWOOD, NY 11786</strong>
         <br />
         Email: <strong className="text-white">fred@taralogisticsllc.com</strong>
       </div>

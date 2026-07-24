@@ -107,7 +107,7 @@ function StepCompanyInfo({ data, setData }: { data: FormData; setData: (d: FormD
         <br />
         MC #: 1551407 | DOT #: 4079068
         <br />
-        Address: 1308 WESLEY AVE BERWYN, IL 60402
+        Address: 50 EMJAY BLVD BRENTWOOD, NY 11786
         <br />
         Email: fred@taralogisticsllc.com
       </div>
@@ -483,7 +483,7 @@ function StepCertificate({ data }: { data: FormData }) {
           <div className="text-sm font-semibold">MC-1551407</div>
           <div className="text-xs text-gray-600">U.S. DOT No. 4079068</div>
           <div className="text-sm font-semibold mt-1">TARA LOGISTICS LLC</div>
-          <div className="text-xs text-gray-600">1308 WESLEY AVE BERWYN, IL 60402</div>
+          <div className="text-xs text-gray-600">50 EMJAY BLVD BRENTWOOD, NY 11786</div>
         </div>
 
         <div className="px-6 py-4 text-xs text-gray-700 leading-relaxed border-b border-gray-200 space-y-2">
