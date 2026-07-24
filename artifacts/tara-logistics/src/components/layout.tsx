@@ -48,7 +48,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
               <Truck className="w-5 h-5 text-[#D4AF37]" strokeWidth={2} />
             </div>
             <span className="font-bold text-xl tracking-tight text-foreground">
-              CHODU<span className="text-[#D4AF37]">Logistics</span>
+              Brokerage<span className="text-[#D4AF37]"> Co. of American INC</span>
             </span>
           </Link>
 
@@ -137,7 +137,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
                   <Truck className="w-5 h-5 text-[#D4AF37]" strokeWidth={2} />
                 </div>
                 <span className="font-bold text-xl tracking-tight text-foreground">
-                  CHODU<span className="text-[#D4AF37]">Logistics</span>
+                  Brokerage<span className="text-[#D4AF37]"> Co. of American INC</span>
                 </span>
               </Link>
               <p className="text-[#CBD5E1] text-[15px] leading-relaxed max-w-sm">
@@ -217,7 +217,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
 
           <div className="pt-8 border-t border-border flex flex-col md:flex-row items-center justify-between gap-6">
             <div className="text-[14px] text-[#94A3B8]">
-              &copy; {new Date().getFullYear()} CHODU Logistics. All rights reserved.
+              &copy; {new Date().getFullYear()} Brokerage Company of American INC. All rights reserved.
             </div>
             
             {/* Social Links */}

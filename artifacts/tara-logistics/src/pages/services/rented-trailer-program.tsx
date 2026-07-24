@@ -37,7 +37,7 @@ export default function RentedTrailerProgram() {
                 <div className="w-12 h-0.5 bg-primary mb-8" />
                 <div className="prose prose-invert max-w-none text-muted-foreground text-lg leading-relaxed space-y-6 font-light">
                   <p>
-                    For owner-operators and small fleets, trailer ownership is a significant barrier to entry for higher-paying, specialized freight. CHODU Logistics' Rented Trailer Program is designed to remove that barrier, offering flexible access to well-maintained equipment.
+                    For owner-operators and small fleets, trailer ownership is a significant barrier to entry for higher-paying, specialized freight. Brokerage Company of American INC's Rented Trailer Program is designed to remove that barrier, offering flexible access to well-maintained equipment.
                   </p>
                   <p>
                     Whether you need a dry van for retail goods, a flatbed for construction materials, or a reefer for temperature-sensitive loads, our network provides the equipment you need, exactly when you need it.

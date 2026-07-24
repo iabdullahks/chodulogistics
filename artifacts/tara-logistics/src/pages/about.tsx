@@ -30,7 +30,7 @@ export default function About() {
               Built for the <br /><span className="text-transparent bg-clip-text bg-gradient-to-r from-[#D4AF37] to-[#F4C542]">Long Haul.</span>
             </h1>
             <p className="text-xl text-[#CBD5E1] leading-relaxed max-w-2xl">
-              CHODU Logistics is a nationwide freight brokerage and carrier support partner committed to keeping the supply chain moving with precision, integrity, and operational excellence.
+              Brokerage Company of American INC is a nationwide freight brokerage and carrier support partner committed to keeping the supply chain moving with precision, integrity, and operational excellence.
             </p>
           </motion.div>
         </div>
@@ -51,7 +51,7 @@ export default function About() {
                 <h2 className="text-4xl md:text-5xl font-bold mb-6 text-foreground tracking-tight">Bridging the gap between freight and operations.</h2>
                 <div className="w-16 h-1 bg-[#D4AF37] mb-8 rounded-full" />
                 <p className="text-[#CBD5E1] leading-relaxed text-lg mb-6">
-                  Founded with a clear understanding of the challenges owner-operators face on the road, CHODU Logistics was built to be more than just a load board connection. We saw a gap between finding freight and running a compliant, profitable trucking business.
+                  Founded with a clear understanding of the challenges owner-operators face on the road, Brokerage Company of American INC was built to be more than just a load board connection. We saw a gap between finding freight and running a compliant, profitable trucking business.
                 </p>
                 <p className="text-[#CBD5E1] leading-relaxed text-lg">
                   Today, we bridge that gap. We act as a comprehensive operational partner for carriers, providing access to dependable freight while handling the back-office complexities—from insurance applications to factoring and permit compliance.

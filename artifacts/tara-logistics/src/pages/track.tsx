@@ -73,7 +73,7 @@ export default function Track() {
             </h1>
             
             <p className="text-xl text-[#CBD5E1] leading-relaxed mb-12 max-w-2xl mx-auto">
-              Enter your CHODU Logistics tracking number below to view real-time status and delivery estimates.
+              Enter your Brokerage Company of American INC tracking number below to view real-time status and delivery estimates.
             </p>
 
             <form onSubmit={handleSearch} className="flex flex-col sm:flex-row gap-4 max-w-2xl mx-auto relative z-20">

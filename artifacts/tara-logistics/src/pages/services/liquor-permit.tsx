@@ -40,7 +40,7 @@ export default function LiquorPermit() {
                     Hauling alcoholic beverages requires specific state-issued permits. Because of the regulatory hurdles, these loads frequently pay above average market rates.
                   </p>
                   <p>
-                    CHODU Logistics holds direct relationships with major beverage distributors and shippers. We connect permitted carriers with steady volume lanes, and we help non-permitted carriers obtain the necessary licenses to enter this lucrative market.
+                    Brokerage Company of American INC holds direct relationships with major beverage distributors and shippers. We connect permitted carriers with steady volume lanes, and we help non-permitted carriers obtain the necessary licenses to enter this lucrative market.
                   </p>
                 </div>
               </section>

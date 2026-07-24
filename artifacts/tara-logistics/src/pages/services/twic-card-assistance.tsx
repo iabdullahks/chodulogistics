@@ -41,7 +41,7 @@ export default function TwicCardAssistance() {
                     A TWIC (Transportation Worker Identification Credential) card is mandatory for unescorted access to secure areas of maritime facilities and vessels. Without it, you are locked out of lucrative drayage and port-adjacent freight opportunities.
                   </p>
                   <p>
-                    The application process involves background checks, TSA coordination, and specific documentation. CHODU Logistics simplifies this bureaucratic hurdle, ensuring your application is accurate, complete, and processed as quickly as possible.
+                    The application process involves background checks, TSA coordination, and specific documentation. Brokerage Company of American INC simplifies this bureaucratic hurdle, ensuring your application is accurate, complete, and processed as quickly as possible.
                   </p>
                 </div>
               </section>
