@@ -150,8 +150,8 @@ export default function Contact() {
                     <div>
                       <div className="font-semibold uppercase tracking-wider text-xs text-[#94A3B8] mb-2">Corporate HQ</div>
                       <div className="text-xl font-medium text-foreground leading-relaxed">
-                        100 Logistics Blvd, Ste 400<br />
-                        Dallas, TX 75201
+                        50 Emjay Blvd<br />
+                        Brentwood, NY 11786
                       </div>
                     </div>
                   </div>
