@@ -1,6 +1,8 @@
 import { useState } from "react"
-import { Truck, Send, CheckCircle2 } from "lucide-react"
+import { Truck, CheckCircle2, Loader2 } from "lucide-react"
 import { cn } from "@/lib/utils"
+import BrandLogo from "@/components/BrandLogo"
+import { jsPDF } from "jspdf"
 
 // ─── Types ───────────────────────────────────────────────────────────────────
 
@@ -56,7 +58,7 @@ const STEPS = [
 ]
 
 const DISPATCH_COMPANIES = [
-  "TARA LOGISTICS LLC",
+  "BROKERAGE COMPANY OF AMERICAN INC",
   "Prime Dispatch Services",
   "Eagle Freight Dispatch",
   "American Truck Dispatch",
@@ -64,13 +66,336 @@ const DISPATCH_COMPANIES = [
   "Other",
 ]
 
+const LANE_LABEL: Record<string, string> = {
+  "dot-only": "DOT-Only Carriers (Intrastate Loads) — Security Deposit Required",
+  "new-mc": "New MCs (Less than 2 Years Old) — Security Deposit Required",
+  "broker-authority": "Under Broker's Authority — Security Deposit Required",
+  "established-mc": "Established MCs (Older than 2 Years) — No Deposit Required",
+}
+
 const TODAY = new Date().toLocaleDateString("en-US", {
   month: "long",
   day: "numeric",
   year: "numeric",
 })
 
+const TODAY_ISO = new Date().toISOString().split("T")[0]
 const TODAY_DMY = new Date().toLocaleDateString("en-GB").replace(/\//g, "/")
+
+// ─── PDF Generator ───────────────────────────────────────────────────────────
+
+function generatePDF(data: FormData): string {
+  const doc = new jsPDF({ unit: "pt", format: "letter" })
+  const W = doc.internal.pageSize.getWidth()
+  const margin = 56
+  let y = margin
+
+  const addPage = () => {
+    doc.addPage()
+    y = margin
+  }
+
+  const checkPage = (needed = 40) => {
+    if (y + needed > doc.internal.pageSize.getHeight() - margin) addPage()
+  }
+
+  const selectedServices: string[] = []
+  if (data.otherServices.twicCard) selectedServices.push("TWIC Card Application — $360 (Same-day processing)")
+  if (data.otherServices.trailerRental) selectedServices.push("Trailer Rental (3 months) — $500 (Subject to availability)")
+  if (data.otherServices.factoringSetup) selectedServices.push("Factoring Setup — $250 (Same-day registration)")
+  if (data.otherServices.insuranceAssistance) selectedServices.push("Insurance Assistance — $399 (Fast-track insurance quote & setup)")
+
+  // ── Header bar ──
+  doc.setFillColor(13, 13, 13)
+  doc.rect(0, 0, W, 68, "F")
+
+  // Gold circle logo placeholder
+  doc.setFillColor(212, 175, 55)
+  doc.circle(margin + 20, 34, 18, "F")
+  doc.setTextColor(13, 13, 13)
+  doc.setFontSize(16)
+  doc.setFont("helvetica", "bold")
+  doc.text("B", margin + 20, 39, { align: "center" })
+
+  // Company name
+  doc.setTextColor(255, 255, 255)
+  doc.setFontSize(11)
+  doc.setFont("helvetica", "bold")
+  doc.text("BROKERAGE COMPANY OF AMERICAN INC", margin + 46, 30)
+  doc.setTextColor(212, 175, 55)
+  doc.setFontSize(8.5)
+  doc.text("MC #: 1551407  |  DOT #: 4079068  |  50 Emjay Blvd, Brentwood, NY 11786", margin + 46, 46)
+  doc.setTextColor(180, 180, 180)
+  doc.setFontSize(7.5)
+  doc.text("fred@brokeragecompanyofamericaninc.com", margin + 46, 59)
+
+  y = 90
+
+  // ── Title ──
+  doc.setTextColor(13, 13, 13)
+  doc.setFontSize(15)
+  doc.setFont("helvetica", "bold")
+  doc.text("TRUCKING SERVICE AGREEMENT", W / 2, y, { align: "center" })
+  y += 14
+  doc.setFontSize(9)
+  doc.setFont("helvetica", "normal")
+  doc.setTextColor(80, 80, 80)
+  doc.text("(Dedicated Lanes, Dispatch, Trailer Rental, and Setup Services)", W / 2, y, { align: "center" })
+  y += 18
+
+  // Gold divider
+  doc.setDrawColor(212, 175, 55)
+  doc.setLineWidth(1.2)
+  doc.line(margin, y, W - margin, y)
+  y += 16
+
+  // ── Parties ──
+  doc.setFontSize(9)
+  doc.setTextColor(50, 50, 50)
+  doc.setFont("helvetica", "normal")
+  const partyText = [
+    `This Agreement is made and entered into on ${TODAY_ISO}, by and between: BROKERAGE COMPANY OF AMERICAN INC`,
+    `MC #: 1551407 | DOT #: 4079068`,
+    `Address: 50 EMJAY BLVD BRENTWOOD, NY 11786`,
+    `Email: fred@brokeragecompanyofamericaninc.com`,
+    ``,
+    `Dispatch Company: ${data.dispatchCompany}`,
+    `(Hereinafter referred to as the BROKERAGE COMPANY OF AMERICAN INC)`,
+  ]
+  partyText.forEach((line) => {
+    checkPage()
+    doc.text(line, margin, y)
+    y += 13
+  })
+  y += 6
+
+  // ── Section helper ──
+  const sectionTitle = (title: string) => {
+    checkPage(30)
+    doc.setFillColor(245, 245, 245)
+    doc.rect(margin, y - 10, W - margin * 2, 18, "F")
+    doc.setDrawColor(212, 175, 55)
+    doc.setLineWidth(0.6)
+    doc.rect(margin, y - 10, W - margin * 2, 18)
+    doc.setFontSize(9.5)
+    doc.setFont("helvetica", "bold")
+    doc.setTextColor(13, 13, 13)
+    doc.text(title, margin + 6, y + 3)
+    y += 18
+    doc.setFont("helvetica", "normal")
+    doc.setFontSize(9)
+    doc.setTextColor(50, 50, 50)
+  }
+
+  const bullet = (text: string) => {
+    checkPage()
+    doc.text(`• ${text}`, margin + 10, y)
+    y += 13
+  }
+
+  const field = (label: string, value: string) => {
+    checkPage()
+    doc.setFont("helvetica", "bold")
+    doc.text(`${label}:`, margin, y)
+    doc.setFont("helvetica", "normal")
+    const lw = doc.getTextWidth(`${label}: `)
+    doc.text(value || "—", margin + lw, y)
+    y += 13
+  }
+
+  const bodyText = (text: string) => {
+    checkPage()
+    const lines = doc.splitTextToSize(text, W - margin * 2)
+    lines.forEach((l: string) => {
+      checkPage()
+      doc.text(l, margin, y)
+      y += 13
+    })
+  }
+
+  // ── Carrier Information ──
+  y += 4
+  sectionTitle("Carrier Information")
+  y += 4
+  field("Carrier Full Name", data.carrierFullName)
+  field("Company Name (if applicable)", data.companyName || "N/A")
+  field("MC Number", data.mcNumber || "N/A")
+  field("DOT Number", data.dotNumber || "N/A")
+  field("Driving License Number", data.drivingLicense || "N/A")
+  field("Carrier Phone Number", data.phone || "N/A")
+  field("Email", data.email || "N/A")
+  y += 8
+
+  // ── Purpose of Agreement ──
+  sectionTitle("Purpose of Agreement")
+  y += 4
+  bodyText(
+    "This Agreement outlines the terms and conditions under which the Company provides setup and logistics services to the Client, including but not limited to:"
+  )
+  y += 4
+  bullet("Dedicated freight lanes")
+  bullet("Dispatch assistance")
+  bullet("Trailer rental")
+  bullet("TWIC card application support")
+  bullet("Commercial insurance setup")
+  bullet("Factoring registration")
+  y += 4
+  bodyText("Access to high-paying loads through partnered shippers including Amazon & government contracts")
+  y += 8
+
+  // ── Lane Setup Option ──
+  sectionTitle("Selected Dedicated Lane Setup Option")
+  y += 4
+  bodyText(LANE_LABEL[data.laneSetupOption] || data.laneSetupOption || "—")
+  y += 4
+  doc.setFontSize(8.5)
+  doc.setTextColor(120, 90, 0)
+  bodyText(
+    "Note: A $460 Security deposit is required for applicable setups and is fully refundable after the first three successful deliveries."
+  )
+  doc.setTextColor(50, 50, 50)
+  doc.setFontSize(9)
+  y += 8
+
+  // ── Services ──
+  sectionTitle("Selected Services With Fees")
+  y += 4
+  if (selectedServices.length === 0) {
+    bodyText("No additional services selected.")
+  } else {
+    selectedServices.forEach(bullet)
+  }
+  y += 8
+
+  // ── Payment ──
+  sectionTitle("Payment Method")
+  y += 4
+  field("Selected Payment Method", data.paymentMethod)
+  y += 4
+  bullet("Payment is due prior to service activation")
+  bullet("Payments may be processed via third-party accounts to enable same-day service")
+  bullet("A digital receipt will be issued upon payment")
+  y += 8
+
+  // ── Refund Policy ──
+  sectionTitle("Refund Policy")
+  y += 4
+  bullet("The $460 dedicated lane setup fee is refundable after the Client completes their first three successful deliveries arranged by the Company")
+  bullet("Other service fees are non-refundable once service begins, as these are time-sensitive administrative tasks")
+  bullet("Refunds will be issued via the original payment method within 5–7 business days, if applicable")
+  y += 8
+
+  // ── Client Responsibilities ──
+  sectionTitle("Client Responsibilities")
+  y += 4
+  bodyText("The Client agrees to:")
+  y += 4
+  bullet("Provide accurate legal business and driver information")
+  bullet("Maintain active authority (MC/DOT) and valid insurance, unless Company is assisting with setup")
+  bullet("Communicate in a timely and professional manner")
+  bullet("Not engage in fraud, chargebacks, or misrepresentation")
+  y += 8
+
+  // ── No Employment ──
+  sectionTitle("No Employer-Employee Relationship")
+  y += 4
+  bodyText(
+    "This Agreement does not create an employment relationship. The Client is an independent carrier and assumes all responsibility for tax, insurance, regulatory compliance, and FMCSA obligations."
+  )
+  y += 8
+
+  // ── Liability ──
+  sectionTitle("Limitation of Liability")
+  y += 4
+  bodyText("The Company is not liable for:")
+  y += 4
+  bullet("Any loss of income due to delays, market rates, or missed loads")
+  bullet("Legal or regulatory penalties due to false or missing information provided by the Client")
+  bullet("Broker cancellations or third-party payment processing delays")
+  y += 8
+
+  // ── Term ──
+  sectionTitle("Term and Termination")
+  y += 4
+  bodyText(
+    "This agreement becomes effective upon payment and remains active until the completion of the contracted services. Either party may terminate in writing at any time. Refund terms apply as per Section 4."
+  )
+  y += 8
+
+  // ── Entire Agreement ──
+  sectionTitle("Entire Agreement")
+  y += 4
+  bodyText(
+    "This Agreement contains the entire understanding between both parties and supersedes all prior agreements, written or oral."
+  )
+  y += 16
+
+  // ── Signatures ──
+  checkPage(90)
+  doc.setDrawColor(212, 175, 55)
+  doc.setLineWidth(1)
+  doc.line(margin, y, W - margin, y)
+  y += 16
+
+  doc.setFontSize(9.5)
+  doc.setFont("helvetica", "bold")
+  doc.setTextColor(13, 13, 13)
+  doc.text("Carrier Details", margin, y)
+  y += 14
+
+  doc.setFont("helvetica", "normal")
+  doc.setFontSize(9)
+  doc.setTextColor(50, 50, 50)
+
+  // Carrier signature block
+  const halfW = (W - margin * 2) / 2 - 10
+  doc.setFont("helvetica", "bold")
+  doc.text("Signature:", margin, y)
+  doc.setFont("helvetica", "normal")
+  doc.text(data.signature, margin + 60, y)
+  doc.line(margin + 60, y + 2, margin + 60 + halfW - 30, y + 2)
+  y += 20
+  doc.setFont("helvetica", "bold")
+  doc.text("Print Name:", margin, y)
+  doc.setFont("helvetica", "normal")
+  doc.text(data.printName, margin + 60, y)
+  y += 20
+  doc.setFont("helvetica", "bold")
+  doc.text("Date:", margin, y)
+  doc.setFont("helvetica", "normal")
+  doc.text(TODAY_ISO, margin + 60, y)
+  y += 28
+
+  // Company representative block
+  doc.setFontSize(9.5)
+  doc.setFont("helvetica", "bold")
+  doc.setTextColor(13, 13, 13)
+  doc.text("Dispatch/Service Provider Representative", margin, y)
+  y += 14
+  doc.setFont("helvetica", "normal")
+  doc.setFontSize(9)
+  doc.setTextColor(50, 50, 50)
+  doc.text("BROKERAGE COMPANY OF AMERICAN INC", margin, y)
+  y += 13
+  doc.text(`Date: ${TODAY_ISO}`, margin, y)
+  y += 20
+
+  // Footer
+  const pageCount = doc.getNumberOfPages()
+  for (let i = 1; i <= pageCount; i++) {
+    doc.setPage(i)
+    doc.setFontSize(7.5)
+    doc.setTextColor(160, 160, 160)
+    doc.text(
+      `Brokerage Company of American INC  ·  50 Emjay Blvd, Brentwood, NY 11786  ·  Page ${i} of ${pageCount}`,
+      W / 2,
+      doc.internal.pageSize.getHeight() - 24,
+      { align: "center" }
+    )
+  }
+
+  return doc.output("datauristring").split(",")[1]
+}
 
 // ─── Sub-components ──────────────────────────────────────────────────────────
 
@@ -162,23 +487,22 @@ function StepCompanyInfo({ data, setData }: { data: FormData; setData: (d: FormD
 
       <div className="text-xs text-[#CBD5E1] leading-relaxed mb-5 pb-5 border-b border-[#2a2a2a]">
         This Agreement is made and entered into on <strong className="text-white">{TODAY}</strong>, by and between:{" "}
-        <strong className="text-white">TARA LOGISTICS LLC</strong>
+        <strong className="text-white">BROKERAGE COMPANY OF AMERICAN INC</strong>
         <br />
         MC #: <strong className="text-white">1551407</strong> | DOT #: <strong className="text-white">4079068</strong>
         <br />
-        Address: <strong className="text-white">50 EMJAY BLVD BRENTWOOD, NY 11786</strong>
+        Address: <strong className="text-white">50 EMJAY BLVD, BRENTWOOD, NY 11786</strong>
         <br />
-        Email: <strong className="text-white">fred@taralogisticsllc.com</strong>
+        Email: <strong className="text-white">fred@brokeragecompanyofamericaninc.com</strong>
       </div>
 
-      {/* Important notice */}
       <div className="bg-[#1a1a1a] border border-[#333] rounded-md px-4 py-3 mb-5">
         <p className="text-xs text-[#CBD5E1]">
-          <strong className="text-white">Important:</strong> The Client should only respond to verified contacts from the Company or the following trusted dispatch partners:
+          <strong className="text-white">Important:</strong> The Client should only respond to verified contacts from
+          the Company or the following trusted dispatch partners:
         </p>
       </div>
 
-      {/* Dispatch Company dropdown */}
       <div className="mb-4">
         <FieldLabel>Dispatch Company Name</FieldLabel>
         <div className="relative">
@@ -196,7 +520,9 @@ function StepCompanyInfo({ data, setData }: { data: FormData; setData: (d: FormD
         </div>
       </div>
 
-      <p className="text-xs text-[#94A3B8] italic">(Hereinafter referred to as the TARA LOGISTICS LLC)</p>
+      <p className="text-xs text-[#94A3B8] italic">
+        (Hereinafter referred to as the BROKERAGE COMPANY OF AMERICAN INC)
+      </p>
     </div>
   )
 }
@@ -225,7 +551,6 @@ function StepCarrierInfo({ data, setData }: { data: FormData; setData: (d: FormD
         </div>
       </div>
 
-      {/* Form grid */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-5">
         <div>
           <FieldLabel>Carrier Full Name</FieldLabel>
@@ -257,7 +582,6 @@ function StepCarrierInfo({ data, setData }: { data: FormData; setData: (d: FormD
         </div>
       </div>
 
-      {/* Purpose of Agreement */}
       <div className="border-t border-[#2a2a2a] pt-5">
         <div className="flex items-center gap-2 mb-3">
           <div className="w-6 h-6 rounded-full bg-[#D4AF37]/20 border border-[#D4AF37]/40 flex items-center justify-center">
@@ -266,8 +590,8 @@ function StepCarrierInfo({ data, setData }: { data: FormData; setData: (d: FormD
           <h3 className="text-sm font-bold text-white">Purpose of Agreement</h3>
         </div>
         <p className="text-xs text-[#94A3B8] mb-3">
-          This Agreement outlines the terms and conditions under which the Company provides setup and logistics services to the Client,
-          including but not limited to:
+          This Agreement outlines the terms and conditions under which the Company provides setup and logistics
+          services to the Client, including but not limited to:
         </p>
         <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 mb-3">
           {SERVICE_BADGES.map((badge) => (
@@ -371,12 +695,13 @@ function StepServicesFinal({ data, setData }: { data: FormData; setData: (d: For
         </div>
         <div className="mt-2 bg-[#1a1a0a] border border-[#D4AF37]/20 rounded-md px-3 py-2">
           <p className="text-[10px] text-[#CBD5E1]">
-            <strong className="text-[#D4AF37]">Note:</strong> A $460 Security deposit is required for applicable setups and is fully refundable after the first three successful deliveries.
+            <strong className="text-[#D4AF37]">Note:</strong> A $460 Security deposit is required for applicable
+            setups and is fully refundable after the first three successful deliveries.
           </p>
         </div>
       </div>
 
-      {/* Select Other Services With Fees */}
+      {/* Other Services */}
       <div>
         <div className="flex items-center gap-2 mb-3">
           <div className="w-6 h-6 rounded bg-[#D4AF37]/20 border border-[#D4AF37]/40 flex items-center justify-center">
@@ -399,14 +724,18 @@ function StepServicesFinal({ data, setData }: { data: FormData; setData: (d: For
                     "w-4 h-4 rounded border-2 flex items-center justify-center shrink-0",
                     data.otherServices[svc.key] ? "bg-[#D4AF37] border-[#D4AF37]" : "border-[#444]"
                   )}
-                  onClick={() => setData({ ...data, otherServices: { ...data.otherServices, [svc.key]: !data.otherServices[svc.key] } })}
+                  onClick={() =>
+                    setData({ ...data, otherServices: { ...data.otherServices, [svc.key]: !data.otherServices[svc.key] } })
+                  }
                 >
                   {data.otherServices[svc.key] && <span className="text-black text-[8px] font-bold">✓</span>}
                 </div>
                 <input
                   type="checkbox"
                   checked={data.otherServices[svc.key]}
-                  onChange={() => setData({ ...data, otherServices: { ...data.otherServices, [svc.key]: !data.otherServices[svc.key] } })}
+                  onChange={() =>
+                    setData({ ...data, otherServices: { ...data.otherServices, [svc.key]: !data.otherServices[svc.key] } })
+                  }
                   className="sr-only"
                 />
                 <span className="text-xs text-[#CBD5E1]">{svc.label}</span>
@@ -419,7 +748,7 @@ function StepServicesFinal({ data, setData }: { data: FormData; setData: (d: For
         </div>
       </div>
 
-      {/* Payment Method Selection */}
+      {/* Payment Method */}
       <div>
         <div className="flex items-center gap-2 mb-3">
           <div className="w-6 h-6 rounded bg-[#D4AF37]/20 border border-[#D4AF37]/40 flex items-center justify-center">
@@ -468,14 +797,12 @@ function StepServicesFinal({ data, setData }: { data: FormData; setData: (d: For
             <p>Payments may be processed via third-party accounts to enable same-day service</p>
             <p>A digital receipt will be issued upon payment</p>
           </div>
-
           <div>
             <h4 className="font-bold text-[#D4AF37] mb-1">Refund Policy</h4>
             <p>The $460 dedicated lane setup fee is refundable after the Client completes their first three successful deliveries arranged by the Company</p>
             <p>Other service fees are non-refundable once service begins, as these are time-sensitive administrative tasks</p>
             <p>Refunds will be issued via the original payment method within 5–7 business days, if applicable</p>
           </div>
-
           <div>
             <h4 className="font-bold text-[#D4AF37] mb-1">Client Responsibilities</h4>
             <p className="mb-2">The Client agrees to:</p>
@@ -488,12 +815,10 @@ function StepServicesFinal({ data, setData }: { data: FormData; setData: (d: For
               ))}
             </div>
           </div>
-
           <div>
             <h4 className="font-bold text-[#D4AF37] mb-1">No Employer-Employee Relationship</h4>
             <p>This Agreement does not create an employment relationship. The Client is an independent carrier and assumes all responsibility for tax, insurance, regulatory compliance, and FMCSA obligations.</p>
           </div>
-
           <div>
             <h4 className="font-bold text-[#D4AF37] mb-1">Limitation of Liability</h4>
             <p className="mb-2">The Company is not liable for:</p>
@@ -506,12 +831,10 @@ function StepServicesFinal({ data, setData }: { data: FormData; setData: (d: For
               ))}
             </div>
           </div>
-
           <div>
             <h4 className="font-bold text-[#D4AF37] mb-1">Term and Termination</h4>
             <p>This agreement becomes effective upon payment and remains active until the completion of the contracted services. Either party may terminate in writing at any time. Refund terms apply as per Section 4.</p>
           </div>
-
           <div>
             <h4 className="font-bold text-[#D4AF37] mb-1">Entire Agreement</h4>
             <p>This Agreement contains the entire understanding between both parties and supersedes all prior agreements, written or oral.</p>
@@ -544,17 +867,26 @@ function StepServicesFinal({ data, setData }: { data: FormData; setData: (d: For
 
 // ─── Success Screen ───────────────────────────────────────────────────────────
 
-function SuccessScreen({ data }: { data: FormData }) {
+function SuccessScreen({ data, emailSent }: { data: FormData; emailSent: boolean }) {
   return (
     <div className="text-center py-8">
       <div className="w-14 h-14 rounded-full bg-[#D4AF37]/20 border border-[#D4AF37]/40 flex items-center justify-center mx-auto mb-4">
         <CheckCircle2 className="w-7 h-7 text-[#D4AF37]" />
       </div>
       <h2 className="text-xl font-bold text-white mb-2">Agreement Submitted!</h2>
-      <p className="text-sm text-[#94A3B8] mb-6">
+      <p className="text-sm text-[#94A3B8] mb-2">
         Thank you, <strong className="text-white">{data.carrierFullName || "Carrier"}</strong>. Your Carrier Setup Agreement has been received.
-        A confirmation will be sent to <strong className="text-white">{data.email || "your email"}</strong>.
       </p>
+      {emailSent ? (
+        <p className="text-xs text-[#4ade80] mb-6">
+          ✓ A signed PDF copy has been sent to our team and a confirmation to{" "}
+          <strong className="text-white">{data.email}</strong>.
+        </p>
+      ) : (
+        <p className="text-xs text-[#94A3B8] mb-6">
+          Your agreement has been recorded. A confirmation will follow shortly.
+        </p>
+      )}
       <div className="bg-[#111] border border-[#2a2a2a] rounded-lg p-4 text-left text-xs space-y-1.5 text-[#94A3B8] mb-6 max-w-sm mx-auto">
         <div><span className="text-white">Carrier:</span> {data.carrierFullName}</div>
         {data.mcNumber && <div><span className="text-white">MC #:</span> {data.mcNumber}</div>}
@@ -578,6 +910,9 @@ export default function CarrierSetupAgreement() {
   const [step, setStep] = useState(0)
   const [data, setData] = useState<FormData>(INITIAL_FORM)
   const [submitted, setSubmitted] = useState(false)
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [emailSent, setEmailSent] = useState(false)
+  const [submitError, setSubmitError] = useState<string | null>(null)
 
   function canProceed(): boolean {
     if (step === 0) return data.dispatchCompany !== ""
@@ -586,8 +921,28 @@ export default function CarrierSetupAgreement() {
     return true
   }
 
-  function handleSubmit() {
-    setSubmitted(true)
+  async function handleSubmit() {
+    setIsSubmitting(true)
+    setSubmitError(null)
+    try {
+      // 1. Generate PDF
+      const pdfBase64 = generatePDF(data)
+
+      // 2. Send to API
+      const apiBase = import.meta.env.BASE_URL?.replace(/\/$/, "") ?? ""
+      const res = await fetch(`${apiBase}/api/carrier-agreement`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ formData: data, pdfBase64 }),
+      })
+
+      setEmailSent(res.ok)
+    } catch {
+      setEmailSent(false)
+    } finally {
+      setIsSubmitting(false)
+      setSubmitted(true)
+    }
   }
 
   return (
@@ -595,10 +950,13 @@ export default function CarrierSetupAgreement() {
       <div className="w-full max-w-2xl">
         {/* Header */}
         <div className="text-center mb-6">
-          <div className="w-14 h-14 rounded-full bg-[#D4AF37]/20 border border-[#D4AF37]/40 flex items-center justify-center mx-auto mb-3">
-            <Truck className="w-7 h-7 text-[#D4AF37]" />
+          <div className="flex justify-center mb-3">
+            <BrandLogo size={64} />
           </div>
           <h1 className="text-2xl font-bold text-white">Carrier Setup Agreement</h1>
+          <p className="text-xs text-[#D4AF37] font-semibold mt-0.5 tracking-wide">
+            BROKERAGE COMPANY OF AMERICAN INC
+          </p>
           <p className="text-xs text-[#94A3B8] mt-1">Dedicated Lanes, Dispatch, Trailer Rental, and Setup Services</p>
           <div className="inline-flex items-center gap-1.5 bg-[#D4AF37]/20 border border-[#D4AF37]/40 rounded-full px-3 py-1 mt-3">
             <span className="text-[10px] text-[#D4AF37] font-semibold">📅 Agreement Date: {TODAY}</span>
@@ -608,7 +966,7 @@ export default function CarrierSetupAgreement() {
         {/* Card */}
         <div className="bg-[#111] border border-[#2a2a2a] rounded-xl p-6 shadow-2xl">
           {submitted ? (
-            <SuccessScreen data={data} />
+            <SuccessScreen data={data} emailSent={emailSent} />
           ) : (
             <>
               <ProgressBar step={step} />
@@ -619,14 +977,18 @@ export default function CarrierSetupAgreement() {
                 {step === 2 && <StepServicesFinal data={data} setData={setData} />}
               </div>
 
+              {submitError && (
+                <p className="text-xs text-red-400 text-center mb-3">{submitError}</p>
+              )}
+
               {/* Navigation */}
               <div className="flex justify-between items-center pt-4 border-t border-[#2a2a2a]">
                 <button
                   onClick={() => setStep((s) => Math.max(0, s - 1))}
-                  disabled={step === 0}
+                  disabled={step === 0 || isSubmitting}
                   className={cn(
                     "flex items-center gap-1.5 px-4 py-2 rounded-md text-sm font-medium transition-all",
-                    step === 0
+                    step === 0 || isSubmitting
                       ? "text-[#444] cursor-not-allowed"
                       : "text-[#94A3B8] hover:text-white hover:bg-[#1a1a1a]"
                   )}
@@ -650,22 +1012,36 @@ export default function CarrierSetupAgreement() {
                 ) : (
                   <button
                     onClick={handleSubmit}
-                    disabled={!canProceed()}
+                    disabled={!canProceed() || isSubmitting}
                     className={cn(
                       "flex items-center gap-2 px-5 py-2 rounded-md text-sm font-bold transition-all",
-                      canProceed()
+                      canProceed() && !isSubmitting
                         ? "bg-[#D4AF37] text-black hover:bg-[#C9A227]"
                         : "bg-[#2a2a2a] text-[#555] cursor-not-allowed"
                     )}
                   >
-                    <Send className="w-4 h-4" />
-                    Submit Agreement
+                    {isSubmitting ? (
+                      <>
+                        <Loader2 className="w-4 h-4 animate-spin" />
+                        Sending Agreement…
+                      </>
+                    ) : (
+                      <>
+                        <Send className="w-4 h-4" />
+                        Submit Agreement
+                      </>
+                    )}
                   </button>
                 )}
               </div>
             </>
           )}
         </div>
+
+        {/* Footer */}
+        <p className="text-center text-[10px] text-[#444] mt-4">
+          Brokerage Company of American INC · 50 Emjay Blvd, Brentwood, NY 11786
+        </p>
       </div>
     </div>
   )
