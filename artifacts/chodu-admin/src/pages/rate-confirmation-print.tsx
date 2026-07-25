@@ -22,18 +22,26 @@ function fmtMoney(value: number | null) {
 }
 
 function Bar({ children }: { children: React.ReactNode }) {
-  return <div className="bg-[#eeeeee] border border-black/20 px-4 py-1.5 text-center font-bold text-[14px]">{children}</div>;
+  return (
+    <div className="bg-[#FEF9C3] border border-[#D4AF37] text-black px-4 py-1.5 text-center font-bold text-[14px] shadow-sm rounded-sm">
+      {children}
+    </div>
+  );
 }
 
 function SectionBar({ children }: { children: React.ReactNode }) {
-  return <div className="bg-[#3a3a3a] text-white px-3 py-1.5 font-bold text-[12px] tracking-wide uppercase">{children}</div>;
+  return (
+    <div className="bg-[#1e1e1e] text-white border-l-4 border-[#D4AF37] px-3 py-1.5 font-bold text-[12px] tracking-wide uppercase">
+      {children}
+    </div>
+  );
 }
 
 function TwoColRow({
   labelA, valueA, labelB, valueB, shaded,
 }: { labelA: string; valueA?: React.ReactNode; labelB: string; valueB?: React.ReactNode; shaded?: boolean }) {
   return (
-    <div className={`grid grid-cols-[140px_1fr_140px_1fr] border-b border-black/15 ${shaded ? "bg-[#f2f2f2]" : "bg-white"}`}>
+    <div className={`grid grid-cols-[140px_1fr_140px_1fr] border-b border-black/15 ${shaded ? "bg-[#fcfcfa]" : "bg-white"}`}>
       <div className="px-3 py-1.5 font-bold text-[12px] border-r border-black/15">{labelA}</div>
       <div className="px-3 py-1.5 text-[12px] border-r border-black/15">{valueA || "—"}</div>
       <div className="px-3 py-1.5 font-bold text-[12px] border-r border-black/15">{labelB}</div>
@@ -95,27 +103,27 @@ export default function RateConfirmationPrint() {
           <Bar>{rc.daysDedicatedLane || "120 Days Dedicated Lane"}</Bar>
         </div>
 
-        <div className="border-t-2 border-black mb-4" />
+        <div className="border-t-2 border-[#D4AF37] mb-4" />
 
         {/* FROM & DATE/TIME Grid */}
         <div className="grid grid-cols-2 gap-4 mb-6">
-          <div className="border border-black/20 p-3">
-            <div className="text-[12px] font-bold mb-1">FROM</div>
+          <div className="border border-black/20 p-3 bg-white">
+            <div className="text-[12px] font-bold mb-1 text-[#0d0d0d]">FROM</div>
             <div className="text-[12px] font-bold">{companyName}</div>
             <div className="text-[12px]">{companyAddress}</div>
             <div className="text-[12px]">{rc.fromPhone || "800-555-0199"}</div>
             <div className="text-[12px]">{rc.fromEmail || "dispatch@brokeragecompanyofamericaninc.com"}</div>
           </div>
-          <div className="border border-black/20 p-3 bg-[#fafafa]">
+          <div className="border border-[#D4AF37]/50 p-3 bg-[#FEF9C3]/30">
             <div className="text-[12px] font-bold mb-1">DATE & TIME</div>
             <div className="text-[12px]">{fmtDateTime(rc.rcDateTime)}</div>
-            <div className="text-[12px] font-bold mt-2">Rate Confirmation</div>
+            <div className="text-[12px] font-bold mt-2 text-[#8B7500]">Rate Confirmation</div>
           </div>
         </div>
 
         {/* CARRIER INFORMATION */}
         <SectionBar>CARRIER INFORMATION</SectionBar>
-        <div className="mb-6">
+        <div className="mb-6 border-x border-b border-black/20">
           <TwoColRow labelA="Carrier Name" valueA={rc.carrierName} labelB="MC #" valueB={rc.mcNumber} shaded />
           <TwoColRow labelA="Phone" valueA={rc.carrierPhone} labelB="DOT #" valueB={rc.dotNumber} shaded />
           <TwoColRow labelA="Driver Name" valueA={rc.driverName} labelB="Driver Cell #" valueB={rc.driverCell} shaded />
@@ -124,7 +132,7 @@ export default function RateConfirmationPrint() {
 
         {/* LOAD DETAILS */}
         <SectionBar>LOAD DETAILS</SectionBar>
-        <div className="mb-6">
+        <div className="mb-6 border-x border-b border-black/20">
           <TwoColRow labelA="Miles" valueA={rc.miles} labelB="Size & Type" valueB={rc.sizeType} shaded />
           <TwoColRow labelA="Pieces" valueA={rc.pieces} labelB="Weight" valueB={rc.weightLbs ? `${rc.weightLbs} lbs` : ""} shaded />
           <TwoColRow labelA="Description" valueA={rc.description} labelB="" valueB="" shaded />
@@ -136,7 +144,7 @@ export default function RateConfirmationPrint() {
         <div className="mb-6 overflow-hidden border border-black/20">
           <table className="w-full text-left text-[11px] border-collapse">
             <thead>
-              <tr className="bg-[#0d0d0d] text-white font-bold">
+              <tr className="bg-[#1e1e1e] text-white font-bold border-b-2 border-[#D4AF37]">
                 <th className="p-2 border-r border-white/20">Stop</th>
                 <th className="p-2 border-r border-white/20">Pickup Address</th>
                 <th className="p-2 border-r border-white/20">Delivery Address</th>
@@ -158,7 +166,7 @@ export default function RateConfirmationPrint() {
                 <td className="p-2 border-r border-black/15">{rc.outboundPieces || "—"}</td>
                 <td className="p-2">{rc.outboundWeight ? `${rc.outboundWeight} lbs` : "—"}</td>
               </tr>
-              <tr className="bg-[#f9f9f9]">
+              <tr className="bg-[#FEF9C3]/20">
                 <td className="p-2 font-bold border-r border-black/15">Return Route</td>
                 <td className="p-2 border-r border-black/15">{rc.returnPickupAddress || "—"}</td>
                 <td className="p-2 border-r border-black/15">{rc.returnDeliveryAddress || "—"}</td>
@@ -180,7 +188,7 @@ export default function RateConfirmationPrint() {
 
         {/* SPECIAL INSTRUCTIONS */}
         <SectionBar>SPECIAL INSTRUCTIONS</SectionBar>
-        <div className="border border-black/20 p-3 mb-6 text-[11px] bg-[#fffef0] leading-relaxed whitespace-pre-wrap">
+        <div className="border border-[#D4AF37]/60 border-l-4 border-l-[#D4AF37] p-3.5 mb-6 text-[11px] bg-[#FEF9C3]/40 leading-relaxed whitespace-pre-wrap rounded-r-sm">
           {rc.specialInstructions ||
 `***Driver must accept MacroPoint and track for the duration of this load. Any failure to do so will result in a minimum of a $250 fine, deducted from the settlement of this load. Any delivery date and time, other than what is listed on the Rate Agreement, will result in a minimum of a $200 fine, deducted from the settlement of the load. Repair receipts must accompany any breakdowns in transit or carrier will be fined $200 if delivery date and time on this Rate Agreement is not met. That fine will be deducted from the settlement of this shipment ...
 
@@ -211,16 +219,16 @@ export default function RateConfirmationPrint() {
           </div>
         </div>
 
-        <div className="text-center my-4 font-bold text-[12px]">
+        <div className="text-center my-4 font-bold text-[12px] bg-[#FEF9C3]/50 py-2 border border-[#D4AF37]/40 rounded-sm">
           <p className="text-[#8B7500]">PRO # {rc.proNumber || "55879"} must appear on all Invoices</p>
-          <p className="text-gray-500 text-[11px]">Send Carrier Bills to the Address Above: {companyAddress}</p>
+          <p className="text-gray-600 text-[11px]">Send Carrier Bills to the Address Above: {companyAddress}</p>
         </div>
 
         {/* REMARKS */}
         {rc.remarks && (
           <>
             <SectionBar>REMARKS</SectionBar>
-            <div className="border border-black/20 p-3 mb-6 text-[11px] bg-white leading-relaxed whitespace-pre-wrap">
+            <div className="border border-[#D4AF37]/50 border-l-4 border-l-[#D4AF37] p-3.5 mb-6 text-[11px] bg-[#FEF9C3]/30 leading-relaxed whitespace-pre-wrap rounded-r-sm">
               {rc.remarks}
             </div>
           </>
@@ -228,7 +236,7 @@ export default function RateConfirmationPrint() {
 
         {/* PAYMENT OPTIONS */}
         <SectionBar>PAYMENT OPTIONS</SectionBar>
-        <div className="border border-black/20 p-3 mb-6 text-[11px] bg-[#fdfdfd] leading-relaxed space-y-2">
+        <div className="border border-[#D4AF37]/50 border-l-4 border-l-[#D4AF37] p-3.5 mb-6 text-[11px] bg-[#FEF9C3]/30 leading-relaxed space-y-2 rounded-r-sm">
           <p className="font-bold">
             Invoicing, document collection, and payment for all completed loads will be handled electronically using Epay Manager at www.epaymanager.com.
           </p>
@@ -245,13 +253,13 @@ export default function RateConfirmationPrint() {
             <li>Packing slips</li>
             <li>Lumper receipts (if applicable)</li>
           </ul>
-          <p className="font-bold">Please log in to Epay to submit all supporting documents: Epay Manager: www.epaymanager.com</p>
+          <p className="font-bold text-[#8B7500]">Please log in to Epay to submit all supporting documents: Epay Manager: www.epaymanager.com</p>
         </div>
 
         {/* MASTER MOTOR CARRIER AGREEMENT SUPPLEMENT */}
         <SectionBar>{companyName} MASTER MOTOR CARRIER AGREEMENT SUPPLEMENT</SectionBar>
-        <div className="border border-black/20 p-4 text-[10.5px] leading-normal bg-white space-y-3">
-          <p className="font-bold uppercase text-center text-[11px]">
+        <div className="border border-[#D4AF37]/60 border-l-4 border-l-[#D4AF37] p-4 text-[10.5px] leading-normal bg-[#FEF9C3]/20 space-y-3 rounded-r-sm">
+          <p className="font-bold uppercase text-center text-[11px] text-[#8B7500]">
             {companyName} Master Motor Carrier Agreement Supplement and Carrier Load Confirmation Conditions
           </p>
           <p>
