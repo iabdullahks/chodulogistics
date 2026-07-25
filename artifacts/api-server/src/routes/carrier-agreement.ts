@@ -49,11 +49,15 @@ router.post("/carrier-agreement", async (req, res) => {
       "winston@brokeragecompanyofamericaninc.com"
     ].filter(Boolean).join(", ");
 
-    await transporter.sendMail({
-      from: `"Brokerage Company of American INC" <${process.env.SMTP_FROM ?? process.env.SMTP_USER}>`,
-      to: recipients || (process.env.SMTP_TO ?? process.env.SMTP_USER),
-      subject: "New Carrier Agreement Submitted",
-      html: `
+    let emailSent = false;
+    let emailError: string | undefined;
+
+    try {
+      await transporter.sendMail({
+        from: `"Brokerage Company of American INC" <${process.env.SMTP_FROM ?? process.env.SMTP_USER}>`,
+        to: recipients || (process.env.SMTP_TO ?? process.env.SMTP_USER),
+        subject: "New Carrier Agreement Submitted",
+        html: `
 <!DOCTYPE html>
 <html>
 <body style="margin:0;padding:0;background:#f4f4f4;font-family:Arial,sans-serif;">
@@ -124,22 +128,31 @@ router.post("/carrier-agreement", async (req, res) => {
   </div>
 </body>
 </html>
-      `,
-      attachments: pdfBase64
-        ? [
-            {
-              filename: `Carrier_Agreement_${safeName}_${today}.pdf`,
-              content: Buffer.from(pdfBase64, "base64"),
-              contentType: "application/pdf",
-            },
-          ]
-        : [],
-    });
+        `,
+        attachments: pdfBase64
+          ? [
+              {
+                filename: `Carrier_Agreement_${safeName}_${today}.pdf`,
+                content: Buffer.from(pdfBase64, "base64"),
+                contentType: "application/pdf",
+              },
+            ]
+          : [],
+      });
+      emailSent = true;
+    } catch (err: unknown) {
+      emailError = err instanceof Error ? err.message : String(err);
+      console.error("Nodemailer sendMail error:", emailError);
+    }
 
-    res.json({ ok: true, emailSent: true });
+    res.json({
+      ok: true,
+      emailSent,
+      ...(emailError ? { warning: emailError } : {}),
+    });
   } catch (err: unknown) {
     const message = err instanceof Error ? err.message : String(err);
-    console.error("Email send failed:", message);
+    console.error("Carrier agreement processing failed:", message);
     res.status(500).json({ ok: false, error: message });
   }
 });
