@@ -929,15 +929,26 @@ export default function CarrierSetupAgreement() {
       const pdfBase64 = generatePDF(data)
 
       // 2. Send to API
-      const apiBase = import.meta.env.BASE_URL?.replace(/\/$/, "") ?? ""
+      const envApiUrl = import.meta.env.VITE_API_URL
+      const apiBase = envApiUrl
+        ? envApiUrl.replace(/\/$/, "")
+        : (import.meta.env.BASE_URL?.replace(/\/$/, "") ?? "")
       const res = await fetch(`${apiBase}/api/carrier-agreement`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ formData: data, pdfBase64 }),
       })
 
-      setEmailSent(res.ok)
-    } catch {
+      if (res.ok) {
+        const json = await res.json().catch(() => ({}))
+        setEmailSent(json.emailSent ?? true)
+      } else {
+        const json = await res.json().catch(() => ({}))
+        setSubmitError(json.error || `Server error (${res.status})`)
+        setEmailSent(false)
+      }
+    } catch (err: unknown) {
+      setSubmitError(err instanceof Error ? err.message : "Failed to connect to server")
       setEmailSent(false)
     } finally {
       setIsSubmitting(false)

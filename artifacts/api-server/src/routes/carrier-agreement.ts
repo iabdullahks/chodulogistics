@@ -10,14 +10,26 @@ router.post("/carrier-agreement", async (req, res) => {
       pdfBase64?: string;
     };
 
+    if (!process.env.SMTP_USER || !process.env.SMTP_PASS) {
+      console.warn("SMTP_USER or SMTP_PASS not set on server. Skipping email dispatch.");
+      return res.json({
+        ok: true,
+        emailSent: false,
+        message: "Submission received, but SMTP credentials are not configured on the server."
+      });
+    }
+
     const transporter = nodemailer.createTransport({
       host: process.env.SMTP_HOST ?? "smtp.hostinger.com",
       port: Number(process.env.SMTP_PORT ?? 465),
-      secure: true,
+      secure: Number(process.env.SMTP_PORT ?? 465) === 465,
       auth: {
         user: process.env.SMTP_USER,
         pass: process.env.SMTP_PASS,
       },
+      connectionTimeout: 10000,
+      greetingTimeout: 10000,
+      socketTimeout: 15000,
     });
 
     // Build selected services list
@@ -123,7 +135,7 @@ router.post("/carrier-agreement", async (req, res) => {
         : [],
     });
 
-    res.json({ ok: true });
+    res.json({ ok: true, emailSent: true });
   } catch (err: unknown) {
     const message = err instanceof Error ? err.message : String(err);
     console.error("Email send failed:", message);
