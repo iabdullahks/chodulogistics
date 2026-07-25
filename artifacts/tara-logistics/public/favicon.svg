@@ -1,3 +1,49 @@
-<svg width="180" height="180" viewBox="0 0 180 180" fill="none" xmlns="http://www.w3.org/2000/svg">
-<rect width="180" height="180" rx="36" fill="#FF3C00"/>
+<svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bgGrad" x1="0" y1="0" x2="512" y2="512" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#141923" />
+      <stop offset="100%" stop-color="#090C10" />
+    </linearGradient>
+    <linearGradient id="goldGrad" x1="0" y1="0" x2="512" y2="512" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#F4C542" />
+      <stop offset="50%" stop-color="#D4AF37" />
+      <stop offset="100%" stop-color="#997B20" />
+    </linearGradient>
+    <filter id="goldGlow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="4" stdDeviation="12" flood-color="#D4AF37" flood-opacity="0.3" />
+    </filter>
+  </defs>
+
+  <!-- Background Rounded Shield / Icon Container -->
+  <rect width="512" height="512" rx="110" fill="url(#bgGrad)"/>
+  <rect x="8" y="8" width="496" height="496" rx="102" stroke="url(#goldGrad)" stroke-opacity="0.25" stroke-width="6"/>
+
+  <!-- Premium Trucking Symbol in Gold -->
+  <g filter="url(#goldGlow)">
+    <!-- Semi-Truck Cabin Outer Contour & Grille Body -->
+    <path d="M120 336 V240 L168 152 H328 L376 240 V336 H352 V304 H160 V336 H120 Z" fill="url(#goldGrad)" />
+    
+    <!-- Windshield -->
+    <path d="M184 172 H312 L344 232 H152 L184 172 Z" fill="#090C10" />
+    
+    <!-- Center Grille Bars -->
+    <rect x="180" y="252" width="136" height="8" rx="4" fill="#090C10" />
+    <rect x="180" y="268" width="136" height="8" rx="4" fill="#090C10" />
+    <rect x="180" y="284" width="136" height="8" rx="4" fill="#090C10" />
+
+    <!-- Sleek Headlights -->
+    <rect x="136" y="252" width="28" height="16" rx="4" fill="#FFF8E7" opacity="0.9" />
+    <rect x="332" y="252" width="28" height="16" rx="4" fill="#FFF8E7" opacity="0.9" />
+
+    <!-- Heavy Bumper Bar -->
+    <rect x="104" y="328" width="288" height="28" rx="8" fill="url(#goldGrad)" stroke="#090C10" stroke-width="4" />
+
+    <!-- Wheels / Chassis Accents -->
+    <rect x="124" y="356" width="48" height="40" rx="10" fill="#202632" stroke="url(#goldGrad)" stroke-width="4" />
+    <rect x="324" y="356" width="48" height="40" rx="10" fill="#202632" stroke="url(#goldGrad)" stroke-width="4" />
+
+    <!-- Highway Wings / Motion Lines Above Truck -->
+    <path d="M96 140 Q 248 100 400 140" stroke="url(#goldGrad)" stroke-width="12" stroke-linecap="round" fill="none" />
+    <path d="M130 110 Q 248 80 366 110" stroke="url(#goldGrad)" stroke-width="8" stroke-linecap="round" opacity="0.7" fill="none" />
+  </g>
 </svg>

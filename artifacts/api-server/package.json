@@ -11,6 +11,8 @@
   },
   "dependencies": {
     "@google-cloud/storage": "^7.21.0",
+    "@supabase/server": "^1.4.1",
+    "@supabase/supabase-js": "^2.110.8",
     "@types/nodemailer": "^8.0.1",
     "@workspace/api-zod": "workspace:*",
     "@workspace/db": "workspace:*",

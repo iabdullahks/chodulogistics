@@ -143,14 +143,14 @@ export function Layout({ children }: { children: React.ReactNode }) {
               <p className="text-[#CBD5E1] text-[15px] leading-relaxed max-w-sm">
                 Empowering truck carriers and owner-operators with the resources, freight, and administrative support needed to run a profitable business.
               </p>
-              
+
               {/* Newsletter */}
               <div className="pt-4">
                 <h4 className="text-[14px] font-semibold text-foreground mb-3">Subscribe to updates</h4>
                 <div className="flex gap-2">
-                  <input 
-                    type="email" 
-                    placeholder="Email address" 
+                  <input
+                    type="email"
+                    placeholder="Email address"
                     className="flex-1 bg-background/50 border border-border rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-[#D4AF37]/50 focus:ring-1 focus:ring-[#D4AF37]/50 transition-all text-foreground"
                   />
                   <Button size="icon" className="shrink-0 rounded-xl w-11 h-11">
@@ -190,7 +190,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
                   </div>
                   <div>
                     <div className="text-[13px] text-[#94A3B8] mb-0.5">24/7 Support</div>
-                    <div className="text-[15px] font-medium text-foreground">(800) 555-0199</div>
+                    <div className="text-[15px] font-medium text-foreground">(330) 756-7732</div>
                   </div>
                 </li>
                 <li className="flex gap-4 group">
@@ -199,7 +199,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
                   </div>
                   <div>
                     <div className="text-[13px] text-[#94A3B8] mb-0.5">Email Us</div>
-                    <div className="text-[15px] font-medium text-foreground">dispatch@choudulogistics.com</div>
+                    <a href="mailto:winston@brokeragecompanyofamericaninc.com" className="text-[15px] font-medium text-foreground break-all hover:text-[#D4AF37] transition-colors">winston@brokeragecompanyofamericaninc.com</a>
                   </div>
                 </li>
                 <li className="flex gap-4 group">
@@ -208,7 +208,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
                   </div>
                   <div>
                     <div className="text-[13px] text-[#94A3B8] mb-0.5">Headquarters</div>
-                    <div className="text-[15px] font-medium text-foreground leading-snug">50 Emjay Blvd<br/>Brentwood, NY 11786</div>
+                    <div className="text-[15px] font-medium text-foreground leading-snug">50 Emjay Blvd<br />Brentwood, NY 11786</div>
                   </div>
                 </li>
               </ul>
@@ -219,7 +219,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
             <div className="text-[14px] text-[#94A3B8]">
               &copy; {new Date().getFullYear()} Brokerage Company of American INC. All rights reserved.
             </div>
-            
+
             {/* Social Links */}
             <div className="flex items-center gap-4">
               <a href="#" className="w-10 h-10 rounded-full bg-background border border-border flex items-center justify-center text-[#94A3B8] hover:text-[#D4AF37] hover:border-[#D4AF37]/50 transition-all hover:scale-110">

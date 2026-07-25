@@ -5,20 +5,23 @@ import { Truck, Inbox, Activity, CheckCircle2, Clock, AlertCircle } from "lucide
 import { Link } from "wouter";
 
 export default function AdminDashboard() {
-  const { data: shipments } = useAdminListShipments();
-  const { data: leads } = useAdminListLeads();
+  const { data: shipmentsRaw } = useAdminListShipments();
+  const { data: leadsRaw } = useAdminListLeads();
+
+  const shipments = Array.isArray(shipmentsRaw) ? shipmentsRaw : [];
+  const leads = Array.isArray(leadsRaw) ? leadsRaw : [];
 
   // Shipments calculations
-  const totalShipments = shipments?.length || 0;
-  const inTransitCount = shipments?.filter(s => s.status.toLowerCase() === 'in transit').length || 0;
-  const deliveredCount = shipments?.filter(s => s.status.toLowerCase() === 'delivered').length || 0;
-  const pendingCount = shipments?.filter(s => s.status.toLowerCase() === 'pending pickup').length || 0;
-  const exceptionCount = shipments?.filter(s => s.status.toLowerCase() === 'exception').length || 0;
+  const totalShipments = shipments.length;
+  const inTransitCount = shipments.filter(s => s.status.toLowerCase() === 'in transit').length;
+  const deliveredCount = shipments.filter(s => s.status.toLowerCase() === 'delivered').length;
+  const pendingCount = shipments.filter(s => s.status.toLowerCase() === 'pending pickup').length;
+  const exceptionCount = shipments.filter(s => s.status.toLowerCase() === 'exception').length;
 
   // Leads calculations
-  const totalLeads = leads?.length || 0;
-  const newLeadsCount = leads?.filter(l => l.status.toLowerCase() === 'new').length || 0;
-  const contactedLeadsCount = leads?.filter(l => l.status.toLowerCase() === 'contacted').length || 0;
+  const totalLeads = leads.length;
+  const newLeadsCount = leads.filter(l => l.status.toLowerCase() === 'new').length;
+  const contactedLeadsCount = leads.filter(l => l.status.toLowerCase() === 'contacted').length;
 
   return (
     <AdminLayout>

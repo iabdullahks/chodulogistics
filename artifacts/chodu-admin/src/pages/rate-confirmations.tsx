@@ -37,11 +37,11 @@ import { useLocation } from "wouter";
 
 const DEFAULT_SPECIAL_INSTRUCTIONS = `***Driver must accept MacroPoint and track for the duration of this load. Any failure to do so will result in a minimum of a $250 fine, deducted from the settlement of this load. Any delivery date and time, other than what is listed on the Rate Agreement, will result in a minimum of a $200 fine, deducted from the settlement of the load. Repair receipts must accompany any breakdowns in transit or carrier will be fined $200 if delivery date and time on this Rate Agreement is not met. That fine will be deducted from the settlement of this shipment ...
 
-***taralogisticsllc.com MUST BE NOTIFIED 3 HOURS PRIOR TO DELIVERY APPOINTMENT IF THE DRIVER WILL BE LATE. ANY LATE OR MISSED DELIVERIES MAY RESULT IN LONG DWELL TIMES AND/OR LAYOVER(S) UNTIL NEXT AVAILABLE APPOINTMENT IS SCHEDULED.`;
+***brokeragecompanyofamericaninc.com MUST BE NOTIFIED 3 HOURS PRIOR TO DELIVERY APPOINTMENT IF THE DRIVER WILL BE LATE. ANY LATE OR MISSED DELIVERIES MAY RESULT IN LONG DWELL TIMES AND/OR LAYOVER(S) UNTIL NEXT AVAILABLE APPOINTMENT IS SCHEDULED.`;
 
 const DEFAULT_REMARKS = `Please submit ALL pages of the POD with a receiver signature within 72 hours of delivery. ***CARRIERS MUST REPORT DETENTION 1 HOUR PRIOR TO OCCURANCE AND MUST SUBMIT LUMPER RECEIPT WITHIN 24-48 HOURS OF DELIVERY IF THERE IS ONE. FAILURE TO DO SO WILL RESULT IN NON-PAYMENT OF CHARGES.***
 
-Failure to notify TARA LOGISTICS LLC within 1HR of occurrence results in time starting 1 HR from time of Email. Arrival and Departure times to be clearly written on BOL by shipper/receiver. Please Email to billing@taralogisticsllc.com within 24HRS for payment.`;
+Failure to notify Brokerage Co. of American INC within 1HR of occurrence results in time starting 1 HR from time of Email. Arrival and Departure times to be clearly written on BOL by shipper/receiver. Please Email to billing@brokeragecompanyofamericaninc.com within 24HRS for payment.`;
 
 const rcSchema = z.object({
   proNumber: z.string().optional(),
@@ -99,7 +99,7 @@ const EMPTY_FORM_VALUES: RcFormValues = {
   proNumber: "",
   daysDedicatedLane: "",
   rcDateTime: nowLocalDateTime(),
-  fromCompany: "TARA LOGISTICS LLC",
+  fromCompany: "Brokerage Co. of American INC",
   fromPhone: "",
   fromEmail: "",
   carrierName: "",
@@ -299,7 +299,7 @@ function RateConfirmationFormFields({ form }: { form: UseFormReturn<RcFormValues
         <FormField control={form.control} name="fromEmail" render={({ field }) => (
           <FormItem>
             <FormLabel className={labelClass}>Email</FormLabel>
-            <FormControl><Input {...field} placeholder="email@taralogisticsllc.com" /></FormControl>
+            <FormControl><Input {...field} placeholder="email@brokeragecompanyofamericaninc.com" /></FormControl>
             <FormMessage />
           </FormItem>
         )} />
@@ -672,7 +672,7 @@ export default function AdminRateConfirmations() {
               <FileText className="w-5 h-5 text-[#D4AF37]" strokeWidth={2} />
             </div>
             <div>
-              <h1 className="text-2xl font-bold tracking-tight">TARA LOGISTICS LLC</h1>
+              <h1 className="text-2xl font-bold tracking-tight">Brokerage Co. of American INC</h1>
               <p className="text-xs text-muted-foreground uppercase tracking-widest">Rate Confirmation System</p>
             </div>
           </div>

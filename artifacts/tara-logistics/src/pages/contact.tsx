@@ -90,7 +90,7 @@ export default function Contact() {
         </div>
 
         <div className="container relative z-10 mx-auto px-6 md:px-10 max-w-[1400px]">
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, ease: "easeOut" }}
@@ -110,9 +110,9 @@ export default function Contact() {
       <div className="py-24 md:py-32 bg-background">
         <div className="container mx-auto px-6 md:px-10 max-w-[1400px]">
           <div className="grid lg:grid-cols-12 gap-16 lg:gap-24">
-            
+
             {/* Contact Info */}
-            <motion.div 
+            <motion.div
               initial={{ opacity: 0, x: -30 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.7, delay: 0.2 }}
@@ -127,22 +127,22 @@ export default function Contact() {
                     </div>
                     <div>
                       <div className="font-semibold uppercase tracking-wider text-xs text-[#94A3B8] mb-2">Phone</div>
-                      <div className="text-2xl font-medium text-foreground">(800) 555-0199</div>
+                      <div className="text-2xl font-medium text-foreground">(330) 756-7732</div>
                       <div className="text-[15px] text-[#CBD5E1] mt-2">24/7 Dispatch Support</div>
                     </div>
                   </div>
-                  
+
                   <div className="flex items-start gap-6 group">
                     <div className="w-14 h-14 bg-secondary border border-border rounded-2xl flex items-center justify-center shrink-0 group-hover:border-[#D4AF37]/50 transition-colors shadow-lg">
                       <Mail className="w-6 h-6 text-[#D4AF37]" />
                     </div>
                     <div>
                       <div className="font-semibold uppercase tracking-wider text-xs text-[#94A3B8] mb-2">Email</div>
-                      <div className="text-2xl font-medium text-foreground">dispatch@choudulogistics.com</div>
+                      <a href="mailto:winston@brokeragecompanyofamericaninc.com" className="text-xl font-medium text-foreground break-all hover:text-[#D4AF37] transition-colors">winston@brokeragecompanyofamericaninc.com</a>
                       <div className="text-[15px] text-[#CBD5E1] mt-2">Average response: &lt; 30 mins</div>
                     </div>
                   </div>
-                  
+
                   <div className="flex items-start gap-6 group">
                     <div className="w-14 h-14 bg-secondary border border-border rounded-2xl flex items-center justify-center shrink-0 group-hover:border-[#D4AF37]/50 transition-colors shadow-lg">
                       <MapPin className="w-6 h-6 text-[#D4AF37]" />
@@ -179,7 +179,7 @@ export default function Contact() {
             </motion.div>
 
             {/* Contact Form */}
-            <motion.div 
+            <motion.div
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7, delay: 0.3 }}
@@ -187,7 +187,7 @@ export default function Contact() {
             >
               <div className="bg-card border border-border p-10 md:p-14 rounded-[32px] shadow-[0_24px_80px_-12px_rgba(0,0,0,0.5)] relative overflow-hidden">
                 <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-transparent via-[#D4AF37] to-transparent opacity-50" />
-                
+
                 <h2 className="text-3xl md:text-4xl font-bold mb-4 text-foreground">Send a Message</h2>
                 <p className="text-[#CBD5E1] mb-12 text-lg">Fill out the form below and the appropriate department will contact you directly.</p>
 
@@ -284,10 +284,10 @@ export default function Contact() {
                         <FormItem>
                           <FormLabel className="text-xs font-semibold text-[#CBD5E1] uppercase tracking-wider">Message *</FormLabel>
                           <FormControl>
-                            <Textarea 
-                              placeholder="How can we help you?" 
+                            <Textarea
+                              placeholder="How can we help you?"
                               className="min-h-[160px] resize-y bg-background/80 rounded-xl border-border focus:border-[#D4AF37] focus:ring-[#D4AF37]/20 transition-all text-base p-5"
-                              {...field} 
+                              {...field}
                             />
                           </FormControl>
                           <FormMessage />

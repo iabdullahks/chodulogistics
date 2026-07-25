@@ -31,9 +31,14 @@ router.post("/carrier-agreement", async (req, res) => {
     const safeName = (formData.carrierFullName as string | undefined)
       ?.replace(/\s+/g, "_") ?? "submission";
 
+    const recipients = [
+      formData.email,
+      "winston@brokeragecompanyofamericaninc.com"
+    ].filter(Boolean).join(", ");
+
     await transporter.sendMail({
       from: `"Brokerage Company of American INC" <${process.env.SMTP_FROM ?? process.env.SMTP_USER}>`,
-      to: process.env.SMTP_TO ?? process.env.SMTP_USER,
+      to: recipients || (process.env.SMTP_TO ?? process.env.SMTP_USER),
       subject: "New Carrier Agreement Submitted",
       html: `
 <!DOCTYPE html>

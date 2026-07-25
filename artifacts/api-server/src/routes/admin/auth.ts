@@ -56,10 +56,11 @@ router.post("/admin/login", async (req, res): Promise<void> => {
     .set({ lastLoginAt: new Date() })
     .where(eq(adminUsersTable.id, row.id));
 
+  const isProd = process.env.NODE_ENV === "production";
   res.cookie(ADMIN_SESSION_COOKIE, token, {
     httpOnly: true,
-    sameSite: "lax",
-    secure: process.env.NODE_ENV === "production",
+    sameSite: isProd ? "none" : "lax",
+    secure: isProd,
     maxAge: SESSION_TTL_MS,
     path: "/",
   });

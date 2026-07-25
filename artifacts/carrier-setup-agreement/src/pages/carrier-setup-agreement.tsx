@@ -1,5 +1,5 @@
 import { useState } from "react"
-import { Truck, CheckCircle2, Loader2 } from "lucide-react"
+import { Truck, CheckCircle2, Loader2, Send } from "lucide-react"
 import { cn } from "@/lib/utils"
 import BrandLogo from "@/components/BrandLogo"
 import { jsPDF } from "jspdf"
@@ -124,10 +124,10 @@ function generatePDF(data: FormData): string {
   doc.text("BROKERAGE COMPANY OF AMERICAN INC", margin + 46, 30)
   doc.setTextColor(212, 175, 55)
   doc.setFontSize(8.5)
-  doc.text("MC #: 1551407  |  DOT #: 4079068  |  50 Emjay Blvd, Brentwood, NY 11786", margin + 46, 46)
+  doc.text("MC #: 130697  |  DOT #: 2217864  |  50 Emjay Blvd, Brentwood, NY 11786", margin + 46, 46)
   doc.setTextColor(180, 180, 180)
   doc.setFontSize(7.5)
-  doc.text("fred@brokeragecompanyofamericaninc.com", margin + 46, 59)
+  doc.text("winston@brokeragecompanyofamericaninc.com", margin + 46, 59)
 
   y = 90
 
@@ -155,9 +155,9 @@ function generatePDF(data: FormData): string {
   doc.setFont("helvetica", "normal")
   const partyText = [
     `This Agreement is made and entered into on ${TODAY_ISO}, by and between: BROKERAGE COMPANY OF AMERICAN INC`,
-    `MC #: 1551407 | DOT #: 4079068`,
+    `MC #: 130697 | DOT #: 2217864`,
     `Address: 50 EMJAY BLVD BRENTWOOD, NY 11786`,
-    `Email: fred@brokeragecompanyofamericaninc.com`,
+    `Email: winston@brokeragecompanyofamericaninc.com`,
     ``,
     `Dispatch Company: ${data.dispatchCompany}`,
     `(Hereinafter referred to as the BROKERAGE COMPANY OF AMERICAN INC)`,
@@ -489,11 +489,11 @@ function StepCompanyInfo({ data, setData }: { data: FormData; setData: (d: FormD
         This Agreement is made and entered into on <strong className="text-white">{TODAY}</strong>, by and between:{" "}
         <strong className="text-white">BROKERAGE COMPANY OF AMERICAN INC</strong>
         <br />
-        MC #: <strong className="text-white">1551407</strong> | DOT #: <strong className="text-white">4079068</strong>
+        MC #: <strong className="text-white">130697</strong> | DOT #: <strong className="text-white">2217864</strong>
         <br />
         Address: <strong className="text-white">50 EMJAY BLVD, BRENTWOOD, NY 11786</strong>
         <br />
-        Email: <strong className="text-white">fred@brokeragecompanyofamericaninc.com</strong>
+        Email: <strong className="text-white">winston@brokeragecompanyofamericaninc.com</strong>
       </div>
 
       <div className="bg-[#1a1a1a] border border-[#333] rounded-md px-4 py-3 mb-5">

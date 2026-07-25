@@ -81,7 +81,11 @@ export default function RateConfirmationPrint() {
       <div className="max-w-[850px] mx-auto p-8 print:p-4 font-sans">
         <div className="text-center mb-4">
           <h1 className="text-xl font-bold">{rc.fromCompany}</h1>
-          <p className="text-xs">1308 WESLEY AVE BERWYN, IL 60402</p>
+          <p className="text-xs">
+            {rc.fromCompany?.toUpperCase().includes("TARA LOGISTICS")
+              ? "1308 WESLEY AVE BERWYN, IL 60402"
+              : "50 Emjay Blvd, Brentwood, NY 11786"}
+          </p>
         </div>
 
         <div className="space-y-2 mb-4">

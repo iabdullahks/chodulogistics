@@ -522,7 +522,7 @@ export default function AdminLoads() {
               <Truck className="w-5 h-5 text-[#D4AF37]" strokeWidth={2} />
             </div>
             <div>
-              <h1 className="text-2xl font-bold tracking-tight">TARA LOGISTICS LLC</h1>
+              <h1 className="text-2xl font-bold tracking-tight">Brokerage Co. of American INC</h1>
               <p className="text-xs text-muted-foreground uppercase tracking-widest">Load Management Dashboard</p>
             </div>
           </div>
