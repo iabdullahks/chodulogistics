@@ -99,7 +99,7 @@ const EMPTY_FORM_VALUES: RcFormValues = {
   proNumber: "",
   daysDedicatedLane: "",
   rcDateTime: nowLocalDateTime(),
-  fromCompany: "Brokerage Co. of American INC",
+  fromCompany: "BROKERAGE COMPANY OF AMERICAN INC",
   fromPhone: "",
   fromEmail: "",
   carrierName: "",
