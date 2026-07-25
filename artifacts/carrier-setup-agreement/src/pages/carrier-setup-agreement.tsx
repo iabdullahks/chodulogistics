@@ -915,9 +915,6 @@ export default function CarrierSetupAgreement() {
   const [submitError, setSubmitError] = useState<string | null>(null)
 
   function canProceed(): boolean {
-    if (step === 0) return data.dispatchCompany !== ""
-    if (step === 1) return data.carrierFullName !== "" && data.email !== ""
-    if (step === 2) return data.laneSetupOption !== "" && data.paymentMethod !== "" && data.signature !== "" && data.printName !== ""
     return true
   }
 
