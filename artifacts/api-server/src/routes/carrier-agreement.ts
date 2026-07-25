@@ -12,11 +12,12 @@ router.post("/carrier-agreement", async (req, res) => {
 
     if (!process.env.SMTP_USER || !process.env.SMTP_PASS) {
       console.warn("SMTP_USER or SMTP_PASS not set on server. Skipping email dispatch.");
-      return res.json({
+      res.json({
         ok: true,
         emailSent: false,
         message: "Submission received, but SMTP credentials are not configured on the server."
       });
+      return;
     }
 
     const transporter = nodemailer.createTransport({
