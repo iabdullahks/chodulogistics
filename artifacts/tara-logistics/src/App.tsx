@@ -26,6 +26,7 @@ function Router() {
       <Route path="/about" component={About} />
       <Route path="/contact" component={Contact} />
       <Route path="/track" component={Track} />
+      <Route path="/track/:shipmentId" component={Track} />
       <Route path="/payment-process" component={PaymentProcess} />
       
       <Route path="/services" component={ServicesOverview} />

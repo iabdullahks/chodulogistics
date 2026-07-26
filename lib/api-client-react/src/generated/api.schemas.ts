@@ -55,6 +55,7 @@ export interface Shipment {
   carrierName: string;
   estimatedDelivery: string;
   lastUpdate: string;
+  pendingFees: string;
 }
 
 export interface ShipmentInput {
@@ -71,6 +72,7 @@ export interface ShipmentInput {
   estimatedDelivery: string;
   /** @minLength 1 */
   lastUpdate: string;
+  pendingFees?: string;
 }
 
 export interface ShipmentUpdateInput {
@@ -87,6 +89,7 @@ export interface ShipmentUpdateInput {
   estimatedDelivery?: string;
   /** @minLength 1 */
   lastUpdate?: string;
+  pendingFees?: string;
 }
 
 export interface AdminLoginInput {
@@ -264,6 +267,8 @@ export interface RateConfirmation {
   /** @nullable */
   carrierPhone: string | null;
   /** @nullable */
+  carrierEmail?: string | null;
+  /** @nullable */
   mcNumber: string | null;
   /** @nullable */
   dotNumber: string | null;
@@ -341,6 +346,7 @@ export interface RateConfirmationInput {
   /** @minLength 1 */
   carrierName: string;
   carrierPhone?: string;
+  carrierEmail?: string;
   mcNumber?: string;
   dotNumber?: string;
   driverName?: string;
@@ -386,6 +392,7 @@ export interface RateConfirmationUpdateInput {
   /** @minLength 1 */
   carrierName?: string;
   carrierPhone?: string;
+  carrierEmail?: string;
   mcNumber?: string;
   dotNumber?: string;
   driverName?: string;

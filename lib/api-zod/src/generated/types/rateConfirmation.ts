@@ -22,6 +22,8 @@ export interface RateConfirmation {
   /** @nullable */
   carrierPhone: string | null;
   /** @nullable */
+  carrierEmail?: string | null;
+  /** @nullable */
   mcNumber: string | null;
   /** @nullable */
   dotNumber: string | null;

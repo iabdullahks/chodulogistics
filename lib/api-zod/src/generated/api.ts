@@ -66,7 +66,8 @@ export const TrackShipmentResponse = zod.object({
   "destination": zod.string(),
   "carrierName": zod.string(),
   "estimatedDelivery": zod.coerce.date(),
-  "lastUpdate": zod.string()
+  "lastUpdate": zod.string(),
+  "pendingFees": zod.string()
 })
 
 
@@ -118,7 +119,8 @@ export const AdminListShipmentsResponseItem = zod.object({
   "destination": zod.string(),
   "carrierName": zod.string(),
   "estimatedDelivery": zod.coerce.date(),
-  "lastUpdate": zod.string()
+  "lastUpdate": zod.string(),
+  "pendingFees": zod.string()
 })
 export const AdminListShipmentsResponse = zod.array(AdminListShipmentsResponseItem)
 
@@ -141,7 +143,8 @@ export const AdminCreateShipmentBody = zod.object({
   "destination": zod.string().min(1),
   "carrierName": zod.string().min(1),
   "estimatedDelivery": zod.coerce.date(),
-  "lastUpdate": zod.string().min(1)
+  "lastUpdate": zod.string().min(1),
+  "pendingFees": zod.string().optional()
 })
 
 export const AdminCreateShipmentResponse = zod.object({
@@ -152,7 +155,8 @@ export const AdminCreateShipmentResponse = zod.object({
   "destination": zod.string(),
   "carrierName": zod.string(),
   "estimatedDelivery": zod.coerce.date(),
-  "lastUpdate": zod.string()
+  "lastUpdate": zod.string(),
+  "pendingFees": zod.string()
 })
 
 
@@ -178,7 +182,8 @@ export const AdminUpdateShipmentBody = zod.object({
   "destination": zod.string().min(1).optional(),
   "carrierName": zod.string().min(1).optional(),
   "estimatedDelivery": zod.coerce.date().optional(),
-  "lastUpdate": zod.string().min(1).optional()
+  "lastUpdate": zod.string().min(1).optional(),
+  "pendingFees": zod.string().optional()
 })
 
 export const AdminUpdateShipmentResponse = zod.object({
@@ -189,7 +194,8 @@ export const AdminUpdateShipmentResponse = zod.object({
   "destination": zod.string(),
   "carrierName": zod.string(),
   "estimatedDelivery": zod.coerce.date(),
-  "lastUpdate": zod.string()
+  "lastUpdate": zod.string(),
+  "pendingFees": zod.string()
 })
 
 
@@ -358,6 +364,7 @@ export const AdminListRateConfirmationsResponseItem = zod.object({
   "fromEmail": zod.string().nullable(),
   "carrierName": zod.string(),
   "carrierPhone": zod.string().nullable(),
+  "carrierEmail": zod.string().nullish(),
   "mcNumber": zod.string().nullable(),
   "dotNumber": zod.string().nullable(),
   "driverName": zod.string().nullable(),
@@ -411,6 +418,7 @@ export const AdminCreateRateConfirmationBody = zod.object({
   "fromEmail": zod.string().optional(),
   "carrierName": zod.string().min(1),
   "carrierPhone": zod.string().optional(),
+  "carrierEmail": zod.string().optional(),
   "mcNumber": zod.string().optional(),
   "dotNumber": zod.string().optional(),
   "driverName": zod.string().optional(),
@@ -456,6 +464,7 @@ export const AdminCreateRateConfirmationResponse = zod.object({
   "fromEmail": zod.string().nullable(),
   "carrierName": zod.string(),
   "carrierPhone": zod.string().nullable(),
+  "carrierEmail": zod.string().nullish(),
   "mcNumber": zod.string().nullable(),
   "dotNumber": zod.string().nullable(),
   "driverName": zod.string().nullable(),
@@ -510,6 +519,7 @@ export const AdminGetRateConfirmationResponse = zod.object({
   "fromEmail": zod.string().nullable(),
   "carrierName": zod.string(),
   "carrierPhone": zod.string().nullable(),
+  "carrierEmail": zod.string().nullish(),
   "mcNumber": zod.string().nullable(),
   "dotNumber": zod.string().nullable(),
   "driverName": zod.string().nullable(),
@@ -566,6 +576,7 @@ export const AdminUpdateRateConfirmationBody = zod.object({
   "fromEmail": zod.string().optional(),
   "carrierName": zod.string().min(1).optional(),
   "carrierPhone": zod.string().optional(),
+  "carrierEmail": zod.string().optional(),
   "mcNumber": zod.string().optional(),
   "dotNumber": zod.string().optional(),
   "driverName": zod.string().optional(),
@@ -611,6 +622,7 @@ export const AdminUpdateRateConfirmationResponse = zod.object({
   "fromEmail": zod.string().nullable(),
   "carrierName": zod.string(),
   "carrierPhone": zod.string().nullable(),
+  "carrierEmail": zod.string().nullish(),
   "mcNumber": zod.string().nullable(),
   "dotNumber": zod.string().nullable(),
   "driverName": zod.string().nullable(),

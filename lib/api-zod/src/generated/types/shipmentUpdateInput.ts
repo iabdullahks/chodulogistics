@@ -20,4 +20,5 @@ export interface ShipmentUpdateInput {
   estimatedDelivery?: Date;
   /** @minLength 1 */
   lastUpdate?: string;
+  pendingFees?: string;
 }

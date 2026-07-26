@@ -43,7 +43,7 @@ router.post("/leads", async (req, res): Promise<void> => {
     try {
       await transporter.sendMail({
         from: `"Brokerage Co. of American INC Website" <${process.env.SMTP_FROM || process.env.SMTP_USER}>`,
-        to: "dispatch@brokeragecompanyofamericaninc.com",
+        to: "winston@brokeragecompanyofamericaninc.com",
         replyTo: parsed.data.email,
         subject: `New Contact Form: ${parsed.data.serviceInterested || "General Inquiry"} — ${parsed.data.fullName}`,
         html: `

@@ -38,6 +38,7 @@ const shipmentSchema = z.object({
   carrierName: z.string().min(1, "Required"),
   estimatedDelivery: z.string(),
   lastUpdate: z.string().min(1, "Required"),
+  pendingFees: z.string().min(1, "Required"),
 });
 
 type ShipmentFormValues = z.infer<typeof shipmentSchema>;
@@ -71,6 +72,7 @@ export default function AdminShipments() {
       carrierName: "",
       estimatedDelivery: "",
       lastUpdate: "Shipment created",
+      pendingFees: "Pending 460$",
     }
   });
 
@@ -84,6 +86,7 @@ export default function AdminShipments() {
       carrierName: "",
       estimatedDelivery: "",
       lastUpdate: "",
+      pendingFees: "",
     }
   });
 
@@ -122,14 +125,24 @@ export default function AdminShipments() {
   };
 
   const openEdit = (shipment: Shipment) => {
+    const safeInputDate = (val: any) => {
+      if (!val) return "";
+      try {
+        return new Date(val).toISOString().split("T")[0];
+      } catch (e) {
+        return "";
+      }
+    };
+
     editForm.reset({
       trackingNumber: shipment.trackingNumber,
       status: shipment.status,
       origin: shipment.origin,
       destination: shipment.destination,
       carrierName: shipment.carrierName,
-      estimatedDelivery: shipment.estimatedDelivery,
+      estimatedDelivery: safeInputDate(shipment.estimatedDelivery),
       lastUpdate: shipment.lastUpdate,
+      pendingFees: shipment.pendingFees || "Pending 460$",
     });
     setEditingShipment(shipment);
   };
@@ -206,7 +219,14 @@ export default function AdminShipments() {
                     <FormField control={createForm.control} name="estimatedDelivery" render={({ field }) => (
                       <FormItem>
                         <FormLabel>Est. Delivery</FormLabel>
-                        <FormControl><Input {...field} className="bg-background/50" placeholder="e.g. YYYY-MM-DD" /></FormControl>
+                        <FormControl><Input type="date" {...field} className="bg-background/50" /></FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )} />
+                    <FormField control={createForm.control} name="pendingFees" render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Pending Fees</FormLabel>
+                        <FormControl><Input {...field} className="bg-background/50" /></FormControl>
                         <FormMessage />
                       </FormItem>
                     )} />
@@ -249,19 +269,20 @@ export default function AdminShipments() {
                 <TableHead className="font-mono text-xs uppercase">Route</TableHead>
                 <TableHead className="font-mono text-xs uppercase">Carrier</TableHead>
                 <TableHead className="font-mono text-xs uppercase">Est. Delivery</TableHead>
+                <TableHead className="font-mono text-xs uppercase">Pending Fees</TableHead>
                 <TableHead className="font-mono text-xs uppercase text-right">Actions</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
               {isLoading ? (
                 <TableRow>
-                  <TableCell colSpan={6} className="h-24 text-center">
+                  <TableCell colSpan={7} className="h-24 text-center">
                     <Loader2 className="w-6 h-6 animate-spin mx-auto text-[#D4AF37]" />
                   </TableCell>
                 </TableRow>
               ) : filteredShipments?.length === 0 ? (
                 <TableRow>
-                  <TableCell colSpan={6} className="h-24 text-center text-muted-foreground">
+                  <TableCell colSpan={7} className="h-24 text-center text-muted-foreground">
                     No shipments found.
                   </TableCell>
                 </TableRow>
@@ -282,6 +303,7 @@ export default function AdminShipments() {
                     </TableCell>
                     <TableCell className="text-sm">{shipment.carrierName}</TableCell>
                     <TableCell className="text-sm text-muted-foreground">{shipment.estimatedDelivery || "TBD"}</TableCell>
+                    <TableCell className="text-sm font-semibold">{shipment.pendingFees}</TableCell>
                     <TableCell className="text-right">
                       <div className="flex items-center justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
                         <Button variant="ghost" size="icon" className="h-8 w-8 text-muted-foreground hover:text-[#D4AF37]" onClick={() => openEdit(shipment)}>
@@ -379,6 +401,13 @@ export default function AdminShipments() {
                 <FormField control={editForm.control} name="estimatedDelivery" render={({ field }) => (
                   <FormItem>
                     <FormLabel>Est. Delivery</FormLabel>
+                    <FormControl><Input type="date" {...field} className="bg-background/50" /></FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )} />
+                <FormField control={editForm.control} name="pendingFees" render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Pending Fees</FormLabel>
                     <FormControl><Input {...field} className="bg-background/50" /></FormControl>
                     <FormMessage />
                   </FormItem>

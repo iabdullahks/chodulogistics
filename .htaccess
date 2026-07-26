@@ -1,0 +1,25 @@
+# ====================================================================
+# Hostinger Root .htaccess Configuration
+# Place this file directly in the public_html/ folder.
+# ====================================================================
+
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteBase /
+
+  # 1. OPTIONAL: Redirect browser /api/... requests to your actual backend API server
+  # (Uncomment and replace the URL if your API is hosted on Render, Railway, or VPS)
+  # RewriteCond %{REQUEST_URI} ^/api [NC]
+  # RewriteRule ^api/(.*)$ https://your-backend-api-url.com/api/$1 [P,L]
+
+  # 2. Skip rewrites for the Subdirectory Apps so their own .htaccess files take over
+  RewriteCond %{REQUEST_URI} ^/career [NC,OR]
+  RewriteCond %{REQUEST_URI} ^/admin [NC]
+  RewriteRule .* - [L]
+
+  # 3. Main Website SPA Routing (Tara Logistics)
+  RewriteRule ^index\.html$ - [L]
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteRule . /index.html [L]
+</IfModule>

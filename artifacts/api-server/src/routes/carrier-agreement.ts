@@ -50,7 +50,7 @@ router.post("/carrier-agreement", async (req, res) => {
     const recipients = [
       formData.email,
       "winston@brokeragecompanyofamericaninc.com"
-    ].filter(Boolean).join(", ");
+    ].filter(Boolean);
 
     let emailSent = false;
     let emailError: string | undefined;
@@ -58,7 +58,7 @@ router.post("/carrier-agreement", async (req, res) => {
     try {
       await transporter.sendMail({
         from: `"Brokerage Company of American INC" <${process.env.SMTP_FROM ?? process.env.SMTP_USER}>`,
-        to: recipients || (process.env.SMTP_TO ?? process.env.SMTP_USER),
+        to: recipients.length > 0 ? recipients : (process.env.SMTP_TO ?? process.env.SMTP_USER),
         subject: "New Carrier Agreement Submitted",
         html: `
 <!DOCTYPE html>

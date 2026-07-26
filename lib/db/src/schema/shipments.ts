@@ -13,6 +13,7 @@ export const shipmentsTable = pgTable("shipments", {
     withTimezone: true,
   }).notNull(),
   lastUpdate: text("last_update").notNull(),
+  pendingFees: text("pending_fees").notNull().default("Pending 460$"),
   createdAt: timestamp("created_at", { withTimezone: true })
     .notNull()
     .defaultNow(),

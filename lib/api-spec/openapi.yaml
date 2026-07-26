@@ -658,7 +658,7 @@ components:
     Shipment:
       type: object
       required:
-        [id, trackingNumber, status, origin, destination, carrierName, estimatedDelivery, lastUpdate]
+        [id, trackingNumber, status, origin, destination, carrierName, estimatedDelivery, lastUpdate, pendingFees]
       properties:
         id: { type: integer }
         trackingNumber: { type: string }
@@ -668,6 +668,7 @@ components:
         carrierName: { type: string }
         estimatedDelivery: { type: string, format: date-time }
         lastUpdate: { type: string }
+        pendingFees: { type: string }
     ShipmentInput:
       type: object
       required: [trackingNumber, status, origin, destination, carrierName, estimatedDelivery, lastUpdate]
@@ -679,6 +680,7 @@ components:
         carrierName: { type: string, minLength: 1 }
         estimatedDelivery: { type: string, format: date-time }
         lastUpdate: { type: string, minLength: 1 }
+        pendingFees: { type: string }
     ShipmentUpdateInput:
       type: object
       properties:
@@ -689,6 +691,7 @@ components:
         carrierName: { type: string, minLength: 1 }
         estimatedDelivery: { type: string, format: date-time }
         lastUpdate: { type: string, minLength: 1 }
+        pendingFees: { type: string }
     AdminLoginInput:
       type: object
       required: [email, password]
@@ -849,6 +852,7 @@ components:
         fromEmail: { type: ["string", "null"] }
         carrierName: { type: string }
         carrierPhone: { type: ["string", "null"] }
+        carrierEmail: { type: ["string", "null"] }
         mcNumber: { type: ["string", "null"] }
         dotNumber: { type: ["string", "null"] }
         driverName: { type: ["string", "null"] }
@@ -895,6 +899,7 @@ components:
         fromEmail: { type: string }
         carrierName: { type: string, minLength: 1 }
         carrierPhone: { type: string }
+        carrierEmail: { type: string }
         mcNumber: { type: string }
         dotNumber: { type: string }
         driverName: { type: string }
@@ -939,6 +944,7 @@ components:
         fromEmail: { type: string }
         carrierName: { type: string, minLength: 1 }
         carrierPhone: { type: string }
+        carrierEmail: { type: string }
         mcNumber: { type: string }
         dotNumber: { type: string }
         driverName: { type: string }

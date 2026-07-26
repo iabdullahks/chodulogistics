@@ -34,6 +34,7 @@ import { useToast } from "@/hooks/use-toast";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import type { RateConfirmation } from "@workspace/api-client-react";
 import { useLocation } from "wouter";
+import { jsPDF } from "jspdf";
 
 const DEFAULT_SPECIAL_INSTRUCTIONS = `***Driver must accept MacroPoint and track for the duration of this load. Any failure to do so will result in a minimum of a $250 fine, deducted from the settlement of this load. Any delivery date and time, other than what is listed on the Rate Agreement, will result in a minimum of a $200 fine, deducted from the settlement of the load. Repair receipts must accompany any breakdowns in transit or carrier will be fined $200 if delivery date and time on this Rate Agreement is not met. That fine will be deducted from the settlement of this shipment ...
 
@@ -41,7 +42,7 @@ const DEFAULT_SPECIAL_INSTRUCTIONS = `***Driver must accept MacroPoint and track
 
 const DEFAULT_REMARKS = `Please submit ALL pages of the POD with a receiver signature within 72 hours of delivery. ***CARRIERS MUST REPORT DETENTION 1 HOUR PRIOR TO OCCURANCE AND MUST SUBMIT LUMPER RECEIPT WITHIN 24-48 HOURS OF DELIVERY IF THERE IS ONE. FAILURE TO DO SO WILL RESULT IN NON-PAYMENT OF CHARGES.***
 
-Failure to notify Brokerage Co. of American INC within 1HR of occurrence results in time starting 1 HR from time of Email. Arrival and Departure times to be clearly written on BOL by shipper/receiver. Please Email to billing@brokeragecompanyofamericaninc.com within 24HRS for payment.`;
+Failure to notify Brokerage Co. of American INC within 1HR of occurrence results in time starting 1 HR from time of Email. Arrival and Departure times to be clearly written on BOL by shipper/receiver. Please Email to winston@brokeragecompanyofamericaninc.com within 24HRS for payment.`;
 
 const rcSchema = z.object({
   proNumber: z.string().optional(),
@@ -52,6 +53,7 @@ const rcSchema = z.object({
   fromEmail: z.string().optional(),
   carrierName: z.string().min(1, "Required"),
   carrierPhone: z.string().optional(),
+  carrierEmail: z.string().optional(),
   mcNumber: z.string().optional(),
   dotNumber: z.string().optional(),
   driverName: z.string().optional(),
@@ -101,9 +103,10 @@ const EMPTY_FORM_VALUES: RcFormValues = {
   rcDateTime: nowLocalDateTime(),
   fromCompany: "BROKERAGE COMPANY OF AMERICAN INC",
   fromPhone: "",
-  fromEmail: "",
+  fromEmail: "winston@brokeragecompanyofamericaninc.com",
   carrierName: "",
   carrierPhone: "",
+  carrierEmail: "",
   mcNumber: "",
   dotNumber: "",
   driverName: "",
@@ -155,6 +158,7 @@ function toPayload(values: RcFormValues) {
     fromEmail: values.fromEmail || undefined,
     carrierName: values.carrierName,
     carrierPhone: values.carrierPhone || undefined,
+    carrierEmail: values.carrierEmail || undefined,
     mcNumber: values.mcNumber || undefined,
     dotNumber: values.dotNumber || undefined,
     driverName: values.driverName || undefined,
@@ -201,6 +205,7 @@ function fromRateConfirmation(rc: RateConfirmation): RcFormValues {
     fromEmail: rc.fromEmail ?? "",
     carrierName: rc.carrierName,
     carrierPhone: rc.carrierPhone ?? "",
+    carrierEmail: rc.carrierEmail ?? "",
     mcNumber: rc.mcNumber ?? "",
     dotNumber: rc.dotNumber ?? "",
     driverName: rc.driverName ?? "",
@@ -318,6 +323,13 @@ function RateConfirmationFormFields({ form }: { form: UseFormReturn<RcFormValues
           <FormItem>
             <FormLabel className={labelClass}>Phone</FormLabel>
             <FormControl><Input {...field} /></FormControl>
+            <FormMessage />
+          </FormItem>
+        )} />
+        <FormField control={form.control} name="carrierEmail" render={({ field }) => (
+          <FormItem>
+            <FormLabel className={labelClass}>Carrier Email</FormLabel>
+            <FormControl><Input {...field} type="email" placeholder="carrier@example.com" /></FormControl>
             <FormMessage />
           </FormItem>
         )} />
@@ -598,6 +610,516 @@ function RateConfirmationFormFields({ form }: { form: UseFormReturn<RcFormValues
     </div>
   );
 }
+function generateRcPDF(values: RcFormValues): string {
+  const doc = new jsPDF({ unit: "pt", format: "letter" });
+  const W = doc.internal.pageSize.getWidth();
+  const H = doc.internal.pageSize.getHeight();
+  const margin = 36;
+  const PW = W - margin * 2;
+
+  const rcDate = values.rcDateTime 
+    ? new Date(values.rcDateTime).toLocaleDateString("en-US", { month: '2-digit', day: '2-digit', year: '2-digit' }) + " " + new Date(values.rcDateTime).toLocaleTimeString("en-US", { hour12: false }) + " (EST)"
+    : new Date().toLocaleDateString("en-US", { month: '2-digit', day: '2-digit', year: '2-digit' }) + " 10:47:00 (EST)";
+  
+  const rcDateSimple = values.rcDateTime 
+    ? new Date(values.rcDateTime).toISOString().split("T")[0] 
+    : new Date().toISOString().split("T")[0];
+
+  const docId = "2026" + String(Math.floor(10000000 + Math.random() * 90000000));
+
+  const drawHeader = (pageNumber: number) => {
+    // Top border line
+    doc.setDrawColor(0);
+    doc.setLineWidth(1);
+    doc.line(margin, 36, W - margin, 36);
+
+    doc.setTextColor(0);
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(8.5);
+    doc.text("Brokerage Co. of American INC - Rate Confirmation", margin, 28);
+    doc.text(`PRO #: ${values.proNumber || "—"}`, W - margin, 28, { align: "right" });
+  };
+
+  const drawFooter = (pageNumber: number) => {
+    // Bottom border line
+    doc.setDrawColor(0);
+    doc.setLineWidth(1);
+    doc.line(margin, H - 36, W - margin, H - 36);
+
+    doc.setTextColor(120);
+    doc.setFont("helvetica", "normal");
+    doc.setFontSize(8);
+    doc.text(`Confirmation Date: ${rcDate}`, margin, H - 24);
+    doc.text("Brokerage Co. of American INC", W - margin, H - 24, { align: "right" });
+
+    doc.setFont("helvetica", "normal");
+    doc.setFontSize(8);
+    doc.text(`${pageNumber}/5`, W - margin, H - 12, { align: "right" });
+  };
+
+  const drawSectionBar = (title: string, yPos: number) => {
+    doc.setFillColor(43, 43, 43);
+    doc.rect(margin, yPos, PW, 16, "F");
+    doc.setTextColor(255);
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(8.5);
+    doc.text(title.toUpperCase(), W / 2, yPos + 11, { align: "center" });
+    return yPos + 16;
+  };
+
+  const drawParagraphs = (text: string, x: number, startY: number, width: number, lineHeight = 11, fontSize = 7.5) => {
+    let currY = startY;
+    doc.setFont("helvetica", "normal");
+    doc.setFontSize(fontSize);
+    doc.setTextColor(50);
+    const lines = doc.splitTextToSize(text, width);
+    lines.forEach((line: string) => {
+      doc.text(line, x, currY);
+      currY += lineHeight;
+    });
+    return currY;
+  };
+
+  // ==========================================
+  // PAGE 1: Core Details, Stops, Notes
+  // ==========================================
+  drawHeader(1);
+
+  // Logo Circle
+  doc.setDrawColor(0);
+  doc.setLineWidth(1.5);
+  doc.circle(margin + 24, 76, 20);
+  doc.setLineWidth(0.5);
+  doc.circle(margin + 24, 76, 18);
+  doc.setFont("helvetica", "bold");
+  doc.setFontSize(10);
+  doc.setTextColor(0);
+  doc.text("BC", margin + 24, 80, { align: "center" });
+
+  // Company Name Centered
+  doc.setFont("helvetica", "bold");
+  doc.setFontSize(14);
+  doc.text("BROKERAGE CO. OF AMERICAN INC", W / 2, 70, { align: "center" });
+  doc.setFont("helvetica", "normal");
+  doc.setFontSize(8.5);
+  doc.setTextColor(80);
+  doc.text("50 Emjay Blvd", W / 2, 81, { align: "center" });
+  doc.text("Brentwood, NY 11786", W / 2, 91, { align: "center" });
+
+  // Rounded gray bars
+  let y = 104;
+  doc.setFillColor(243, 244, 246);
+  doc.roundedRect(margin, y, PW, 16, 4, 4, "F");
+  doc.setFont("helvetica", "bold");
+  doc.setFontSize(9);
+  doc.setTextColor(0);
+  doc.text(`PRO #: ${values.proNumber || "—"}`, W / 2, y + 11, { align: "center" });
+
+  y += 20;
+  doc.setFillColor(243, 244, 246);
+  doc.roundedRect(margin, y, PW, 16, 4, 4, "F");
+  doc.text(values.daysDedicatedLane || "—", W / 2, y + 11, { align: "center" });
+
+  // FROM vs DATE & TIME boxes
+  y += 24;
+  const boxW = (PW - 12) / 2;
+  const boxH = 70;
+  
+  // Left Box
+  doc.setDrawColor(220);
+  doc.setLineWidth(1);
+  doc.rect(margin, y, boxW, boxH);
+  doc.setFont("helvetica", "bold");
+  doc.setFontSize(8);
+  doc.setTextColor(0);
+  doc.text("FROM", margin + 8, y + 12);
+  doc.text("Brokerage Co. of American INC", margin + 8, y + 23);
+  doc.setFont("helvetica", "normal");
+  doc.setFontSize(7.5);
+  doc.setTextColor(80);
+  doc.text("50 Emjay Blvd\nBrentwood, NY 11786\nwinston@brokeragecompanyofamericaninc.com", margin + 8, y + 34);
+
+  // Right Box
+  doc.rect(margin + boxW + 12, y, boxW, boxH);
+  doc.setFont("helvetica", "bold");
+  doc.setFontSize(8);
+  doc.setTextColor(0);
+  doc.text("DATE & TIME", margin + boxW + 20, y + 12);
+  doc.setFont("helvetica", "normal");
+  doc.setFontSize(8);
+  doc.setTextColor(80);
+  doc.text(rcDate, margin + boxW + 20, y + 23);
+  doc.setFont("helvetica", "bold");
+  doc.setFontSize(8);
+  doc.setTextColor(0);
+  doc.text("Rate Confirmation", margin + boxW + 20, y + 42);
+
+  // CARRIER INFORMATION Section
+  y += boxH + 12;
+  y = drawSectionBar("CARRIER INFORMATION", y);
+
+  const drawRow = (label1: string, val1: string | undefined | null, label2: string, val2: string | undefined | null) => {
+    doc.setDrawColor(220);
+    doc.rect(margin, y, PW, 16);
+    const colW = PW / 4;
+    
+    // Label 1 background
+    doc.setFillColor(248, 248, 248);
+    doc.rect(margin, y, colW, 16, "F");
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(8);
+    doc.setTextColor(80);
+    doc.text(label1, margin + 8, y + 11);
+    
+    // Value 1
+    doc.setFont("helvetica", "normal");
+    doc.setFontSize(8);
+    doc.setTextColor(0);
+    doc.text(val1 || "—", margin + colW + 8, y + 11);
+
+    // Label 2 background
+    doc.setFillColor(248, 248, 248);
+    doc.rect(margin + colW * 2, y, colW, 16, "F");
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(8);
+    doc.setTextColor(80);
+    doc.text(label2, margin + colW * 2 + 8, y + 11);
+
+    // Value 2
+    doc.setFont("helvetica", "normal");
+    doc.setFontSize(8);
+    doc.setTextColor(0);
+    doc.text(val2 || "—", margin + colW * 3 + 8, y + 11);
+    y += 16;
+  };
+
+  drawRow("Carrier Name", values.carrierName, "MC #", values.mcNumber);
+  drawRow("Phone", values.carrierPhone, "DOT #", values.dotNumber);
+  drawRow("Driver Name", values.driverName, "Driver Cell #", values.driverCell);
+  drawRow("Truck #", values.truckNumber, "Trailer #", values.trailerNumber);
+
+  // LOAD DETAILS Section
+  y += 4;
+  y = drawSectionBar("LOAD DETAILS", y);
+  drawRow("Miles", values.miles ? String(values.miles) : "", "Size & Type", values.sizeType);
+  drawRow("Pieces", values.pieces ? String(values.pieces) : "", "Weight", values.weightLbs ? `${values.weightLbs} lbs` : "");
+  
+  // Description full width row
+  doc.rect(margin, y, PW, 16);
+  doc.setFillColor(248, 248, 248);
+  doc.rect(margin, y, PW / 4, 16, "F");
+  doc.setFont("helvetica", "bold");
+  doc.setFontSize(8);
+  doc.setTextColor(80);
+  doc.text("Description", margin + 8, y + 11);
+  doc.setFont("helvetica", "normal");
+  doc.setFontSize(8);
+  doc.setTextColor(0);
+  doc.text(values.description || "—", margin + (PW / 4) + 8, y + 11);
+  y += 16;
+
+  const totalRateStr = values.totalRateUsd ? `$${Number(values.totalRateUsd).toFixed(2)}` : "$";
+  drawRow("Hot Load", values.hotLoad === "yes" ? "Yes" : "No", "Total Rate", totalRateStr);
+
+  // STOPS Section
+  y += 4;
+  y = drawSectionBar("STOPS", y);
+
+  // Table header
+  doc.setFillColor(43, 43, 43);
+  doc.rect(margin, y, PW, 14, "F");
+  doc.setTextColor(255);
+  doc.setFont("helvetica", "bold");
+  doc.setFontSize(7.5);
+  doc.text("Stop", margin + 4, y + 10);
+  doc.text("Pickup Address", margin + 70, y + 10);
+  doc.text("Delivery Address", margin + 175, y + 10);
+  doc.text("Appointment", margin + 280, y + 10);
+  doc.text("Hours", margin + 375, y + 10);
+  doc.text("Contact", margin + 420, y + 10);
+  doc.text("Pieces", margin + 480, y + 10);
+  doc.text("Weight", margin + 510, y + 10);
+  y += 14;
+
+  const drawStopRow = (
+    label: string,
+    pickup: string | undefined | null,
+    delivery: string | undefined | null,
+    apptDate: string | undefined | null,
+    apptTime: string | undefined | null,
+    hours: string | undefined | null,
+    contact: string | undefined | null,
+    pieces: string | undefined | null,
+    weight: string | undefined | null
+  ) => {
+    doc.setDrawColor(220);
+    doc.rect(margin, y, PW, 16);
+    doc.setFont("helvetica", "normal");
+    doc.setFontSize(7);
+    doc.setTextColor(0);
+    doc.text(label, margin + 4, y + 11);
+    doc.text(pickup || "—", margin + 70, y + 11);
+    doc.text(delivery || "—", margin + 175, y + 11);
+    doc.text(apptDate ? `${apptDate} ${apptTime || ""}` : "—", margin + 280, y + 11);
+    doc.text(hours || "—", margin + 375, y + 11);
+    doc.text(contact || "—", margin + 420, y + 11);
+    doc.text(pieces || "—", margin + 480, y + 11);
+    doc.text(weight || "—", margin + 510, y + 11);
+    y += 16;
+  };
+
+  drawStopRow("Outbound Route", values.outboundPickupAddress, values.outboundDeliveryAddress, values.outboundAppointmentDate, values.outboundAppointmentTime, values.outboundHours, values.outboundPhoneContact, values.outboundPieces ? String(values.outboundPieces) : "", values.outboundWeight ? `${values.outboundWeight} lbs` : "");
+  drawStopRow("Return Route", values.returnPickupAddress, values.returnDeliveryAddress, values.returnAppointmentDate, values.returnAppointmentTime, values.returnHours, values.returnPhoneContact, values.returnPieces ? String(values.returnPieces) : "", values.returnWeight ? `${values.returnWeight} lbs` : "");
+
+  // DISPATCH NOTES Section
+  y += 4;
+  y = drawSectionBar("DISPATCH NOTES", y);
+  doc.rect(margin, y, PW, 24);
+  doc.setFont("helvetica", "normal");
+  doc.setFontSize(7.5);
+  doc.text(values.dispatchNotes || "—", margin + 8, y + 14);
+  
+  drawFooter(1);
+
+  // ==========================================
+  // PAGE 2: Special Instructions
+  // ==========================================
+  doc.addPage();
+  drawHeader(2);
+  y = 55;
+
+  doc.setFillColor(243, 244, 246);
+  doc.roundedRect(margin, y, PW, 16, 4, 4, "F");
+  
+  y += 24;
+  y = drawSectionBar("SPECIAL INSTRUCTIONS", y);
+
+  const specText = values.specialInstructions || DEFAULT_SPECIAL_INSTRUCTIONS;
+  const specLines = doc.splitTextToSize(specText, PW - 20);
+  const specBoxH = specLines.length * 11 + 20;
+
+  doc.setFillColor(254, 249, 195); // soft yellow bg
+  doc.rect(margin, y, PW, specBoxH, "F");
+  doc.setDrawColor(212, 175, 55);
+  doc.rect(margin, y, PW, specBoxH);
+
+  drawParagraphs(specText, margin + 10, y + 15, PW - 20, 11, 7.5);
+  y += specBoxH + 40;
+
+  // Signatures on Page 2
+  doc.setDrawColor(0);
+  doc.setLineWidth(1);
+  doc.line(margin, y + 40, margin + 220, y + 40);
+  doc.line(W - margin - 220, y + 40, W - margin, y + 40);
+
+  doc.setFont("helvetica", "bold");
+  doc.setFontSize(8.5);
+  doc.text("Carrier Signature", margin + 110, y + 52, { align: "center" });
+  doc.text("Brokerage Co. of American INC Representative", W - margin - 110, y + 52, { align: "center" });
+  
+  doc.setFont("helvetica", "normal");
+  doc.setFontSize(7.5);
+  doc.text(`Date: ${rcDateSimple}`, margin + 110, y + 64, { align: "center" });
+  doc.text(`Doc ID: ${docId}`, W - margin - 110, y + 64, { align: "center" });
+
+  y += 90;
+  // Invoice callout bar
+  doc.setFillColor(254, 249, 195);
+  doc.roundedRect(margin, y, PW, 32, 6, 6, "F");
+  doc.setDrawColor(212, 175, 55);
+  doc.roundedRect(margin, y, PW, 32, 6, 6, "D");
+  doc.setFont("helvetica", "bold");
+  doc.setFontSize(8.5);
+  doc.setTextColor(120, 90, 0);
+  doc.text(`PRO # ${values.proNumber || "—"} must appear on all Invoices`, W / 2, y + 14, { align: "center" });
+  doc.setFont("helvetica", "normal");
+  doc.text("Send Carrier Bills to the Address Above", W / 2, y + 24, { align: "center" });
+
+  drawFooter(2);
+
+  // ==========================================
+  // PAGE 3: Remarks & Payment Options
+  // ==========================================
+  doc.addPage();
+  drawHeader(3);
+  y = 55;
+
+  // Company Name Centered
+  doc.setFont("helvetica", "bold");
+  doc.setFontSize(14);
+  doc.text("Brokerage Co. of American INC", W / 2, y + 15, { align: "center" });
+  doc.setFont("helvetica", "normal");
+  doc.setFontSize(8.5);
+  doc.setTextColor(80);
+  doc.text("50 Emjay Blvd\nBrentwood, NY 11786", W / 2, y + 26, { align: "center" });
+
+  y += 50;
+  doc.setFillColor(243, 244, 246);
+  doc.roundedRect(margin, y, PW, 16, 4, 4, "F");
+  doc.setFont("helvetica", "bold");
+  doc.setFontSize(9);
+  doc.setTextColor(0);
+  doc.text(`PRO #: ${values.proNumber || "—"}`, W / 2, y + 11, { align: "center" });
+
+  y += 24;
+  // FROM vs CARRIER boxes
+  doc.setDrawColor(220);
+  doc.rect(margin, y, boxW, boxH);
+  doc.setFont("helvetica", "bold");
+  doc.setFontSize(8);
+  doc.text("FROM", margin + 8, y + 12);
+  doc.text("Brokerage Co. of American INC", margin + 8, y + 23);
+  doc.setFont("helvetica", "normal");
+  doc.setFontSize(7.5);
+  doc.text("50 Emjay Blvd\nBrentwood, NY 11786\nwinston@brokeragecompanyofamericaninc.com", margin + 8, y + 34);
+
+  doc.rect(margin + boxW + 12, y, boxW, boxH);
+  doc.setFont("helvetica", "bold");
+  doc.setFontSize(8);
+  doc.text("CARRIER", margin + boxW + 20, y + 12);
+  doc.text(values.carrierName || "—", margin + boxW + 20, y + 23);
+  doc.setFont("helvetica", "normal");
+  doc.setFontSize(7.5);
+  doc.text(`${values.carrierPhone || ""}\nMC # ${values.mcNumber || ""}\nDOT ${values.dotNumber || ""}`, margin + boxW + 20, y + 34);
+
+  // REMARKS Section
+  y += boxH + 12;
+  y = drawSectionBar("REMARKS", y);
+  const remarkText = values.remarks || DEFAULT_REMARKS;
+  const remarkLines = doc.splitTextToSize(remarkText, PW - 20);
+  const remarkBoxH = remarkLines.length * 11 + 20;
+
+  doc.setFillColor(254, 249, 195);
+  doc.rect(margin, y, PW, remarkBoxH, "F");
+  doc.setDrawColor(212, 175, 55);
+  doc.rect(margin, y, PW, remarkBoxH);
+
+  drawParagraphs(remarkText, margin + 10, y + 15, PW - 20, 11, 7.5);
+  y += remarkBoxH + 30;
+
+  // PAYMENT OPTIONS Section
+  y = drawSectionBar("PAYMENT OPTIONS", y);
+  const paymentText = `Invoicing, document collection, and payment for all completed loads will be processed by our team.
+Please email your invoice and all supporting documents (legible POD/BOL, lumper receipts, etc.) to: winston@brokeragecompanyofamericaninc.com. All payments will be made in U.S. Dollars unless approved in writing by Brokerage Co. of American INC in advance of the shipment.
+Payment Methods & Timing:
+ACH Direct Deposit: Payment will be deposited directly into the carrier's bank account within 12-24 hours after receipt and approval of all required and legible paperwork.
+Check Payment: Payment will be issued by check after receipt and approval of all required paperwork and mailed to the carrier's registered address.
+Standard Contractual Pay: Payment will be made in accordance with contractual pay terms if selected.`;
+
+  const paymentLines = doc.splitTextToSize(paymentText, PW - 20);
+  const paymentBoxH = paymentLines.length * 10.5 + 20;
+
+  doc.setFillColor(239, 246, 255); // soft blue bg
+  doc.rect(margin, y, PW, paymentBoxH, "F");
+  doc.setDrawColor(191, 219, 254);
+  doc.rect(margin, y, PW, paymentBoxH);
+
+  drawParagraphs(paymentText, margin + 10, y + 14, PW - 20, 10.5, 7);
+
+  drawFooter(3);
+
+  // ==========================================
+  // PAGE 4: Supporting Docs, MMCA Supplement
+  // ==========================================
+  doc.addPage();
+  drawHeader(4);
+  y = 55;
+
+  doc.setFont("helvetica", "normal");
+  doc.setFontSize(8.5);
+  doc.setTextColor(0);
+  doc.text("•  BOL\n•  Packing slips\n•  Lumper receipts (if applicable)", margin + 15, y + 15);
+
+  doc.setFont("helvetica", "bold");
+  doc.text("Please email all supporting documents to:", margin, y + 55);
+  doc.setTextColor(120, 90, 0);
+  doc.text("winston@brokeragecompanyofamericaninc.com", margin, y + 68);
+
+  y += 85;
+  y = drawSectionBar("BROKERAGE CO. OF AMERICAN INC MASTER MOTOR CARRIER AGREEMENT SUPPLEMENT", y);
+  
+  const supplementText = `THIS LOAD CONFIRMATION IS SUBJECT TO THE CONDITIONS OF THE MASTER MOTOR CARRIER AGREEMENT PREVIOUSLY EXECUTED BETWEEN OUR COMPANIES AND THIS ESTABLISHES A SUPPLEMENT TO THE TERMS OF THAT AGREEMENT. WE AGREE TO PAY THE RATES AND CHARGES SHOWN AND NO DIFFERENT TARIFF, RATE, OR SCHEDULE OF RATES APPLIES. THIS LOAD CONFIRMATION IS INCLUSIVE OF ALL CHARGES UNLESS ORAL AND WRITTEN FAX/EMAIL OBJECTIONS ARE MADE TO ITS TERMS, WITHIN TWENTY FOUR (24) HOURS OF RECEIPT OR PRIOR TO WORK BEING INITIATED, WHICHEVER IS EARLIER.
+
+Additional Terms:
+1. Service and Rate Stipulation: This rate is reliant upon successful and on-time completion of all load terms as fixed on this supplement. Shipper may reduce the rate if carrier fails to complete any shipment terms and conditions or if the load picks up or delivers after originally scheduled date and time.
+2. Seal Integrity, Food Safety & Temperature: Only authorized personnel can remove seals upon arrival to the destination site unless required by in-transit inspections. If a seal is broken in-transit, it must be communicated immediately to the broker. Failure by carrier to maintain seal integrity throughout the trip may result in a claim.
+3. Accessorial Charges/OS&D: Accessorial charges must be authorized and approved prior to or at time of occurrence. Pre-approval of detention and layover is strictly required. All overage, shortage, and damage must be reported immediately.
+4. Exclusive Use of Trailer: Unless otherwise agreed, carrier's motor vehicle equipment shall be dedicated to exclusive use while transporting freight pursuant to this Rate Confirmation.
+5. Cargo Insurance Stipulation: Carrier will provide cargo insurance coverage sufficient to cover the loss or damage of any commodities carried. Carrier's cargo insurance policy must not exclude coverage of any commodities carried.`;
+
+  const supplementLines = doc.splitTextToSize(supplementText, PW - 20);
+  const supplementBoxH = supplementLines.length * 9.5 + 40;
+
+  doc.setFillColor(255, 255, 255);
+  doc.rect(margin, y, PW, supplementBoxH);
+  doc.setDrawColor(200);
+  doc.rect(margin, y, PW, supplementBoxH);
+
+  doc.setFont("helvetica", "bold");
+  doc.setFontSize(8);
+  doc.setTextColor(120, 90, 0);
+  doc.text("BROKERAGE CO. OF AMERICAN INC MASTER MOTOR CARRIER AGREEMENT SUPPLEMENT AND CARRIER LOAD CONFIRMATION CONDITIONS", W / 2, y + 15, { align: "center" });
+
+  drawParagraphs(supplementText, margin + 10, y + 30, PW - 20, 9.5, 6.8);
+
+  drawFooter(4);
+
+  // ==========================================
+  // PAGE 5: Driver Loaded, Signatures, Footer callout
+  // ==========================================
+  doc.addPage();
+  drawHeader(5);
+  y = 55;
+
+  const driverText = "If BOL is marked Driver Count/Pieces at shipper, driver must confirm the correct amount was loaded BEFORE signing/leaving\nfacility. Call a Representative of Brokerage Co. of American INC, Inc. if shipper will not recount or if there is an error. Customer will\nfile claim if driver signs for incorrect number of cases shipped.";
+  const driverLines = doc.splitTextToSize(driverText, PW - 16);
+  const driverBoxH = driverLines.length * 11 + 16;
+
+  doc.setFillColor(248, 248, 248);
+  doc.rect(margin, y, PW, driverBoxH, "F");
+  doc.setDrawColor(220);
+  doc.rect(margin, y, PW, driverBoxH);
+
+  drawParagraphs(driverText, margin + 8, y + 12, PW - 16, 11, 8);
+
+  y += driverBoxH + 40;
+  doc.setDrawColor(0);
+  doc.setLineWidth(1);
+  doc.line(margin, y, margin + 220, y);
+  doc.line(W - margin - 220, y, W - margin, y);
+
+  doc.setFont("helvetica", "bold");
+  doc.setFontSize(8.5);
+  doc.text("Carrier Signature", margin + 110, y + 12, { align: "center" });
+  doc.text("Brokerage Co. of American INC", W - margin - 110, y + 12, { align: "center" });
+
+  doc.setFont("helvetica", "normal");
+  doc.setFontSize(7.5);
+  doc.text(values.carrierName || "—", margin + 110, y + 24, { align: "center" });
+  doc.text(`Date: ${rcDateSimple}`, margin + 110, y + 34, { align: "center" });
+  doc.text(`Date: ${rcDateSimple}`, W - margin - 110, y + 24, { align: "center" });
+
+  y += 70;
+  // Bottom callout
+  doc.setFillColor(254, 249, 195);
+  doc.roundedRect(margin, y, PW, 40, 6, 6, "F");
+  doc.setDrawColor(212, 175, 55);
+  doc.roundedRect(margin, y, PW, 40, 6, 6, "D");
+  
+  doc.setFont("helvetica", "bold");
+  doc.setFontSize(8.5);
+  doc.setTextColor(120, 90, 0);
+  doc.text(`PRO # ${values.proNumber || "—"} must appear on all Invoices`, W / 2, y + 14, { align: "center" });
+  doc.setFont("helvetica", "normal");
+  doc.text("Send Carrier Bills to: 50 Emjay Blvd, Brentwood, NY 11786", W / 2, y + 24, { align: "center" });
+  doc.setFont("helvetica", "normal");
+  doc.text(`Doc ID: ${docId}`, W / 2, y + 33, { align: "center" });
+
+  drawFooter(5);
+
+  const base64 = doc.output("datauristring").split(",")[1];
+  return base64;
+}
 
 export default function AdminRateConfirmations() {
   const { data: rateConfirmations, isLoading } = useAdminListRateConfirmations();
@@ -623,7 +1145,8 @@ export default function AdminRateConfirmations() {
   });
 
   const onCreateSubmit = (values: RcFormValues) => {
-    createMutation.mutate({ data: toPayload(values) }, {
+    const pdfBase64 = generateRcPDF(values);
+    createMutation.mutate({ data: { ...toPayload(values), pdfBase64 } as any }, {
       onSuccess: () => {
         queryClient.invalidateQueries({ queryKey: getAdminListRateConfirmationsQueryKey() });
         setIsCreateOpen(false);

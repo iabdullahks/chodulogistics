@@ -15,4 +15,5 @@ export interface Shipment {
   carrierName: string;
   estimatedDelivery: Date;
   lastUpdate: string;
+  pendingFees: string;
 }

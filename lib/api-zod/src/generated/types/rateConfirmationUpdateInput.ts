@@ -16,6 +16,7 @@ export interface RateConfirmationUpdateInput {
   /** @minLength 1 */
   carrierName?: string;
   carrierPhone?: string;
+  carrierEmail?: string;
   mcNumber?: string;
   dotNumber?: string;
   driverName?: string;
