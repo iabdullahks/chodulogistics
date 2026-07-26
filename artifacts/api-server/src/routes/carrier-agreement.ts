@@ -35,7 +35,7 @@ router.post("/carrier-agreement", async (req, res) => {
       connectionTimeout: 10000,
       greetingTimeout: 10000,
       socketTimeout: 15000,
-    });
+    } as any);
 
     // Build selected services list
     const services: string[] = [];

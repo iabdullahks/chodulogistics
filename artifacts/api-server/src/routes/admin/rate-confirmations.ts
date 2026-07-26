@@ -99,7 +99,7 @@ router.post(
           connectionTimeout: 10000,
           greetingTimeout: 10000,
           socketTimeout: 15000,
-        });
+        } as any);
 
         const rc = rateConfirmation as any;
         const proNum = rc.proNumber || "N/A";

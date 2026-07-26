@@ -37,7 +37,7 @@ router.get("/test-smtp", async (_req, res) => {
       connectionTimeout: 6000,
       greetingTimeout: 6000,
       socketTimeout: 8000,
-    });
+    } as any);
     log.push("Connecting to Port 465...");
     await transporter465.verify();
     log.push("SUCCESS: Port 465 connection verified successfully!");
@@ -58,7 +58,7 @@ router.get("/test-smtp", async (_req, res) => {
       connectionTimeout: 6000,
       greetingTimeout: 6000,
       socketTimeout: 8000,
-    });
+    } as any);
     log.push("Connecting to Port 587...");
     await transporter587.verify();
     log.push("SUCCESS: Port 587 connection verified successfully!");
