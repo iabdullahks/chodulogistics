@@ -11,51 +11,62 @@ router.get("/healthz", (_req, res) => {
 
 router.get("/test-smtp", async (_req, res) => {
   const log: string[] = [];
-  log.push("Starting SMTP Connection test...");
+  log.push("Starting SMTP Connection diagnostics...");
   
   const host = process.env.SMTP_HOST ?? "smtp.hostinger.com";
-  const port = Number(process.env.SMTP_PORT ?? 465);
-  const secure = port === 465;
   const user = process.env.SMTP_USER;
   const pass = process.env.SMTP_PASS;
 
-  log.push(`Config - Host: ${host}, Port: ${port}, Secure: ${secure}, User: ${user ? "Set (length: " + user.length + ")" : "Not Set"}`);
+  log.push(`Config - Host: ${host}, User: ${user ? "Set" : "Not Set"}`);
 
   if (!user || !pass) {
     res.json({ ok: false, error: "SMTP credentials not configured on backend", log });
     return;
   }
 
+  // 1. Test Port 465 (SSL)
+  log.push("--- Testing Port 465 (SSL) ---");
   try {
-    const transporter = nodemailer.createTransport({
+    const transporter465 = nodemailer.createTransport({
       host,
-      port,
-      secure,
+      port: 465,
+      secure: true,
       auth: { user, pass },
       tls: { rejectUnauthorized: false },
       family: 4,
-      connectionTimeout: 8000,
-      greetingTimeout: 8000,
-      socketTimeout: 10000,
+      connectionTimeout: 6000,
+      greetingTimeout: 6000,
+      socketTimeout: 8000,
     });
-
-    log.push("Verifying SMTP connection...");
-    await transporter.verify();
-    log.push("Verification successful! Sending test email...");
-
-    const info = await transporter.sendMail({
-      from: `"Diagnostics" <${process.env.SMTP_FROM ?? user}>`,
-      to: user,
-      subject: "Render SMTP Diagnostic Test",
-      text: "Connection test from Render container successful!",
-    });
-    log.push(`Email sent successfully! MessageID: ${info.messageId}`);
-    res.json({ ok: true, log });
+    log.push("Connecting to Port 465...");
+    await transporter465.verify();
+    log.push("SUCCESS: Port 465 connection verified successfully!");
   } catch (err: any) {
-    log.push(`Error encountered: ${err.message || String(err)}`);
-    if (err.code) log.push(`Error Code: ${err.code}`);
-    res.json({ ok: false, log });
+    log.push(`FAILED Port 465: ${err.message || String(err)} (Code: ${err.code || "N/A"})`);
   }
+
+  // 2. Test Port 587 (STARTTLS)
+  log.push("--- Testing Port 587 (STARTTLS) ---");
+  try {
+    const transporter587 = nodemailer.createTransport({
+      host,
+      port: 587,
+      secure: false,
+      auth: { user, pass },
+      tls: { rejectUnauthorized: false },
+      family: 4,
+      connectionTimeout: 6000,
+      greetingTimeout: 6000,
+      socketTimeout: 8000,
+    });
+    log.push("Connecting to Port 587...");
+    await transporter587.verify();
+    log.push("SUCCESS: Port 587 connection verified successfully!");
+  } catch (err: any) {
+    log.push(`FAILED Port 587: ${err.message || String(err)} (Code: ${err.code || "N/A"})`);
+  }
+
+  res.json({ log });
 });
 
 export default router;
