@@ -33,6 +33,7 @@ router.get("/test-smtp", async (_req, res) => {
       secure,
       auth: { user, pass },
       tls: { rejectUnauthorized: false },
+      family: 4,
       connectionTimeout: 8000,
       greetingTimeout: 8000,
       socketTimeout: 10000,

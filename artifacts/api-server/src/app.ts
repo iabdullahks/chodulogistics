@@ -2,8 +2,11 @@ import express, { type Express } from "express";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 import pinoHttp from "pino-http";
+import dns from "dns";
 import router from "./routes";
 import { logger } from "./lib/logger";
+
+dns.setDefaultResultOrder("ipv4first");
 
 const app: Express = express();
 
