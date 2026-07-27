@@ -1,5 +1,6 @@
 import app from "./app";
 import { logger } from "./lib/logger";
+import { verifySmtpConnection } from "./lib/mailer";
 
 const rawPort = process.env["PORT"];
 
@@ -22,4 +23,9 @@ app.listen(port, (err) => {
   }
 
   logger.info({ port }, "Server listening");
+  
+  // Run SMTP check asynchronously in background on startup
+  verifySmtpConnection().catch((err) => {
+    logger.error({ err }, "Unhandled error during SMTP verification");
+  });
 });

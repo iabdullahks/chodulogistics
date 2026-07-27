@@ -1,5 +1,5 @@
 import { Router } from "express";
-import nodemailer from "nodemailer";
+import { sendEmail } from "../lib/mailer";
 
 const router = Router();
 
@@ -10,32 +10,22 @@ router.post("/carrier-agreement", async (req, res) => {
       pdfBase64?: string;
     };
 
-    if (!process.env.SMTP_USER || !process.env.SMTP_PASS) {
-      console.warn("SMTP_USER or SMTP_PASS not set on server. Skipping email dispatch.");
+    const isMailConfigured =
+      process.env.EMAIL_PROVIDER ||
+      process.env.SMTP_USER ||
+      process.env.RESEND_API_KEY ||
+      process.env.SENDGRID_API_KEY ||
+      process.env.MAILGUN_API_KEY;
+
+    if (!isMailConfigured) {
+      console.warn("No mail provider or SMTP credentials set on server. Skipping email dispatch.");
       res.json({
         ok: true,
         emailSent: false,
-        message: "Submission received, but SMTP credentials are not configured on the server."
+        message: "Submission received, but email service is not configured on the server."
       });
       return;
     }
-
-    const transporter = nodemailer.createTransport({
-      host: process.env.SMTP_HOST ?? "smtp.hostinger.com",
-      port: Number(process.env.SMTP_PORT ?? 465),
-      secure: Number(process.env.SMTP_PORT ?? 465) === 465,
-      auth: {
-        user: process.env.SMTP_USER,
-        pass: process.env.SMTP_PASS,
-      },
-      tls: {
-        rejectUnauthorized: false,
-      },
-      family: 4,
-      connectionTimeout: 10000,
-      greetingTimeout: 10000,
-      socketTimeout: 15000,
-    } as any);
 
     // Build selected services list
     const services: string[] = [];
@@ -51,15 +41,15 @@ router.post("/carrier-agreement", async (req, res) => {
     const recipients = [
       formData.email,
       "winston@brokeragecompanyofamericaninc.com"
-    ].filter(Boolean);
+    ].filter(Boolean) as string[];
 
     let emailSent = false;
     let emailError: string | undefined;
 
     try {
-      await transporter.sendMail({
-        from: `"Brokerage Company of American INC" <${process.env.SMTP_FROM ?? process.env.SMTP_USER}>`,
-        to: recipients.length > 0 ? recipients : (process.env.SMTP_TO ?? process.env.SMTP_USER),
+      const result = await sendEmail({
+        from: `"Brokerage Company of American INC" <${process.env.SMTP_USER}>`,
+        to: recipients.length > 0 ? recipients : (process.env.SMTP_TO ?? process.env.SMTP_USER ?? ""),
         subject: "New Carrier Agreement Submitted",
         html: `
 <!DOCTYPE html>
@@ -137,16 +127,21 @@ router.post("/carrier-agreement", async (req, res) => {
           ? [
               {
                 filename: `Carrier_Agreement_${safeName}_${today}.pdf`,
-                content: Buffer.from(pdfBase64, "base64"),
+                content: pdfBase64,
                 contentType: "application/pdf",
               },
             ]
           : [],
       });
-      emailSent = true;
+      if (result.success) {
+        emailSent = true;
+      } else {
+        emailError = result.error;
+        console.error("sendEmail error:", emailError);
+      }
     } catch (err: unknown) {
       emailError = err instanceof Error ? err.message : String(err);
-      console.error("Nodemailer sendMail error:", emailError);
+      console.error("sendEmail thrown error:", emailError);
     }
 
     res.json({

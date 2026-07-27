@@ -1,20 +1,9 @@
 import { Router, type IRouter } from "express";
 import { db, leadsTable } from "@workspace/db";
 import { CreateLeadBody, CreateLeadResponse } from "@workspace/api-zod";
-import nodemailer from "nodemailer";
+import { sendEmail } from "../lib/mailer";
 
 const router: IRouter = Router();
-
-// Create reusable transporter using SMTP from env
-const transporter = nodemailer.createTransport({
-  host: process.env.SMTP_HOST || "smtp.hostinger.com",
-  port: Number(process.env.SMTP_PORT) || 465,
-  secure: true,
-  auth: {
-    user: process.env.SMTP_USER,
-    pass: process.env.SMTP_PASS,
-  },
-});
 
 router.post("/leads", async (req, res): Promise<void> => {
   const parsed = CreateLeadBody.safeParse(req.body);
@@ -38,11 +27,18 @@ router.post("/leads", async (req, res): Promise<void> => {
 
   req.log.info({ leadId: lead.id }, "Lead created");
 
-  // Send email notification if SMTP is configured
-  if (process.env.SMTP_USER && process.env.SMTP_PASS) {
+  // Send email notification if mail is configured
+  const isMailConfigured = 
+    process.env.EMAIL_PROVIDER || 
+    process.env.SMTP_USER || 
+    process.env.RESEND_API_KEY || 
+    process.env.SENDGRID_API_KEY ||
+    process.env.MAILGUN_API_KEY;
+
+  if (isMailConfigured) {
     try {
-      await transporter.sendMail({
-        from: `"Brokerage Co. of American INC Website" <${process.env.SMTP_FROM || process.env.SMTP_USER}>`,
+      const result = await sendEmail({
+        from: `"Brokerage Co. of American INC Website" <${process.env.SMTP_USER}>`,
         to: "winston@brokeragecompanyofamericaninc.com",
         replyTo: parsed.data.email,
         subject: `New Contact Form: ${parsed.data.serviceInterested || "General Inquiry"} — ${parsed.data.fullName}`,
@@ -84,9 +80,13 @@ router.post("/leads", async (req, res): Promise<void> => {
           </div>
         `,
       });
-      req.log.info({ leadId: lead.id }, "Contact form email sent");
+      if (result.success) {
+        req.log.info({ leadId: lead.id, messageId: result.messageId }, "Contact form email sent");
+      } else {
+        req.log.error({ leadId: lead.id, err: result.error }, "Failed to send contact form email");
+      }
     } catch (err) {
-      req.log.error({ err }, "Failed to send contact form email");
+      req.log.error({ leadId: lead.id, err }, "Failed to send contact form email");
       // Don't fail the request — the lead was saved to DB
     }
   }

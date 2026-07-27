@@ -1,7 +1,7 @@
 import { Router, type IRouter } from "express";
 import { desc, eq } from "drizzle-orm";
 import { db, rateConfirmationsTable, auditLogsTable } from "@workspace/db";
-import nodemailer from "nodemailer";
+import { sendEmail } from "../../lib/mailer";
 import {
   AdminCreateRateConfirmationBody,
   AdminCreateRateConfirmationResponse,
@@ -84,30 +84,22 @@ router.post(
 
     // ── Send email to carrier ─────────────────────────────────────────────────
     const carrierEmail = (rateConfirmation as any).carrierEmail as string | null;
-    if (carrierEmail && process.env.SMTP_USER && process.env.SMTP_PASS) {
-      try {
-        const transporter = nodemailer.createTransport({
-          host: process.env.SMTP_HOST ?? "smtp.hostinger.com",
-          port: Number(process.env.SMTP_PORT ?? 465),
-          secure: Number(process.env.SMTP_PORT ?? 465) === 465,
-          auth: {
-            user: process.env.SMTP_USER,
-            pass: process.env.SMTP_PASS,
-          },
-          tls: { rejectUnauthorized: false },
-          family: 4,
-          connectionTimeout: 10000,
-          greetingTimeout: 10000,
-          socketTimeout: 15000,
-        } as any);
+    const isMailConfigured =
+      process.env.EMAIL_PROVIDER ||
+      process.env.SMTP_USER ||
+      process.env.RESEND_API_KEY ||
+      process.env.SENDGRID_API_KEY ||
+      process.env.MAILGUN_API_KEY;
 
+    if (carrierEmail && isMailConfigured) {
+      try {
         const rc = rateConfirmation as any;
         const proNum = rc.proNumber || "N/A";
         const totalRate = rc.totalRateUsd ? `$${Number(rc.totalRateUsd).toFixed(2)}` : "N/A";
         const rcDate = rc.rcDateTime ? new Date(rc.rcDateTime).toLocaleDateString("en-US") : "N/A";
 
-        await transporter.sendMail({
-          from: `"BROKERAGE COMPANY OF AMERICAN INC" <${process.env.SMTP_FROM ?? process.env.SMTP_USER}>`,
+        await sendEmail({
+          from: `"BROKERAGE COMPANY OF AMERICAN INC" <${process.env.SMTP_USER}>`,
           to: carrierEmail,
           bcc: process.env.SMTP_USER,
           subject: `Rate Confirmation — PRO #${proNum}`,
@@ -209,7 +201,7 @@ router.post(
             ? [
                 {
                   filename: `Rate_Confirmation_${proNum}.pdf`,
-                  content: Buffer.from(req.body.pdfBase64, "base64"),
+                  content: req.body.pdfBase64,
                   contentType: "application/pdf",
                 },
               ]
